@@ -1,6 +1,6 @@
 {
-  "name": "My App",
-  "short_name": "My App",
+  "name": "Active Citizen Dashboard",
+  "short_name": "Active Citizen Dashboard",
     "icons": [{
       "src": "images/app-icon-32.png",
       "type": "image/png",

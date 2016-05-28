@@ -1,0 +1,28 @@
+{
+  "notification": {
+    "post": {
+      "statusChangeSubject": "Status of post changed"
+    },
+    "email": {
+      "postEndorsementNew": "Your idea has support",
+      "postNew": "New idea",
+      "postNewsSelf": "Your new idea",
+      "postEndorsementSelf": "Endorsement for your idea",
+      "postEndorsement": "Endorsement for an idea",
+      "postOppositionSelf": "Opposition for your idea",
+      "postOpposition": "Opposition for idea",
+      "pointNewSelf": "New point for your idea",
+      "pointNew'": "New point",
+      "pointUnhelpfulSelf": "Point marked unhelpful for my idea",
+      "pointUnhelpful": "Point marked unhelpfu",
+      "pointHelpfulSelf": "Point marked helpful for my idea",
+      "pointHelpful": "Point marked helpful",
+      "newPointOnMyPoint": "New point",
+      "password_recovery": "Create a new password",
+      "dear": "Hi",
+      "reset_password_1": "Here is link to change your password.",
+      "reset_password_2": "If you didn't request this, please ignore this email.",
+      "reset_password_3": "Your password won't change until you access the link above and create a new one."
+    }
+  }
+}
