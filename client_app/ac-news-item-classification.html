@@ -10,7 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<dom-module id="my-view1">
+<dom-module id="ac-news-item-classification">
 
   <template>
 
@@ -52,14 +52,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
     </div>
 
+    <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" last-response="{{response}}"></yp-ajax>
+
   </template>
 
   <script>
 
     Polymer({
 
-      is: 'my-view1'
+      is: 'ac-news-item-classification'
 
+      properties: {
+        response: {
+          type: Object,
+          observer: "_responseChanged"
+        }
+      },
+
+      _responseChanged: function (newResponse) {
+       debugger;
+      }
     });
 
   </script>

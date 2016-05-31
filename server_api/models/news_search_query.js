@@ -5,18 +5,17 @@ var toJson = require('../utils/to_json');
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var NewsItem = sequelize.define("NewsItem", {
+  var NewsSearchQuery = sequelize.define("NewsSearchQuery", {
     name: { type: DataTypes.STRING, allowNull: false },
     description: DataTypes.TEXT,
-    rating:  DataTypes.JSONB,
     data_object:  DataTypes.JSONB,
-    data_id: DataTypes.STRING,
+    saved_query_id: DataTypes.STRING,
     ip_address: DataTypes.STRING
   }, {
 
     underscored: true,
 
-    tableName: 'news_items',
+    tableName: 'news_search_queries',
 
     instanceMethods: {
     },
@@ -24,10 +23,10 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
 
       associate: function(models) {
-        NewsItem.belongsTo(models.NewsSearchQuery);
+        NewsSearchQuery.hasMany(models.NewItems);
       }
     }
   });
 
-  return NewsItem;
+  return NewsSearchQuery;
 };

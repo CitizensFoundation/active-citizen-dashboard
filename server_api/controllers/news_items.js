@@ -18,6 +18,20 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/next_to_rate', function(req, res) {
+  models.NewItem.find(
+    {
+      where: {
+        rating: null
+      },
+      order: [
+        Sequelize.fn( 'RAND' )
+      ]
+    }).then(function (item) {
+    req.send(item);
+  });
+});
+
 router.put('/:newsItemId', function(req, res) {
   models.NewItem.find({
     where: {

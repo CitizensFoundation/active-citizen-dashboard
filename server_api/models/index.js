@@ -39,11 +39,8 @@ fs
     db[model.name] = model;
   });
 
-if (process.env.NODE_ENV === 'development') {
-  sequelize.sync().done(function() {
-    db.Post.addFullTextIndex();
-  });
-}
+sequelize.sync().done(function() {
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
