@@ -1,0 +1,8 @@
+{
+  "entrypoint": "index.html",
+  "shell": "dashboard-app.html",
+  "fragments": [
+    "ac-news-item-classification.html",
+    "ac-view-items.html"
+  ]
+}

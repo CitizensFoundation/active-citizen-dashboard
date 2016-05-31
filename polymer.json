@@ -1,8 +1,0 @@
-{
-  "entrypoint": "index.html",
-  "shell": "client_app/dashboard-app.html",
-  "fragments": [
-    "client_app/classify.html",
-    "client_app/view.html"
-  ]
-}

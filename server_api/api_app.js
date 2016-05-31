@@ -159,6 +159,7 @@ app.use('/api/news_items', newsItems);
 
 console.log("Getting ready 2");
 
+/*
 app.use(function(err, req, res, next) {
   if (err instanceof auth.UnauthorizedError) {
     log.error("User Unauthorized", { context: 'unauthorizedError', user: toJson(req.user), err: 'Unauthorized', errorStatus: 401 });
@@ -167,7 +168,7 @@ app.use(function(err, req, res, next) {
     next(err);
   }
 });
-
+*/
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

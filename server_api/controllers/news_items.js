@@ -8,32 +8,34 @@ var _ = require('lodash');
 var async = require('async');
 
 router.get('/:', function(req, res) {
-  models.NewItem.findAll(
+  models.NewsItem.findAll(
     {
       offset: 0,
       limit: 200,
       order: [sequelize.json("rating.value"), 'ASC']
     }).then(function (items) {
-      req.send(items);
+      res.send(items);
   });
 });
 
 router.get('/next_to_rate', function(req, res) {
-  models.NewItem.find(
+  models.NewsItem.find(
     {
       where: {
         rating: null
       },
       order: [
-        Sequelize.fn( 'RAND' )
+        models.sequelize.fn( 'random' )
       ]
     }).then(function (item) {
-    req.send(item);
+    res.send(item);
+  }).catch(function (error) {
+    res.sendStatus(500);
   });
 });
 
 router.put('/:id/rate', function(req, res) {
-  models.NewItem.find({
+  models.NewsItem.find({
     where: {
       id: req.params.id
     }
@@ -41,10 +43,10 @@ router.put('/:id/rate', function(req, res) {
     if (item) {
       item.set('rating', { value: req.body.ratingValue });
       item.save().then(function () {
-        req.sendStatus(200);
+        res.sendStatus(200);
       });
     } else {
-      req.sendStatus(404);
+      res.sendStatus(404);
     }
   });
 });

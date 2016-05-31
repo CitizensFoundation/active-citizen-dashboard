@@ -13,8 +13,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 
-<link rel="import" href="yp-ajax/yp-ajax.html">
-
 
 <dom-module id="ac-news-item-classification">
 
@@ -57,7 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="layout horizontal">[[response.description]]</div>
     </paper-material>
 
-    <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" on-response="_nextResponse"></yp-ajax>
+    <yp-ajax id="getNextToClassifyAjax" auto method="GET" url="/api/news_items/next_to_rate" on-response="{{_nextResponse}}"></yp-ajax>
     <yp-ajax id="classifyItemAjax" method="PUT" on-response="_classifyDone"></yp-ajax>
 
   </template>
@@ -79,10 +77,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: "_ratingValueChanged",
           value: null
         }
-      },
-
-      ready: function () {
-        this.$.getNextToClassifyAjax.generateRequest();
       },
 
       _nextResponse: function (event, detail) {

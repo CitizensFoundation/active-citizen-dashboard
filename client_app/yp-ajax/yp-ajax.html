@@ -6,14 +6,14 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
-<link rel="import" href="../yp-behaviors/fix-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../app-helpers.html">
 
 <dom-module id="yp-ajax">
   <style>
     :host {
 
     }
-
     .large {
       height: 64px !important;
       width: 64px !important;
@@ -180,12 +180,12 @@
         } else {
           text = errorText;
         }
-        var dialog = Polymer.dom(document).querySelector('yp-app').getDialog("errorDialog");
+        var dialog = Polymer.dom(document).querySelector('my-app').getDialog("errorDialog");
         dialog.showErrorDialog(this._transformErrorText(text));
       },
 
       _resetErrorText: function(event) {
-        var dialog = Polymer.dom(document).querySelector('yp-app').getDialog("errorDialog");
+        var dialog = Polymer.dom(document).querySelector('my-app').getDialog("errorDialog");
         dialog.resetErrorText();
       }
     })

@@ -13,6 +13,7 @@
 <link rel="import" href="my-icons.html">
 
 <link rel="import" href="ac-news-item-classification.html">
+<link rel="import" href="ac-dialog-container.html">
 
 <dom-module id="my-app">
 
@@ -58,6 +59,8 @@
 
 
     </style>
+
+    <ac-dialog-container id="dialogContainer"></ac-dialog-container>
 
     <app-location route="{{route}}"></app-location>
 
@@ -111,7 +114,7 @@
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged'
-        },
+        }
 
       },
 
@@ -119,14 +122,18 @@
         '_routePageChanged(routeData.page)'
       ],
 
+      getDialog: function (idName) {
+        return this.$$("#dialogContainer").getDialog(idName);
+      },
+
       _routePageChanged: function(page) {
         this.page = page || 'view1';
       },
 
       _pageChanged: function(page) {
         // load page import on demand.
-        this.importHref(
-          this.resolveUrl('my-' + page + '.html'), null, null, true);
+    //    this.importHref(
+      //    this.resolveUrl('my-' + page + '.html'), null, null, true);
       }
 
     });

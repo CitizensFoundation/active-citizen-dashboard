@@ -41,12 +41,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     })();
 
     // load pre-caching service worker
+    /*
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/service-worker.js');
       });
     }
-
+*/
   </script>
 
   <link rel="import" href="dashboard-app.html">
@@ -66,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 <body>
 
-  <my-app>Active Citizen Dashboard</my-app>
+  <my-app id="yp-app">Active Citizen Dashboard</my-app>
 
 </body>
 </html>
