@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var models = require("../models");
-var auth = require('../authorization');
+
 var log = require('../utils/logger');
 var toJson = require('../utils/to_json');
 var _ = require('lodash');
 var async = require('async');
 
-router.get('/', function(req, res) {
+router.get('/:', function(req, res) {
   models.NewItem.findAll(
     {
       offset: 0,
@@ -32,10 +32,10 @@ router.get('/next_to_rate', function(req, res) {
   });
 });
 
-router.put('/:newsItemId', function(req, res) {
+router.put('/:id/rate', function(req, res) {
   models.NewItem.find({
     where: {
-      id: req.params.newsItemId
+      id: req.params.id
     }
   }).then(function (item) {
     if (item) {

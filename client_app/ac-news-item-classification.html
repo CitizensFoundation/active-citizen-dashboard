@@ -9,6 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+
 
 <dom-module id="ac-news-item-classification">
 
@@ -27,6 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: #fff;
         color: #757575;
       }
+
       .circle {
         display: inline-block;
         height: 64px;
@@ -38,6 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #555;
         text-align: center;
       }
+
       h1 {
         font-size: 22px;
         margin: 16px 0;
@@ -45,14 +51,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+    <paper-material elevation="2">
+      <div class="layout horizontal">[[response.description]]</div>
+    </paper-material>
 
-    <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" last-response="{{response}}"></yp-ajax>
+    <yp-ajax id="getNextToClassifyAjax" auto method="GET" url="/api/news_items/next_to_rate" on-response="{{_nextResponse}}"></yp-ajax>
+    <yp-ajax id="classifyItemAjax" method="PUT" on-response="_classifyDone"></yp-ajax>
 
   </template>
 
@@ -60,12 +64,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'ac-news-item-classification'
+      is: 'ac-news-item-classification',
 
       properties: {
         response: {
           type: Object,
           observer: "_responseChanged"
+        },
+
+        ratingValue: {
+          type: Number,
+          observer: "_ratingValueChanged",
+          value: null
+        }
+      },
+
+      _nextResponse: function (event, detail) {
+        debugger;
+        this.set("response", detail.response);
+      },
+
+      _classifyDone: function (value) {
+        this.set('response', null);
+        this.$.getNextToClassifyAjax.generateRequest();
+      },
+
+      _ratingValueChanged: function (value) {
+        debugger;
+        if (false && value!=null) {
+          this.$.classifyItemAjax.url = "/api/news_items/"+this.response.id+"/rate";
+          this.$.classifyItemAjax.body = { ratingValue: value };
+          this.$.classifyItemAjax.generateRequest();
         }
       },
 

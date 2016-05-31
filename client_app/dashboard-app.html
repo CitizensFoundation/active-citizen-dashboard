@@ -12,6 +12,8 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="my-icons.html">
 
+<link rel="import" href="ac-news-item-classification.html">
+
 <dom-module id="my-app">
 
   <template>
@@ -87,7 +89,7 @@
         </app-header>
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <ac-classify-post name="classify"></ac-classify-post>
+          <ac-news-item-classification name="classify"></ac-news-item-classification>
           <ac-view-post name="view"></ac-view-post>
         </iron-pages>
 

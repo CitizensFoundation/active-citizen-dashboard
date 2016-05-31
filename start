@@ -1,0 +1,1 @@
+cd server_api;ENV=development DEBUG=active-citizen-dashboard node ./api_app.js
