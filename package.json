@@ -1,5 +1,5 @@
 {
-  "name": "your-priorities-app",
+  "name": "active-citizen-dashboard",
   "version": "6.0.332",
   "dependencies": {
     "airbrake": "^1.0.1",
@@ -50,6 +50,7 @@
     "posix": "^4.0.0",
     "predictionio-driver": "git+https://github.com/rbjarnason/predictionio-driver.git",
     "randomstring": "^1.1.4",
+    "request": "^2.72.0",
     "request-ip": "^1.2.2",
     "s3-uploader": "^1.0.0",
     "sequelize": "^3.17.3",

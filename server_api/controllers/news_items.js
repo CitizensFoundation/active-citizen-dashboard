@@ -35,5 +35,4 @@ router.put('/:newsItemId', function(req, res) {
   });
 });
 
-
 module.exports = router;
