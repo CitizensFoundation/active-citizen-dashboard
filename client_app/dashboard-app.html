@@ -70,14 +70,14 @@
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <app-drawer-layout fullbleed>
+    <app-drawer-layout fullbleed responsive-width="6000px">
 
       <!-- Drawer content -->
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/classify">Classify posts</a>
-          <a name="view2" href="/view">View posts</a>
+          <a name="classify" href="/classify">Classify Posts</a>
+          <a name="view" href="/view">View Posts</a>
         </iron-selector>
       </app-drawer>
 
@@ -87,14 +87,11 @@
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div title>Active Citizen Dashboard</div>
+            <div title>DEEP-Y Dashboard</div>
           </app-toolbar>
         </app-header>
 
-        <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <ac-news-item-classification name="classify"></ac-news-item-classification>
-          <ac-view-post name="view"></ac-view-post>
-        </iron-pages>
+        <ac-news-item-classification name="classify"></ac-news-item-classification>
 
       </app-header-layout>
 
@@ -113,7 +110,8 @@
         page: {
           type: String,
           reflectToAttribute: true,
-          observer: '_pageChanged'
+          observer: '_pageChanged',
+          value: 'classify'
         }
 
       },

@@ -22,7 +22,10 @@ router.get('/next_to_rate', function(req, res) {
   models.NewsItem.find(
     {
       where: {
-        rating: null
+        rating: null,
+        description: {
+          $ne: null
+        }
       },
       order: [
         models.sequelize.fn( 'random' )
