@@ -10,9 +10,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
 
 <link rel="import" href="yp-ajax/yp-ajax.html">
 
@@ -21,38 +22,128 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
 
-    <style>
+    <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
         padding: 10px;
       }
 
+      .dont-break-out {
+
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+
+      }
+
       h1 {
         font-size: 22px;
         color: #212121;
-        margin-left: 42px;
       }
 
       paper-material {
         background-color: #FFF;
         padding: 16px;
-        margin: 32px;
-        width: 320px;
+        width: 420px;
         min-height: 420px;
       }
 
       paper-slider {
         margin-top: 16px;
-        width: 280px;
+        width: 350px;
+        --paper-slider-height: 5px;
+        --paper-slider-active-color: var(--google-red-500);
+      }
+
+      .container {
+        @apply(--layout-center-center);
+      }
+
+      .top {
+        width: 100%;
+      }
+
+      .link {
+        margin-top: 16px;
+        border-bottom: 1px solid;
+        padding-bottom: 24px;
+        border-color: #777;
+      }
+
+      .description {
+      }
+
+      .linkInfoText {
+        color: #aaa;
+      }
+
+      .author {
+        padding-left: 8px;
+      }
+
+      .content {
+        padding-top: 16px;
+      }
+
+      .sliderNumber {
+        color: #555;
+      }
+
+      .ratingContainer {
+        padding-top: 16px;
+      }
+
+      .next {
+        margin-top: 16px;
       }
     </style>
 
-    <div class="layout horizontal center-center">
-      <h1>Classify</h1>
-      <paper-material elevation="4">
-        <div class="layout horizontal">[[response.description]]</div>
-        <paper-slider expand id="slider" on-value-change="_ratingValueChanged"></paper-slider>
-      </paper-material>
+    <div class="top">
+      <div class="layout vertical center-center container">
+        <h1>Classify Relevancy of Social Media Posts</h1>
+        <paper-material elevation="4">
+          <div class="linkInfoText">Author:</div>
+          <div class="layout horizontal">
+            <div class="layout horizontal self-end">
+              <img width="50" height="50" src$="[[response.data_object.avatar]]">
+            </div>
+            <div class="author"><b>[[response.data_object.author]]</b></div>
+          </div>
+          <div class="linkInfoText content">
+            Content:
+          </div>
+          <div class="layout horizontal description">[[response.description]]</div>
+          <div class="link">
+            <div class="linkInfoText">
+              Link to original:
+            </div>
+            <a class="dont-break-out" href$="[[response.data_object.link]]" target="_blank">[[response.data_object.link]]</a>
+          </div>
+          <div class="sliderNumber ratingContainer">
+             Rate content from 1 to 100:
+          </div>
+          <div class="layout horizontal center-center">
+            <div class="sliderNumber">0</div>
+            <paper-slider expand id="slider" on-value-change="_ratingValueChanged"></paper-slider>
+            <div class="sliderNumber">100</div>
+          </div>
+          <div class="next layout horizontal center-center">
+            <paper-button raised on-tap="_next">Next</paper-button>
+          </div>
+        </paper-material>
+      </div>
     </div>
 
     <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" on-response="_nextResponse"></yp-ajax>
@@ -73,7 +164,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       ready: function () {
-        this.$.getNextToClassifyAjax.generateRequest();
+        this._next();
       },
 
       _nextResponse: function (event, detail) {
@@ -81,10 +172,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set("response", detail.response);
       },
 
+      _next: function () {
+        this.$.getNextToClassifyAjax.generateRequest();
+      },
+
       _classifyDone: function (value) {
         this.set('response', null);
         this.$.slider.value = 0;
-        this.$.getNextToClassifyAjax.generateRequest();
+        this._next();
       },
 
       _ratingValueChanged: function (event, value) {
