@@ -1,4 +1,4 @@
 # Active Citizen Dashboard
 
-Created as a part of the EU funded DEEP linking project
+Created as a part of the EU funded DEEP linking Youth project
 
