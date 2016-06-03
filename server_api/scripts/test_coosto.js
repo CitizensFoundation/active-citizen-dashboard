@@ -4,7 +4,7 @@ var async = require('async');
 var coreRequest = require('request');
 
 request = coreRequest.defaults({jar: true});
-
+// DIFFERENT SLIDERS FOR DIFFERENT CATEGORIES STILL ONE CLICK
 var coreUrl = "https://in.coosto.com/";
 var loginParams = "?username="+process.env.COOSTO_USERNAME+"&password="+process.env.COOSTO_PASSWORD;
 
