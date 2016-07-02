@@ -85,6 +85,8 @@
             q: this.textToTranslate
           };
           this.$.checkLanguageApi.generateRequest();
+        } else {
+          this.set('translatedText', null);
         }
       },
 
