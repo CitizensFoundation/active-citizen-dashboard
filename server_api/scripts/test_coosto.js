@@ -77,13 +77,14 @@ var getAndSaveResults = function (callback) {
   });
 };
 
+/*
 getAndSaveResults(function () {
   console.log("Done");
   process.exit();
 });
+*/
 
-/*getAndSaveAllQueries(function () {
-  console.log("Done");
+getAndSaveAllQueries(function () {
+  console.log("Done Queries");
   process.exit();
 });
-*/
