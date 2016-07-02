@@ -13,76 +13,24 @@ var getAndSaveAllQueries = function (callback) {
     console.log(loginResults);
     request(coreUrl+"api/1/savedqueries/get_all", function (error, savedQueres) {
       var queries = JSON.parse(savedQueres.body);
-      async.eachSeries(queries.data, function (query, seriesCallback) {
-        models.NewsSearchQuery.create({
-          saved_query_id: query.id,
-          name: query.name,
-          data_object: query
-        }).then(function () {
-          seriesCallback();
+      if (queries.status != "failed") {
+        async.eachSeries(queries.data, function (query, seriesCallback) {
+          models.NewsSearchQuery.create({
+            saved_query_id: query.id,
+            name: query.name ? query.name : '',
+            data_object: query
+          }).then(function () {
+            seriesCallback();
+          });
+        }, function (error) {
+          callback();
         });
-      }, function (error) {
-        callback();
-      });
+      } else {
+        console.error("Failed with:"+queries.data)
+      }
     });
   })
 };
-
-var getAndSaveResults = function (callback) {
-  request(coreUrl+"api/1/users/login"+loginParams, function (error, loginResults) {
-    models.NewsSearchQuery.findAll({}).then(function (queries) {
-      async.eachSeries(queries, function (query, seriesCallback) {
-        console.log("Processing Query "+query.name);
-        console.log("----------------------------------------------------------------------");
-        request(coreUrl+"api/1/query/results?qid="+query.data_object.id, function (error, queryResults) {
-          console.log("Got responses");
-          var results = JSON.parse(queryResults.body);
-          async.eachSeries(results.data[0], function (result, innerSeriesCallback) {
-            console.log("Saving response");
-            models.NewsItem.find({
-              where: {
-                data_id: result.id
-              }
-            }).then(function (item) {
-              if (item) {
-                console.log("News Item already saved");
-                innerSeriesCallback();
-              } else if (!result.fulltext) {
-                console.log("News Item has no body");
-                console.log(result);
-                console.log("------------ News Item has no body End -------------");
-                innerSeriesCallback();
-              } else {
-                models.NewsItem.create({
-                  name: result.title ? result.title : '',
-                  description: result.fulltext,
-                  data_id: result.id,
-                  news_search_query_id: query.id,
-                  data_object: result
-                }).then(function (createResults) {
-                  console.log("Have saved item");
-                  innerSeriesCallback();
-                });
-              }
-            });
-          }, function (error) {
-            seriesCallback();
-          });
-        });
-      }, function (error) {
-        callback();
-      });
-    });
-
-  });
-};
-
-/*
-getAndSaveResults(function () {
-  console.log("Done");
-  process.exit();
-});
-*/
 
 getAndSaveAllQueries(function () {
   console.log("Done Queries");
