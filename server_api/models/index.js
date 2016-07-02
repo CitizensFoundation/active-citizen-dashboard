@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
   }));
 }
 
-var db        = {};
+var db = {};
 
 // Read from local folder
 fs
