@@ -100,6 +100,8 @@
             q: this.textToTranslate
           };
           this.$.translateApi.generateRequest();
+        } else {
+          this.set('translatedText', null);
         }
       }
     });
