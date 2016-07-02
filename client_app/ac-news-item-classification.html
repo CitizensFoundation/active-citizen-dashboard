@@ -14,9 +14,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="bower_components/paper-button/paper-button.html">
 
-
 <link rel="import" href="yp-ajax/yp-ajax.html">
-
+<link rel="import" href="google-translate.html">
 
 <dom-module id="ac-news-item-classification">
 
@@ -125,6 +124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             Content:
           </div>
           <div class="layout horizontal description">[[response.description]]</div>
+          <google-translate api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c" text-to-translate="[[response.description]]"></google-translate>
           <div class="link">
             <div class="linkInfoText">
               Link to original:
@@ -168,7 +168,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _nextResponse: function (event, detail) {
-        debugger;
         this.set("response", detail.response);
       },
 
