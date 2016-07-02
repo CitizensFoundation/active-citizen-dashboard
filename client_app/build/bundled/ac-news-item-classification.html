@@ -1,0 +1,51 @@
+<html><head><meta charset="UTF-8"><link rel="import" href="dashboard-app.html"></head><body><dom-module id="ac-news-item-classification">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment">:host{display:block;padding:10px;}.dont-break-out{overflow-wrap:break-word;word-wrap:break-word;-ms-word-break:break-all;word-break:break-all;word-break:break-word;-ms-hyphens:auto;-moz-hyphens:auto;-webkit-hyphens:auto;hyphens:auto;}h1{font-size:22px;color:#212121;}paper-material{background-color:#FFF;padding:16px;width:420px;min-height:420px;}paper-slider{margin-top:16px;width:350px;--paper-slider-height:5px;--paper-slider-active-color:var(--google-red-500);}.container{@apply (--layout-center-center);}.top{width:100%;}.link{margin-top:16px;border-bottom:1px solid;padding-bottom:24px;border-color:#777;}.description{}.linkInfoText{color:#aaa;}.author{padding-left:8px;}.content{padding-top:16px;}.sliderNumber{color:#555;}.ratingContainer{padding-top:16px;}.next{margin-top:16px;}</style>
+
+    <div class="top">
+      <div class="layout vertical center-center container">
+        <h1>Classify Relevancy of Social Media Posts</h1>
+        <paper-material elevation="4">
+          <div class="linkInfoText">Author:</div>
+          <div class="layout horizontal">
+            <div class="layout horizontal self-end">
+              <img width="50" height="50" src$="[[response.data_object.avatar]]">
+            </div>
+            <div class="author"><b>[[response.data_object.author]]</b></div>
+          </div>
+          <div class="linkInfoText content">
+            Content:
+          </div>
+          <div class="layout horizontal description">[[response.description]]</div>
+          <div class="link">
+            <div class="linkInfoText">
+              Link to original:
+            </div>
+            <a class="dont-break-out" href$="[[response.data_object.link]]" target="_blank">[[response.data_object.link]]</a>
+          </div>
+          <div class="sliderNumber ratingContainer">
+             Rate content from 1 to 100:
+          </div>
+          <div class="layout horizontal center-center">
+            <div class="sliderNumber">0</div>
+            <paper-slider expand="" id="slider" on-value-change="_ratingValueChanged"></paper-slider>
+            <div class="sliderNumber">100</div>
+          </div>
+          <div class="next layout horizontal center-center">
+            <paper-button raised="" on-tap="_next">Next</paper-button>
+          </div>
+        </paper-material>
+      </div>
+    </div>
+
+    <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" on-response="_nextResponse"></yp-ajax>
+    <yp-ajax id="classifyItemAjax" method="PUT" on-response="_classifyDone"></yp-ajax>
+
+  </template>
+
+  <script>Polymer({is:"ac-news-item-classification",properties:{response:{type:Object}},ready:function(){this._next()},_nextResponse:function(e,s){this.set("response",s.response)},_next:function(){this.$.getNextToClassifyAjax.generateRequest()},_classifyDone:function(e){this.set("response",null),this.$.slider.value=0,this._next()},_ratingValueChanged:function(e,s){null!=e.srcElement.value&&0!=e.srcElement.value&&(this.$.classifyItemAjax.url="/api/news_items/"+this.response.id+"/rate",this.$.classifyItemAjax.body={ratingValue:s},this.$.classifyItemAjax.generateRequest())},_responseChanged:function(e){}});</script>
+
+</dom-module>
+</body></html>

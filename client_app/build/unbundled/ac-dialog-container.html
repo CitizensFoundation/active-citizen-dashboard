@@ -1,0 +1,16 @@
+<html><head><link rel="import" href="bower_components/polymer/polymer.html">
+
+<link rel="import" href="yp-ajax/yp-ajax-error-dialog.html">
+
+</head><body><dom-module id="ac-dialog-container">
+  <template>
+    <style>:host{background-color:var(--primary-background-color);}#dialogs{background-color:var(--primary-background-color) !important;}</style>
+
+    <div id="dialogs">
+      <yp-ajax-error-dialog id="errorDialog"></yp-ajax-error-dialog>
+    </div>
+  </template>
+
+  <script>Polymer({is:"ac-dialog-container",getDialog:function(o){return this.$$("#"+o)},_forgotPassword:function(){this.$.forgotPassword.open()}});</script>
+</dom-module>
+</body></html>
