@@ -11,11 +11,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/paper-material/paper-material.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/paper-fab/paper-fab.html">
 
 <link rel="import" href="yp-ajax/yp-ajax.html">
 <link rel="import" href="google-translate.html">
+<link rel="import" href="ac-rating-category.html">
 
 <dom-module id="ac-news-item-classification">
 
@@ -55,7 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       paper-material {
         background-color: #FFF;
         padding: 16px;
-        width: 420px;
+        margin-top: 24px;
         min-height: 420px;
       }
 
@@ -76,12 +79,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .link {
         margin-top: 16px;
-        border-bottom: 1px solid;
         padding-bottom: 24px;
         border-color: #777;
       }
 
       .description {
+        font-size: 19px;
       }
 
       .linkInfoText {
@@ -107,40 +110,67 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .next {
         margin-top: 16px;
       }
+
+      .raingText {
+        color: #999;
+        font-size: 24px;
+      }
+
+      .mainContentArea {
+        width: 420px;
+        max-width: 420px;
+        padding: 8px;
+      }
+
+      .ratingArea {
+        width: 280px;
+      }
+
+      .mainHeader {
+        font-size: 22px;
+        padding-bottom: 12px;
+        color: #000;
+        font-weight: bold;
+        padding-left: 0;
+      }
+
     </style>
 
     <div class="top">
       <div class="layout vertical center-center container">
-        <h1>Classify Relevancy of Social Media Posts</h1>
         <paper-material elevation="4">
-          <div class="linkInfoText">Author:</div>
           <div class="layout horizontal">
-            <div class="layout horizontal self-end">
-              <img width="50" height="50" src$="[[response.data_object.avatar]]">
+          </div>
+          <div class="layout horizontal wrap">
+
+            <div class="layout vertical mainContentArea">
+              <div class="mainHeader">Classify Relevancy of Social Media Posts</div>
+              <div class="layout horizontal description">[[response.description]]</div>
+              <google-translate class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c" text-to-translate="[[response.description]]"></google-translate>
+              <div class="link">
+                <div class="linkInfoText">
+                  Link to original
+                </div>
+                <a class="dont-break-out" href$="[[response.data_object.link]]" target="_blank">[[response.data_object.link]]</a>
+              </div>
+              <div class="linkInfoText">Author</div>
+              <div class="layout horizontal">
+                <div class="layout horizontal self-end">
+                  <img width="50" height="50" src$="[[response.data_object.avatar]]">
+                </div>
+                <div class="author">[[response.data_object.author]]</div>
+              </div>
+              <div class="next layout horizontal center-center">
+                <paper-button raised on-tap="_next">Skip</paper-button>
+              </div>
             </div>
-            <div class="author"><b>[[response.data_object.author]]</b></div>
-          </div>
-          <div class="linkInfoText content">
-            Content:
-          </div>
-          <div class="layout horizontal description">[[response.description]]</div>
-          <google-translate api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c" text-to-translate="[[response.description]]"></google-translate>
-          <div class="link">
-            <div class="linkInfoText">
-              Link to original:
+
+            <div class="layout vertical ratingArea">
+              <ac-rating-category on-rated="_rated" category-name="Finance"></ac-rating-category>
+              <ac-rating-category on-rated="_rated" category-name="Housing"></ac-rating-category>
+              <ac-rating-category on-rated="_rated" category-name="University"></ac-rating-category>
+              <ac-rating-category on-rated="_rated" category-name="Other"></ac-rating-category>
             </div>
-            <a class="dont-break-out" href$="[[response.data_object.link]]" target="_blank">[[response.data_object.link]]</a>
-          </div>
-          <div class="sliderNumber ratingContainer">
-             Rate content from 1 to 100:
-          </div>
-          <div class="layout horizontal center-center">
-            <div class="sliderNumber">0</div>
-            <paper-slider expand id="slider" on-value-change="_ratingValueChanged"></paper-slider>
-            <div class="sliderNumber">100</div>
-          </div>
-          <div class="next layout horizontal center-center">
-            <paper-button raised on-tap="_next">Skip</paper-button>
           </div>
         </paper-material>
       </div>
@@ -177,16 +207,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _classifyDone: function (value) {
         this.set('response', null);
-        this.$.slider.value = 0;
         this._next();
       },
 
-      _ratingValueChanged: function (event, value) {
-        if (event.srcElement.value!=null && event.srcElement.value!=0) {
-          this.$.classifyItemAjax.url = "/api/news_items/"+this.response.id+"/rate";
-          this.$.classifyItemAjax.body = { ratingValue: value };
-          this.$.classifyItemAjax.generateRequest();
-        }
+      _rated: function (event, detail) {
+        debugger;
+        this.$.classifyItemAjax.url = "/api/news_items/"+this.response.id+"/rate";
+        this.$.classifyItemAjax.body = { ratingValue: detail.ratingValue, ratingCategoryName: detail.categoryName};
+        this.$.classifyItemAjax.generateRequest();
       },
 
       _responseChanged: function (newResponse) {

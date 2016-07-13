@@ -8,6 +8,7 @@
     "app-helpers.html",
     "ac-dialog-container.html",
     "ac-news-item-classification.html",
-    "ac-view-items.html"
+    "ac-view-items.html",
+    "ac-rating-category.html"
   ]
 }

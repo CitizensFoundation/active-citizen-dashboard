@@ -17,6 +17,7 @@
     "paper-icon-button": "PolymerElements/paper-icon-button",
     "polymer": "polymer/polymer#^1.6.0",
     "paper-material": "polymerelements/paper-material",
+    "paper-fab": "polymerelements/paper-fab",
     "paper-slider": "polymerelements/paper-slider",
     "paper-button": "polymerelements/paper-button",
     "paper-spinner": "polymerelements/paper-spinner",

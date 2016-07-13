@@ -44,7 +44,7 @@ router.put('/:id/rate', function(req, res) {
     }
   }).then(function (item) {
     if (item) {
-      item.set('rating', { value: req.body.ratingValue });
+      item.set('rating', { ratingValue: req.body.ratingValue, ratingCategoryName: req.body.ratingCategoryName });
       item.save().then(function () {
         res.sendStatus(200);
       });
