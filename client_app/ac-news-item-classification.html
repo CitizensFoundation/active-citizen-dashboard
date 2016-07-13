@@ -134,6 +134,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 0;
       }
 
+      @media (max-width: 420px) {
+        .mainContentArea {
+          width: 300px;
+          max-width: 300px;
+        }
+
+        .ratingArea {
+          width: 280px;
+        }
+      }
+
     </style>
 
     <div class="top">
@@ -211,7 +222,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _rated: function (event, detail) {
-        debugger;
         this.$.classifyItemAjax.url = "/api/news_items/"+this.response.id+"/rate";
         this.$.classifyItemAjax.body = { ratingValue: detail.ratingValue, ratingCategoryName: detail.categoryName};
         this.$.classifyItemAjax.generateRequest();

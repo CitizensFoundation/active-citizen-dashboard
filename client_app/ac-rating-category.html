@@ -61,16 +61,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _rate: function (event, detail) {
-        var relevanceId = detail.sourceEvent.currentTarget.id;
-        var ratingValue = 0;
-        if (relevanceId=='low') {
-          ratingValue = 0;
-        } else if (relevanceId=='medium') {
-          ratingValue = 1;
-        } else if (relevanceId=='high') {
-          ratingValue = 2;
+        var relevanceId;
+        if (detail.sourceEvent.currentTarget) {
+          relevanceId = detail.sourceEvent.currentTarget.id;
+        } else if (detail.sourceEvent.target) {
+          relevanceId = detail.sourceEvent.target.id;
+        } else {
+          console.error("Can't find rating value");
         }
-        this.fire('rated', { categoryName: this.categoryName, ratingValue: ratingValue })
+        if (relevanceId) {
+          var ratingValue = 0;
+          if (relevanceId=='low') {
+            ratingValue = 0;
+          } else if (relevanceId=='medium') {
+            ratingValue = 1;
+          } else if (relevanceId=='high') {
+            ratingValue = 2;
+          }
+          this.fire('rated', { categoryName: this.categoryName, ratingValue: ratingValue })
+        }
       }
     });
 
