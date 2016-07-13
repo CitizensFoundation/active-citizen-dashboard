@@ -14,7 +14,7 @@
     </div>
   </template>
 
-  <script>Polymer({is:"ac-rating-category",properties:{categoryName:{type:String}},_rate:function(e,r){var t=r.sourceEvent.currentTarget.id,a=0;"low"==t?a=0:"medium"==t?a=1:"high"==t&&(a=2),this.fire("rated",{categoryName:this.categoryName,ratingValue:a})}});</script>
+  <script>Polymer({is:"ac-rating-category",properties:{categoryName:{type:String}},_rate:function(e,r){var t;if(r.sourceEvent.currentTarget?t=r.sourceEvent.currentTarget.id:r.sourceEvent.target?t=r.sourceEvent.target.id:console.error("Can't find rating value"),t){var a=0;"low"==t?a=0:"medium"==t?a=1:"high"==t&&(a=2),this.fire("rated",{categoryName:this.categoryName,ratingValue:a})}}});</script>
 
 </dom-module>
 </body></html>
