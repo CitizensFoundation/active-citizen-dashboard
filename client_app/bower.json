@@ -5,6 +5,7 @@
   ],
   "private": true,
   "dependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
     "app-layout": "polymerelements/app-layout",
     "app-route": "polymerelements/app-route",
     "iron-flex-layout": "polymerelements/iron-flex-layout",
