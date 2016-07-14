@@ -1,6 +1,5 @@
 node_modules
 dist
-bower_components
 server_api/config/config.json
 server_api/test/temp
 server_api/bin/uploads
