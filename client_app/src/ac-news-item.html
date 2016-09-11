@@ -108,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="linkInfoText">Author</div>
       <div class="layout horizontal">
         <div class="layout horizontal self-end">
-          <iron-image width="50" height="50" src$="[[item.data_object.avatar]]">
+          <iron-image preload width="50" height="50" src$="[[item.data_object.avatar]]"></iron-imagepreload>
         </div>
         <div class="author">[[item.data_object.author]]</div>
       </div>
@@ -118,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
         <paper-button class="rateAgain" on-tap="_rateAgain">Reclassify</paper-button>
       </template>
-      </div>
+    </div>
     </div>
   </template>
 
