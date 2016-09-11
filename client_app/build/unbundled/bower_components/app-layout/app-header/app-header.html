@@ -7,8 +7,77 @@
 
 </head><body><dom-module id="app-header">
   <template>
-    <style>:host{position:relative;display:block;transition-timing-function:linear;transition-property:-webkit-transform;transition-property:transform;}:host::after{position:absolute;right:0px;bottom:-5px;left:0px;width:100%;height:5px;content:"";transition:opacity 0.4s;pointer-events:none;opacity:0;box-shadow:inset 0px 5px 6px -3px rgba(0, 0, 0, 0.4);will-change:opacity;@apply (--app-header-shadow);}:host([shadow])::after{opacity:1;}#contentContainer > ::content [condensed-title]{-webkit-transform-origin:left top;transform-origin:left top;white-space:nowrap;opacity:0;}#contentContainer > ::content [main-title]{-webkit-transform-origin:left top;transform-origin:left top;white-space:nowrap;}#background{@apply (--layout-fit);overflow:hidden;}#backgroundFrontLayer,
-      #backgroundRearLayer{@apply (--layout-fit);height:100%;pointer-events:none;background-size:cover;}#backgroundFrontLayer{@apply (--app-header-background-front-layer);}#backgroundRearLayer{opacity:0;@apply (--app-header-background-rear-layer);}#contentContainer{position:relative;width:100%;height:100%;}:host([disabled]),
+    <style>
+      :host {
+        position: relative;
+        display: block;
+        transition-timing-function: linear;
+        transition-property: -webkit-transform;
+        transition-property: transform;
+      }
+
+      :host::after {
+        position: absolute;
+        right: 0px;
+        bottom: -5px;
+        left: 0px;
+        width: 100%;
+        height: 5px;
+        content: "";
+        transition: opacity 0.4s;
+        pointer-events: none;
+        opacity: 0;
+        box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
+        will-change: opacity;
+        @apply(--app-header-shadow);
+      }
+
+      :host([shadow])::after {
+        opacity: 1;
+      }
+
+      #contentContainer > ::content [condensed-title] {
+        -webkit-transform-origin: left top;
+        transform-origin: left top;
+        white-space: nowrap;
+        opacity: 0;
+      }
+
+      #contentContainer > ::content [main-title] {
+        -webkit-transform-origin: left top;
+        transform-origin: left top;
+        white-space: nowrap;
+      }
+
+      #background {
+        @apply(--layout-fit);
+        overflow: hidden;
+      }
+
+      #backgroundFrontLayer,
+      #backgroundRearLayer {
+        @apply(--layout-fit);
+        height: 100%;
+        pointer-events: none;
+        background-size: cover;
+      }
+
+      #backgroundFrontLayer {
+        @apply(--app-header-background-front-layer);
+      }
+
+      #backgroundRearLayer {
+        opacity: 0;
+        @apply(--app-header-background-rear-layer);
+      }
+
+      #contentContainer {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      :host([disabled]),
       :host([disabled])::after,
       :host([disabled]) #backgroundFrontLayer,
       :host([disabled]) #backgroundRearLayer,
@@ -20,7 +89,10 @@
       :host-context(.app-layout-silent-scroll) #backgroundFrontLayer,
       :host-context(.app-layout-silent-scroll) #backgroundRearLayer,
       :host-context(.app-layout-silent-scroll) ::content > app-toolbar:first-of-type,
-      :host-context(.app-layout-silent-scroll) ::content > [sticky]{transition:none !important;}</style>
+      :host-context(.app-layout-silent-scroll) ::content > [sticky] {
+        transition: none !important;
+      }
+    </style>
     <div id="contentContainer">
       <content id="content"></content>
     </div>

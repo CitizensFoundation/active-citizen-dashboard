@@ -4,7 +4,15 @@
 
 </head><body><dom-module id="ac-dialog-container">
   <template>
-    <style>:host{background-color:var(--primary-background-color);}#dialogs{background-color:var(--primary-background-color) !important;}</style>
+    <style>
+      :host {
+        background-color: var(--primary-background-color);
+      }
+
+      #dialogs {
+        background-color: var(--primary-background-color) !important;
+      }
+    </style>
 
     <div id="dialogs">
       <yp-ajax-error-dialog id="errorDialog"></yp-ajax-error-dialog>

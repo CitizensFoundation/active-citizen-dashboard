@@ -4,7 +4,19 @@
 <link rel="import" href="yp-ajax/yp-ajax.html">
 
 </head><body><dom-module id="google-translate">
-  <style>.translatedBy{color:#555;font-size:9px;}.translatedText{border-top:1px solid;border-color:#aaa;padding-top:8px;margin-top:8px;}</style>
+  <style>
+    .translatedBy {
+      color: #555;
+      font-size: 9px;
+    }
+
+    .translatedText {
+      border-top: 1px solid;
+      border-color: #aaa;
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+  </style>
 
   <template>
     <template is="dom-if" if="[[translatedText]]">
