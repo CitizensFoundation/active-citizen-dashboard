@@ -198,6 +198,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" on-response="_nextResponse"></yp-ajax>
     <yp-ajax id="classifyItemAjax" method="PUT" on-response="_classifyDone"></yp-ajax>
     <yp-ajax id="getRatingStats" method="GET" url="/api/news_items/rating_stats" on-response="_statsResponse"></yp-ajax>
+    <yp-ajax id="getItemToClassifyAjax" method="GET" url="/api/news_items/get_item/[[itemId]]" on-response="_nextResponse"></yp-ajax>
 
   </template>
 
@@ -212,17 +213,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object
         },
 
+        itemId: {
+          type: Number,
+          observer: '_itemIdChanged'
+        },
+
         totalRated: Number,
         totalCount: Number
-
       },
 
       ready: function () {
         this._next();
       },
 
+      _itemIdChanged: function (itemId) {
+        if (itemId) {
+          this.$.getItemToClassifyAjax.generateRequest();
+        }
+      },
+
       _nextResponse: function (event, detail) {
         this.set("response", detail.response);
+        this.set('itemId', null);
       },
 
       _statsResponse: function (event, detail) {

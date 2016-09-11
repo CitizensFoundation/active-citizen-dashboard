@@ -11,18 +11,67 @@ router.get('/:', function(req, res) {
   models.NewsItem.findAll(
     {
       offset: 0,
-      limit: 200,
-      order: [sequelize.json("rating.value"), 'ASC']
+      limit: 50,
+      order: [["rating_value", 'DESC']]
     }).then(function (items) {
       res.send(items);
   });
+});
+
+router.get('/get_item/:id', function(req, res) {
+  models.NewsItem.find(
+    {
+      where: {
+        id:  req.params.id
+      }
+    }).then(function (item) {
+    res.send(item);
+  });
+});
+
+router.get('/by_category/:category', function(req, res) {
+  if (req.params.category!="all") {
+    models.NewsItem.findAll(
+      {
+        offset: 0,
+        limit: 50,
+        where: {
+          $and: [
+            { rating_category_name: req.params.category },
+            { rating_value: { $gt: 0 }
+            }
+          ]
+        },
+        order: [["rating_value", 'DESC']]
+      }).then(function (items) {
+      res.send(items);
+    }).catch(function (error) {
+      res.sendStatus(500);
+    });
+  } else {
+    models.NewsItem.findAll(
+      {
+        offset: 0,
+        limit: 50,
+        where: {
+          rating_value: {
+            $gt: 0
+          }
+        },
+        order: [["rating_value", 'DESC']]
+      }).then(function (items) {
+      res.send(items);
+    }).catch(function (error) {
+      res.sendStatus(500);
+    });
+  }
 });
 
 router.get('/next_to_rate', function(req, res) {
   models.NewsItem.find(
     {
       where: {
-        rating: null,
+        rating_value: null,
         description: {
           $ne: null
         }
@@ -44,7 +93,7 @@ router.get('/rating_stats', function(req, res) {
       models.NewsItem.count(
         {
           where: {
-            rating: {
+            rating_value: {
               $ne: null
             }
           }
@@ -62,7 +111,7 @@ router.get('/rating_stats', function(req, res) {
       }).catch(function (error) {
         callback(error);
       });
-    },
+    }
   ], function (error) {
       if (error) {
         res.sendStatus(500);
@@ -79,7 +128,8 @@ router.put('/:id/rate', function(req, res) {
     }
   }).then(function (item) {
     if (item) {
-      item.set('rating', { ratingValue: req.body.ratingValue, ratingCategoryName: req.body.ratingCategoryName });
+      item.set('rating_value', req.body.ratingValue);
+      item.set('rating_category_name', req.body.ratingCategoryName);
       item.save().then(function () {
         res.sendStatus(200);
       });

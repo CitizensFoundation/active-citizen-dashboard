@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .container {
-        @apply(--layout-center-center);
+
       }
 
       .link {
@@ -82,9 +82,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 8px;
       }
 
+      .ratingInfo {
+        padding-top: 8px;
+        color: #777;
+      }
 
+      .rateAgain {
+        margin-top: 8px;
+      }
     </style>
-    <div class="layout vertical center-center container">
+
+    <div class="layout vertical container">
       <div class="layout horizontal description">[[item.description]]</div>
       <google-translate class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c"
                         item-id="[[item.id]]"
@@ -93,15 +101,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="linkInfoText">
           Link to original
         </div>
-        <a class="dont-break-out" href$="[[response.data_object.link]]"
+        <a class="dont-break-out" href$="[[item.data_object.link]]"
            target="_blank">[[item.data_object.link]]</a>
       </div>
       <div class="linkInfoText">Author</div>
       <div class="layout horizontal">
         <div class="layout horizontal self-end">
-          <img width="50" height="50" src$="[[response.data_object.avatar]]">
+          <img width="50" height="50" src$="[[item.data_object.avatar]]">
         </div>
         <div class="author">[[item.data_object.author]]</div>
+      </div>
+      <template is="dom-if" if="[[item.rating_value]]">
+        <div class="layout horizontal center-center ratingInfo">
+          Rated [[ratingToWord]] in category [[item.rating_category_name]]
+        </div>
+        <paper-button class="rateAgain" on-tap="_rateAgain">Reclassify</paper-button>
+      </template>
       </div>
     </div>
   </template>
@@ -115,6 +130,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         item: {
           type: Object
+        },
+
+        ratingToWord: {
+          type: String,
+          computed: '_ratingToWord(item.rating_value)'
+        }
+      },
+
+      _rateAgain: function () {
+        this.fire('rate-again', { itemId: this.item.id })
+      },
+
+      _ratingToWord: function (value) {
+        if (value) {
+          if (value==0) {
+            return 'Low';
+          } else if (value==1) {
+            return 'Medium'
+          } else if (value==2) {
+            return 'High'
+          } else if (value==-1) {
+            return 'Irrelevant'
+          } else {
+            return "Unknown"
+          }
+        } else {
+          return null;
         }
       }
     });

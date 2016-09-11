@@ -39,6 +39,7 @@
       content-type="application/json"
       on-error="_error"
       on-response="_response"
+      last-response="{{lastResponse}}"
       loading="{{loading}}">
     </iron-ajax>
 
@@ -111,6 +112,11 @@
         dispatchError: {
           type: Boolean,
           value: false
+        },
+
+        lastResponse: {
+          type: Object,
+          notify: true
         }
       },
 
