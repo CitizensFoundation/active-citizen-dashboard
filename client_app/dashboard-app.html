@@ -13,6 +13,7 @@
 <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tab.html">
 <link rel="import" href="bower_components/iron-image/iron-image.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <link rel="import" href="src/ac-news-item-classification.html">
 <link rel="import" href="src/ac-dialog-container.html">
@@ -22,11 +23,11 @@
 
   <template>
 
-    <style>
+    <style include="iron-flex iron-flex-alignment">
 
       :host {
         display: block;
-        --app-primary-color: #4285f4;
+        --app-primary-color: var(--paper-deep-orange-400);
         --app-secondary-color: black;
 
         --paper-tabs-selection-bar-color: var(--app-primary-color);
@@ -81,6 +82,9 @@
         font-size: 18px;
       }
 
+      .bottomInfo {
+         margin: 16px;
+      }
       @media (max-width: 420px) {
         .tab {
            font-size: 10px;
@@ -126,6 +130,11 @@
         <ac-view-items name="university" category="University"></ac-view-items>
         <ac-view-items name="other" category="Other"></ac-view-items>
       </iron-pages>
+
+      <div class="layout vertical center-center">
+        <a class="bottomInfo" href="http://deeplinkingyouth.eu/">http://deeplinkingyouth.eu/</a>
+        <img src="http://deeplinkingyouth.eu/wp-content/uploads/2016/06/erasmus.png">
+      </div>
 
     </app-header-layout>
 
