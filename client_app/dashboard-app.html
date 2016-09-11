@@ -10,9 +10,12 @@
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="bower_components/paper-tabs/paper-tab.html">
 
-<link rel="import" href="ac-news-item-classification.html">
-<link rel="import" href="ac-dialog-container.html">
+<link rel="import" href="src/ac-news-item-classification.html">
+<link rel="import" href="src/ac-dialog-container.html">
+<link rel="import" href="src/ac-view-items.html">
 
 <dom-module id="dashboard-app">
 
@@ -67,32 +70,37 @@
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <app-drawer-layout fullbleed responsive-width="6000px">
 
-      <!-- Drawer content -->
-      <app-drawer>
-        <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="classify" href="/classify">Classify Posts</a>
-          <a name="view" href="/view">View Posts</a>
-        </iron-selector>
-      </app-drawer>
+    <!-- Main content -->
+    <app-header-layout >
 
-      <!-- Main content -->
-      <app-header-layout has-scrolling-region>
+      <app-header condenses reveals effects="waterfall">
+        <app-toolbar>
+          <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+          <div title>DEEP-linking Youth Dashboard</div>
+        </app-toolbar>
+      </app-header>
 
-        <app-header condenses reveals effects="waterfall">
-          <app-toolbar>
-            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div title>DEEP-linking Youth Dashboard</div>
-          </app-toolbar>
-        </app-header>
+      <paper-tabs id="paper_tabs" class="tabs" selected="{{selectedTab}}" attr-for-selected="name" focused>
+        <paper-tab name="classify" class="tab">Classify</paper-tab>
+        <paper-tab name="all" class="tab">All highest rate</paper-tab>
+        <paper-tab name="finance" class="tab">Finance</paper-tab>
+        <paper-tab name="housing" class="tab">Housing</paper-tab>
+        <paper-tab name="university" class="tab">University</paper-tab>
+        <paper-tab name="other" class="tab">Other</paper-tab>
+      </paper-tabs>
 
-        <ac-news-item-classification name="classify"></ac-news-item-classification>
+      <iron-pages class="tabPages" selected="{{selectedTab}}" attr-for-selected="name" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+        <ac-news-item-classification name="classify" name="classify"></ac-news-item-classification>
+        <ac-view-items name="all" category="all"></ac-view-items>
+        <ac-view-items name="finance" category="Finance"></ac-view-items>
+        <ac-view-items name="housing" category="Housing"></ac-view-items>
+        <ac-view-items name="university" category="University"></ac-view-items>
+        <ac-view-items name="other" category="Other"></ac-view-items>
+      </iron-pages>
 
-      </app-header-layout>
+    </app-header-layout>
 
-    </app-drawer-layout>
 
   </template>
 
@@ -109,6 +117,11 @@
           reflectToAttribute: true,
           observer: '_pageChanged',
           value: 'classify'
+        },
+
+        selectedTab: {
+          type: String,
+          value: "classify"
         }
 
       },

@@ -1,0 +1,55 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="ac-news-item.html">
+
+<dom-module id="ac-view-items">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      iron-list {
+        flex: 1 1 auto;
+      }
+    </style>
+
+    <paper-material elevation="2">
+      <iron-list items="[[newsItems]]">
+        <template>
+          <ac-news-item item="[[item]]"></ac-news-item>
+        </template>
+      </iron-list>
+    </paper-material>
+
+
+    <yp-ajax id="getAllItems" auto method="GET" url="/api/news_items/by_category/[[category]]" last-response="{{newsItems}}"></yp-ajax>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'ac-view-items',
+
+      properties: {
+        newsItems: Array
+      },
+
+      refresh: function () {
+       this.$.getAllItems.generateRequest();
+      }
+    });
+
+  </script>
+
+</dom-module>

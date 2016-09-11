@@ -1,0 +1,124 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+
+<link rel="import" href="yp-ajax/yp-ajax.html">
+<link rel="import" href="google-translate.html">
+
+<dom-module id="ac-news-item">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+
+      .dont-break-out {
+
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+
+      }
+
+      h1 {
+        font-size: 22px;
+        color: #212121;
+      }
+
+      paper-material {
+        background-color: #FFF;
+        padding: 16px;
+        margin-top: 24px;
+        min-height: 420px;
+      }
+
+      .container {
+        @apply(--layout-center-center);
+      }
+
+      .link {
+        margin-top: 16px;
+        padding-bottom: 24px;
+        border-color: #777;
+      }
+
+      .description {
+        font-size: 19px;
+      }
+
+      .linkInfoText {
+        color: #aaa;
+      }
+
+      .author {
+        padding-left: 8px;
+      }
+
+
+    </style>
+    <div class="layout vertical center-center container">
+      <div class="layout horizontal description">[[item.description]]</div>
+      <google-translate class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c"
+                        item-id="[[item.id]]"
+                        text-to-translate="[[item.description]]"></google-translate>
+      <div class="link">
+        <div class="linkInfoText">
+          Link to original
+        </div>
+        <a class="dont-break-out" href$="[[response.data_object.link]]"
+           target="_blank">[[item.data_object.link]]</a>
+      </div>
+      <div class="linkInfoText">Author</div>
+      <div class="layout horizontal">
+        <div class="layout horizontal self-end">
+          <img width="50" height="50" src$="[[response.data_object.avatar]]">
+        </div>
+        <div class="author">[[item.data_object.author]]</div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'ac-news-item',
+
+      properties: {
+        item: {
+          type: Object
+        }
+      }
+    });
+
+  </script>
+
+</dom-module>

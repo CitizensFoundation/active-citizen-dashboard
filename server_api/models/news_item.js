@@ -11,6 +11,8 @@ module.exports = function(sequelize, DataTypes) {
     rating:  DataTypes.JSONB,
     data_object:  DataTypes.JSONB,
     data_id: DataTypes.STRING,
+    translated_text: DataTypes.TEXT,
+    language: DataTypes.STRING,
     news_search_query_id: DataTypes.STRING,
     ip_address: DataTypes.STRING
   }, {

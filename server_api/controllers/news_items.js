@@ -89,4 +89,22 @@ router.put('/:id/rate', function(req, res) {
   });
 });
 
+router.put('/:id/add_translation', function(req, res) {
+  models.NewsItem.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (item) {
+    if (item) {
+      item.set('translated_text', req.body.translated_text);
+      item.set('language', req.body.language);
+      item.save().then(function () {
+        res.sendStatus(200);
+      });
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
 module.exports = router;

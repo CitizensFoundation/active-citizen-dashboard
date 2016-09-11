@@ -2,13 +2,13 @@
   "entrypoint": "index.html",
   "shell": "dashboard-app.html",
   "fragments": [
-    "yp-ajax/yp-ajax.html",
-    "yp-ajax/yp-ajax-error-dialog.html",
-    "google-translate.html",
-    "app-helpers.html",
-    "ac-dialog-container.html",
-    "ac-news-item-classification.html",
-    "ac-view-items.html",
-    "ac-rating-category.html"
+    "src/yp-ajax/yp-ajax.html",
+    "src/yp-ajax/yp-ajax-error-dialog.html",
+    "src/google-translate.html",
+    "src/app-helpers.html",
+    "src/ac-dialog-container.html",
+    "src/ac-news-item-classification.html",
+    "src/ac-view-items.html",
+    "src/ac-rating-category.html"
   ]
 }
