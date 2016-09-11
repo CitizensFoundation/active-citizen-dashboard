@@ -37,6 +37,41 @@ router.get('/next_to_rate', function(req, res) {
   });
 });
 
+router.get('/rating_stats', function(req, res) {
+  var totalRated, totalCount;
+  async.parallel([
+    function (callback) {
+      models.NewsItem.count(
+        {
+          where: {
+            rating: {
+              $ne: null
+            }
+          }
+        }).then(function (count) {
+        totalRated = count;
+        callback();
+      }).catch(function (error) {
+        callback(error);
+      });
+    },
+    function (callback) {
+      models.NewsItem.count({}).then(function (count) {
+        totalCount = count;
+        callback();
+      }).catch(function (error) {
+        callback(error);
+      });
+    },
+  ], function (error) {
+      if (error) {
+        res.sendStatus(500);
+      } else {
+        res.send({totalRated: totalRated, totalCount: totalCount});
+      }
+  });
+});
+
 router.put('/:id/rate', function(req, res) {
   models.NewsItem.find({
     where: {

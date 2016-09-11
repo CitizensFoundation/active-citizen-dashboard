@@ -87,6 +87,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 19px;
       }
 
+      .ratingHeader {
+        font-size: 20px;
+        font-weight: bold;
+      }
       .linkInfoText {
         color: #aaa;
       }
@@ -124,6 +128,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .ratingArea {
         width: 280px;
+        padding: 16px;
+        padding-left: 24px;
+        color: #fff;
+        background-color: #4285f4;
       }
 
       .mainHeader {
@@ -145,6 +153,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
+      .ratingInfo {
+        padding-top: 8px;
+      }
     </style>
 
     <div class="top">
@@ -173,14 +184,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </div>
               <div class="next layout horizontal center-center">
                 <paper-button raised on-tap="_next">Skip</paper-button>
+                <paper-button raised on-tap="_irrelevant">Irrelevant</paper-button>
               </div>
             </div>
 
             <div class="layout vertical ratingArea">
+              <div class="layout horizontal center-center ratingHeader">
+                Classify for Youth Mobility
+              </div>
               <ac-rating-category on-rated="_rated" category-name="Finance"></ac-rating-category>
               <ac-rating-category on-rated="_rated" category-name="Housing"></ac-rating-category>
               <ac-rating-category on-rated="_rated" category-name="University"></ac-rating-category>
               <ac-rating-category on-rated="_rated" category-name="Other"></ac-rating-category>
+              <div class="layout horizontal center-center ratingInfo">
+                Total [[totalRated]] rated of [[totalCount]]
+              </div>
             </div>
           </div>
         </paper-material>
@@ -189,6 +207,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" on-response="_nextResponse"></yp-ajax>
     <yp-ajax id="classifyItemAjax" method="PUT" on-response="_classifyDone"></yp-ajax>
+    <yp-ajax id="getRatingStats" method="GET" url="/api/news_items/rating_stats" on-response="_statsResponse"></yp-ajax>
 
   </template>
 
@@ -201,7 +220,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         response: {
           type: Object
-        }
+        },
+
+        totalRated: Number,
+        totalCount: Number
+
       },
 
       ready: function () {
@@ -212,13 +235,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set("response", detail.response);
       },
 
+      _statsResponse: function (event, detail) {
+        this.set('totalRated', this.formatNumber(detail.response.totalRated));
+        this.set('totalCount', this.formatNumber(detail.response.totalCount));
+      },
+
+      formatNumber: function (value) {
+        if (value) {
+          return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+          return "0";
+        }
+      },
+
       _next: function () {
         this.$.getNextToClassifyAjax.generateRequest();
+        this.$.getRatingStats.generateRequest();
       },
 
       _classifyDone: function (value) {
         this.set('response', null);
         this._next();
+      },
+
+      _irrelevant: function () {
+        this._rated(null, {ratingValue: -1, categoryName: 'other'});
       },
 
       _rated: function (event, detail) {
