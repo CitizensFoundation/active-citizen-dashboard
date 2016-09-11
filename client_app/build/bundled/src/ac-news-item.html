@@ -1,0 +1,114 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+
+<link rel="import" href="yp-ajax/yp-ajax.html">
+<link rel="import" href="google-translate.html">
+
+</head><body><dom-module id="ac-news-item">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+
+      .dont-break-out {
+
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+
+      }
+
+      h1 {
+        font-size: 22px;
+        color: #212121;
+      }
+
+      paper-material {
+        background-color: #FFF;
+        padding: 16px;
+        margin-top: 24px;
+        min-height: 420px;
+      }
+
+      .container {
+
+      }
+
+      .link {
+        margin-top: 16px;
+        padding-bottom: 24px;
+        border-color: #777;
+      }
+
+      .description {
+        font-size: 19px;
+      }
+
+      .linkInfoText {
+        color: #aaa;
+      }
+
+      .author {
+        padding-left: 8px;
+      }
+
+      .ratingInfo {
+        padding-top: 8px;
+        color: #777;
+      }
+
+      .rateAgain {
+        margin-top: 8px;
+      }
+    </style>
+
+    <div class="layout vertical container">
+      <div class="layout horizontal description">[[item.description]]</div>
+      <google-translate class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c" item-id="[[item.id]]" text-to-translate="[[item.description]]"></google-translate>
+      <div class="link">
+        <div class="linkInfoText">
+          Link to original
+        </div>
+        <a class="dont-break-out" href$="[[item.data_object.link]]" target="_blank">[[item.data_object.link]]</a>
+      </div>
+      <div class="linkInfoText">Author</div>
+      <div class="layout horizontal">
+        <div class="layout horizontal self-end">
+          <img width="50" height="50" src$="[[item.data_object.avatar]]">
+        </div>
+        <div class="author">[[item.data_object.author]]</div>
+      </div>
+      <template is="dom-if" if="[[item.rating_value]]">
+        <div class="layout horizontal center-center ratingInfo">
+          Rated [[ratingToWord]] in category [[item.rating_category_name]]
+        </div>
+        <paper-button class="rateAgain" on-tap="_rateAgain">Reclassify</paper-button>
+      </template>
+      </div>
+    
+  </template>
+
+  <script>Polymer({is:"ac-news-item",properties:{item:{type:Object},ratingToWord:{type:String,computed:"_ratingToWord(item.rating_value)"}},_rateAgain:function(){this.fire("rate-again",{itemId:this.item.id})},_ratingToWord:function(t){return t?0==t?"Low":1==t?"Medium":2==t?"High":t==-1?"Irrelevant":"Unknown":null}});</script>
+
+</dom-module>
+</body></html>

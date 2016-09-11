@@ -1,0 +1,44 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+
+</head><body><dom-module id="ac-rating-category">
+
+  <template>
+
+    <style>
+      :host {
+        padding: 16px;
+        padding-left: 24px;
+        color: #fff;
+        background-color: #4285f4;
+      }
+
+      .categoryName {
+        padding-bottom: 8px;
+        font-size: 20px;
+      }
+
+      paper-button {
+        font-size: 13px;
+        background-color: #fff;
+        color: #333;
+      }
+    </style>
+
+    <div class="layout vertical">
+      <div class="categoryName">[[categoryName]]</div>
+      <div class="layout horizontal flex">
+        <paper-button raised="" id="low" on-tap="_rate">Low</paper-button>
+        <paper-button raised="" id="medium" on-tap="_rate">Medium</paper-button>
+        <paper-button raised="" id="high" on-tap="_rate">High</paper-button>
+      </div>
+    </div>
+  </template>
+
+  <script>Polymer({is:"ac-rating-category",properties:{categoryName:{type:String}},_rate:function(e,r){var t;if(r.sourceEvent.currentTarget?t=r.sourceEvent.currentTarget.id:r.sourceEvent.target?t=r.sourceEvent.target.id:console.error("Can't find rating value"),t){var a=0;"low"==t?a=0:"medium"==t?a=1:"high"==t&&(a=2),this.fire("rated",{categoryName:this.categoryName,ratingValue:a})}}});</script>
+
+</dom-module>
+</body></html>

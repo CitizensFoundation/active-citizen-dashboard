@@ -1,0 +1,42 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="ac-news-item.html">
+
+</head><body><dom-module id="ac-view-items">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+
+      }
+
+      iron-list {
+        flex: 1 1 auto;
+      }
+
+      paper-material {
+        background-color: #FFF;
+        max-width: 420px;
+        margin: 16px;
+      }
+    </style>
+
+    <div class="layout horizontal center-center wrap">
+      <template is="dom-repeat" items="[[newsItems]]">
+        <paper-material elevation="2" class="layout horizontal center-center">
+          <ac-news-item item="[[item]]"></ac-news-item>
+        </paper-material>
+      </template>
+    </div>
+
+    <yp-ajax id="getAllItems" auto="" method="GET" url="/api/news_items/by_category/[[category]]" last-response="{{newsItems}}"></yp-ajax>
+  </template>
+
+  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"}},_newsItemsChanged:function(e){},refresh:function(){this.$.getAllItems.generateRequest()}});</script>
+
+</dom-module>
+</body></html>

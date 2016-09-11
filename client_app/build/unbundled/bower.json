@@ -25,7 +25,9 @@
     "iron-ajax": "polymerelements/iron-ajax",
     "paper-dialog": "polymerelements/paper-dialog",
     "lodash-element": "~1.0.2",
-    "moment": "~2.13.0"
+    "moment": "~2.13.0",
+    "iron-list": "~1.3.9",
+    "paper-tabs": "~1.6.2"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
