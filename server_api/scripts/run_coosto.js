@@ -1,5 +1,6 @@
 var models = require('../models');
 var async = require('async');
+var _ = require('lodash');
 
 var coreRequest = require('request');
 
@@ -11,6 +12,7 @@ var loginParams = "?username="+process.env.COOSTO_USERNAME+"&password="+process.
 var getAndSaveResults = function (callback) {
   request(coreUrl+"api/1/users/login"+loginParams, function (error, loginResults) {
     models.NewsSearchQuery.findAll({}).then(function (queries) {
+      queries = _.shuffle(queries);
       async.eachSeries(queries, function (query, seriesCallback) {
         console.log("Processing Query "+query.name);
         console.log("----------------------------------------------------------------------");
