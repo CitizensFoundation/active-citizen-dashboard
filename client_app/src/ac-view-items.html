@@ -23,6 +23,10 @@
         max-width: 420px;
         margin: 16px;
       }
+
+      yp-ajax {
+        margin: 16px;
+      }
     </style>
 
     <div class="layout horizontal center-center wrap">
@@ -33,7 +37,9 @@
       </template>
     </div>
 
-    <yp-ajax id="getAllItems" auto method="GET" url="/api/news_items/by_category/[[category]]" last-response="{{newsItems}}"></yp-ajax>
+    <div class="layout horizontal center-center">
+      <yp-ajax id="getAllItems" method="GET" url="/api/news_items/by_category/[[category]]" last-response="{{newsItems}}"></yp-ajax>
+    </div>
   </template>
 
   <script>

@@ -3124,14 +3124,12 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
 <dom-module id="google-translate" assetpath="src/">
   <style>
     .translatedBy {
-      color: #555;
+      color: #aaa;
       font-size: 9px;
     }
 
     .translatedText {
-      border-color: #aaa;
-      padding-top: 8px;
-      margin-top: 8px;
+      border-color: #fff;
     }
   </style>
 
@@ -3151,7 +3149,7 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
 
   </template>
 
-  <script>Polymer({is:"google-translate",properties:{translatedResponse:{type:Object,observer:"_translatedResponseChanged"},action:{type:String},apiKey:{type:String},textToTranslate:{type:String,observer:"_textToTranslateChanged"},languageDetected:{type:Object,observer:"_languageDetected"},itemId:{type:Number},sourceLanguage:{type:String},translatedText:{type:String}},_translatedResponse:function(e,t){var a=t.response;if(a&&a.data.translations&&a.data.translations.length>0){var s=a.data.translations[0].translatedText;this.set("translatedText",s),this.$$("#updateLanguage").url="/api/news_items/"+this.itemId+"/add_translation",this.$$("#updateLanguage").body={translated_text:s,language:this.sourceLanguage},this.$$("#updateLanguage").generateRequest()}},_textToTranslateChanged:function(e){e?(this.$$("#checkLanguageApi").url="https://www.googleapis.com/language/translate/v2/detect",this.$$("#checkLanguageApi").params={key:this.apiKey,q:this.textToTranslate},this.$$("#checkLanguageApi").generateRequest()):this.set("translatedText",null)},_languageDetected:function(e,t){var a=t.response;a&&"en"!=a.data.detections[0][0].language?(this.set("sourceLanguage",a.data.detections[0][0].language),this.$$("#translateApi").url="https://www.googleapis.com/language/translate/v2",this.$$("#translateApi").params={key:this.apiKey,target:"en",q:this.textToTranslate},this.$$("#translateApi").generateRequest()):this.set("translatedText",null)}});</script>
+  <script>Polymer({is:"google-translate",properties:{item:{type:Object,observer:"_itemChanged"},translatedResponse:{type:Object,observer:"_translatedResponseChanged"},action:{type:String},apiKey:{type:String},textToTranslate:{type:String},languageDetected:{type:Object,observer:"_languageDetected"},itemId:{type:Number},sourceLanguage:{type:String},translatedText:{type:String,notify:!0}},_translatedResponse:function(t,e){var a=e.response;if(a&&a.data.translations&&a.data.translations.length>0){var s=a.data.translations[0].translatedText;this.set("translatedText",s),this.$$("#updateLanguage").url="/api/news_items/"+this.itemId+"/add_translation",this.$$("#updateLanguage").body={translated_text:s,language:this.sourceLanguage},this.$$("#updateLanguage").generateRequest()}},_itemChanged:function(t){this.item.translated_text?this.set("translatedText",this.item.translated_text):t.description?(this.set("textToTranslate",t.description),this.$$("#checkLanguageApi").url="https://www.googleapis.com/language/translate/v2/detect",this.$$("#checkLanguageApi").params={key:this.apiKey,q:this.textToTranslate},this.$$("#checkLanguageApi").generateRequest()):this.set("translatedText",null)},_languageDetected:function(t,e){var a=e.response;a&&"en"!=a.data.detections[0][0].language?(this.set("sourceLanguage",a.data.detections[0][0].language),this.$$("#translateApi").url="https://www.googleapis.com/language/translate/v2",this.$$("#translateApi").params={key:this.apiKey,target:"en",q:this.textToTranslate},this.$$("#translateApi").generateRequest()):this.set("translatedText",null)}});</script>
 
 </dom-module>
 <dom-module id="ac-news-item" assetpath="src/">
@@ -3161,7 +3159,7 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
     <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
-        padding: 10px;
+        padding: 8px;
       }
 
       .dont-break-out {
@@ -3210,8 +3208,9 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
         font-size: 19px;
       }
 
-      .linkInfoText {
+      .authorHeader {
         color: #aaa;
+        padding-right: 8px;
       }
 
       .author {
@@ -3226,23 +3225,54 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
       .rateAgain {
         margin-top: 8px;
       }
+
+      .mainText {
+        background-color: var(--app-primary-color);
+        color: #FFF;
+        padding: 8px;
+      }
+
+      .ratingCategoryHeader {
+        font-size: 20px;
+        margin-bottom: 16px;
+        margin-top: 8px;
+        color: #555;
+      }
+
+      .authorBox {
+        padding-top: 8px;
+        padding-right: 8px;
+      }
+
+      .authorName {
+        padding-right: 8px;
+      }
     </style>
 
-    <div class="layout vertical container">
-      <google-translate class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c" item-id="[[item.id]]" text-to-translate="[[item.description]]"></google-translate>
-      <div class="layout horizontal description">[[item.description]]</div>
+    <div class="layout vertical">
+      <div class="layout horizontal center-center ratingCategoryHeader" hidden$="[[!item.rating_category_name]]">
+        [[item.rating_category_name]]
+      </div>
+      <div class="mainText">
+        <google-translate hidden$="[[!hasTranslatedText]]" class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c" item="[[item]]" item-id="[[item.id]]" translated-text="{{hasTranslatedText}}"></google-translate>
+        <div class="layout horizontal description" hidden$="[[hasTranslatedText]]">[[item.description]]</div>
+      </div>
+      <div class="layout vertical self-end authorBox">
+        <div class="layout horizontal">
+          <div class="layout vertical">
+            <div class="authorName self-end">[[item.data_object.author]]</div>
+            <div class="authorHeader self-end">Author</div>
+         </div>
+          <div class="layout horizontal self-end">
+            <iron-image preload="" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
+          </div>
+        </div>
+      </div>
       <div class="link">
-        <div class="linkInfoText">
+        <div class="authorHeader">
           Link to original
         </div>
         <a class="dont-break-out" href$="[[item.data_object.link]]" target="_blank">[[item.data_object.link]]</a>
-      </div>
-      <div class="linkInfoText">Author</div>
-      <div class="layout horizontal">
-        <div class="layout horizontal self-end">
-          <iron-image preload="" width="50" height="50" src$="[[item.data_object.avatar]]">
-        </iron-image></div>
-        <div class="author">[[item.data_object.author]]</div>
       </div>
       <template is="dom-if" if="[[item.rating_value]]">
         <div class="layout horizontal center-center ratingInfo">
@@ -3254,7 +3284,7 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
     
   </template>
 
-  <script>Polymer({is:"ac-news-item",properties:{item:{type:Object},ratingToWord:{type:String,computed:"_ratingToWord(item.rating_value)"}},_rateAgain:function(){this.fire("rate-again",{itemId:this.item.id})},_ratingToWord:function(t){return t?0==t?"Low":1==t?"Medium":2==t?"High":t==-1?"Irrelevant":"Unknown":null}});</script>
+  <script>Polymer({is:"ac-news-item",properties:{item:{type:Object},ratingToWord:{type:String,computed:"_ratingToWord(item.rating_value)"},hasTranslatedText:String},_rateAgain:function(){this.fire("rate-again",{itemId:this.item.id})},_ratingToWord:function(t){return t?0==t?"Low":1==t?"Medium":2==t?"High":t==-1?"Irrelevant":"Unknown":null}});</script>
 
 </dom-module>
 <dom-module id="ac-rating-category" assetpath="src/">
@@ -3265,8 +3295,8 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
       :host {
         padding: 16px;
         padding-left: 24px;
-        color: #fff;
-        background-color: var(--app-primary-color);
+        color: #000;
+        background-color: #FFF;
       }
 
       .categoryName {
@@ -3276,8 +3306,8 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
 
       paper-button {
         font-size: 13px;
-        background-color: #fff;
-        color: #333;
+        background-color: var(--app-primary-color);
+        color: #fff;
       }
     </style>
 
@@ -4083,8 +4113,8 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
         width: 280px;
         padding: 16px;
         padding-left: 24px;
-        color: #fff;
-        background-color: var(--app-primary-color);
+        color: #000;
+        background-color: #FFF;
       }
 
       .mainHeader {
@@ -4118,17 +4148,6 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
           </div>
           <div class="layout horizontal wrap">
 
-            <div class="layout vertical mainContentArea">
-              <div class="mainHeader">Classify Relevancy of Social Media Posts</div>
-
-              <ac-news-item item="[[response]]"></ac-news-item>
-
-              <div class="next layout horizontal center-center">
-                <paper-button raised="" on-tap="_next">Skip</paper-button>
-                <paper-button raised="" on-tap="_irrelevant">Irrelevant</paper-button>
-              </div>
-            </div>
-
             <div class="layout vertical ratingArea">
               <div class="layout horizontal center-center ratingHeader">
                 Classify for Youth Mobility
@@ -4141,6 +4160,16 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
                 Total [[totalRated]] rated of [[totalCount]]
               </div>
             </div>
+
+            <div class="layout vertical mainContentArea">
+              <ac-news-item item="[[response]]"></ac-news-item>
+
+              <div class="next layout horizontal center-center">
+                <paper-button raised="" on-tap="_next">Skip</paper-button>
+                <paper-button raised="" on-tap="_irrelevant">Irrelevant</paper-button>
+              </div>
+            </div>
+
           </div>
         </paper-material>
       </div>
@@ -4217,7 +4246,7 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
 
       :host {
         display: block;
-        --app-primary-color: var(--paper-deep-orange-400);
+        --app-primary-color: var(--paper-purple-700);
         --app-secondary-color: black;
 
         --paper-tabs-selection-bar-color: var(--app-primary-color);
@@ -4310,11 +4339,11 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
 
       <iron-pages class="tabPages" selected="{{selectedTab}}" attr-for-selected="name" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
         <ac-news-item-classification item-id="{{itemId}}" name="classify"></ac-news-item-classification>
-        <ac-view-items name="all" category="all"></ac-view-items>
-        <ac-view-items name="finance" category="Finance"></ac-view-items>
-        <ac-view-items name="housing" category="Housing"></ac-view-items>
-        <ac-view-items name="university" category="University"></ac-view-items>
-        <ac-view-items name="other" category="Other"></ac-view-items>
+        <ac-view-items id="all" name="all" category="all"></ac-view-items>
+        <ac-view-items id="finance" name="finance" category="Finance"></ac-view-items>
+        <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>
+        <ac-view-items id="university" name="university" category="University"></ac-view-items>
+        <ac-view-items id="other" name="other" category="Other"></ac-view-items>
       </iron-pages>
 
       <div class="layout vertical center-center">
@@ -4327,7 +4356,7 @@ weekdaysShort:"sön_mån_tis_ons_tor_fre_lör".split("_"),weekdaysMin:"sö_må_t
 
   </template>
 
-  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"classify"},selectedTab:{type:String,value:"classify"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"view1"},_pageChanged:function(e){}});</script>
+  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"classify"},selectedTab:{type:String,value:"classify",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e&&this.$.other.refresh()},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"view1"},_pageChanged:function(e){}});</script>
 
 </dom-module>
 </body></html>

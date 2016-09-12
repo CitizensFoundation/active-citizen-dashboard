@@ -27,7 +27,7 @@
 
       :host {
         display: block;
-        --app-primary-color: var(--paper-deep-orange-400);
+        --app-primary-color: var(--paper-purple-700);
         --app-secondary-color: black;
 
         --paper-tabs-selection-bar-color: var(--app-primary-color);
@@ -120,11 +120,11 @@
 
       <iron-pages class="tabPages" selected="{{selectedTab}}" attr-for-selected="name" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
         <ac-news-item-classification item-id="{{itemId}}" name="classify"></ac-news-item-classification>
-        <ac-view-items name="all" category="all"></ac-view-items>
-        <ac-view-items name="finance" category="Finance"></ac-view-items>
-        <ac-view-items name="housing" category="Housing"></ac-view-items>
-        <ac-view-items name="university" category="University"></ac-view-items>
-        <ac-view-items name="other" category="Other"></ac-view-items>
+        <ac-view-items id="all" name="all" category="all"></ac-view-items>
+        <ac-view-items id="finance" name="finance" category="Finance"></ac-view-items>
+        <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>
+        <ac-view-items id="university" name="university" category="University"></ac-view-items>
+        <ac-view-items id="other" name="other" category="Other"></ac-view-items>
       </iron-pages>
 
       <div class="layout vertical center-center">
@@ -137,7 +137,7 @@
 
   </template>
 
-  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"classify"},selectedTab:{type:String,value:"classify"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"view1"},_pageChanged:function(e){}});</script>
+  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"classify"},selectedTab:{type:String,value:"classify",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e&&this.$.other.refresh()},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"view1"},_pageChanged:function(e){}});</script>
 
 </dom-module>
 </body></html>

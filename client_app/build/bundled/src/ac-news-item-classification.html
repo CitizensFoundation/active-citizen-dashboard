@@ -109,8 +109,8 @@
         width: 280px;
         padding: 16px;
         padding-left: 24px;
-        color: #fff;
-        background-color: var(--app-primary-color);
+        color: #000;
+        background-color: #FFF;
       }
 
       .mainHeader {
@@ -144,17 +144,6 @@
           </div>
           <div class="layout horizontal wrap">
 
-            <div class="layout vertical mainContentArea">
-              <div class="mainHeader">Classify Relevancy of Social Media Posts</div>
-
-              <ac-news-item item="[[response]]"></ac-news-item>
-
-              <div class="next layout horizontal center-center">
-                <paper-button raised="" on-tap="_next">Skip</paper-button>
-                <paper-button raised="" on-tap="_irrelevant">Irrelevant</paper-button>
-              </div>
-            </div>
-
             <div class="layout vertical ratingArea">
               <div class="layout horizontal center-center ratingHeader">
                 Classify for Youth Mobility
@@ -167,6 +156,16 @@
                 Total [[totalRated]] rated of [[totalCount]]
               </div>
             </div>
+
+            <div class="layout vertical mainContentArea">
+              <ac-news-item item="[[response]]"></ac-news-item>
+
+              <div class="next layout horizontal center-center">
+                <paper-button raised="" on-tap="_next">Skip</paper-button>
+                <paper-button raised="" on-tap="_irrelevant">Irrelevant</paper-button>
+              </div>
+            </div>
+
           </div>
         </paper-material>
       </div>
