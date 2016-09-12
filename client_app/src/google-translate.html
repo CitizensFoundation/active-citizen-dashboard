@@ -92,19 +92,21 @@
       },
 
       _itemChanged: function (item) {
-        if (this.item.translated_text) {
-          this.set('translatedText', this.item.translated_text);
-        } else {
-          if (item.description) {
-            this.set('textToTranslate', item.description);
-            this.$$("#checkLanguageApi").url = "https://www.googleapis.com/language/translate/v2/detect";
-            this.$$("#checkLanguageApi").params = {
-              key: this.apiKey,
-              q: this.textToTranslate
-            };
-            this.$$("#checkLanguageApi").generateRequest();
+        if (item) {
+          if (this.item.translated_text) {
+            this.set('translatedText', this.item.translated_text);
           } else {
-            this.set('translatedText', null);
+            if (item.description) {
+              this.set('textToTranslate', item.description);
+              this.$$("#checkLanguageApi").url = "https://www.googleapis.com/language/translate/v2/detect";
+              this.$$("#checkLanguageApi").params = {
+                key: this.apiKey,
+                q: this.textToTranslate
+              };
+              this.$$("#checkLanguageApi").generateRequest();
+            } else {
+              this.set('translatedText', null);
+            }
           }
         }
       },
