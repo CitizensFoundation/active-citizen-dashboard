@@ -6,14 +6,12 @@
 <dom-module id="google-translate">
   <style>
     .translatedBy {
-      color: #555;
+      color: #aaa;
       font-size: 9px;
     }
 
     .translatedText {
-      border-color: #aaa;
-      padding-top: 8px;
-      margin-top: 8px;
+      border-color: #fff;
     }
   </style>
 
@@ -40,6 +38,12 @@
       is: 'google-translate',
 
       properties: {
+
+        item: {
+          type: Object,
+          observer: '_itemChanged'
+        },
+
         translatedResponse: {
           type: Object,
           observer: "_translatedResponseChanged"
@@ -54,8 +58,7 @@
         },
 
         textToTranslate: {
-          type: String,
-          observer: '_textToTranslateChanged'
+          type: String
         },
 
         languageDetected: {
@@ -72,7 +75,8 @@
         },
 
         translatedText: {
-          type: String
+          type: String,
+          notify: true
         }
       },
 
@@ -87,16 +91,21 @@
         }
       },
 
-      _textToTranslateChanged: function (value) {
-        if (value) {
-          this.$$("#checkLanguageApi").url = "https://www.googleapis.com/language/translate/v2/detect";
-          this.$$("#checkLanguageApi").params = {
-            key: this.apiKey,
-            q: this.textToTranslate
-          };
-          this.$$("#checkLanguageApi").generateRequest();
+      _itemChanged: function (item) {
+        if (this.item.translated_text) {
+          this.set('translatedText', this.item.translated_text);
         } else {
-          this.set('translatedText', null);
+          if (item.description) {
+            this.set('textToTranslate', item.description);
+            this.$$("#checkLanguageApi").url = "https://www.googleapis.com/language/translate/v2/detect";
+            this.$$("#checkLanguageApi").params = {
+              key: this.apiKey,
+              q: this.textToTranslate
+            };
+            this.$$("#checkLanguageApi").generateRequest();
+          } else {
+            this.set('translatedText', null);
+          }
         }
       },
 

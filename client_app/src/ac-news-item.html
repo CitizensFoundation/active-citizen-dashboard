@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
-        padding: 10px;
+        padding: 8px;
       }
 
       .dont-break-out {
@@ -75,8 +75,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 19px;
       }
 
-      .linkInfoText {
+      .authorHeader {
         color: #aaa;
+        padding-right: 8px;
       }
 
       .author {
@@ -91,26 +92,58 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .rateAgain {
         margin-top: 8px;
       }
+
+      .mainText {
+        background-color: var(--app-primary-color);
+        color: #FFF;
+        padding: 8px;
+      }
+
+      .ratingCategoryHeader {
+        font-size: 20px;
+        margin-bottom: 16px;
+        margin-top: 8px;
+        color: #555;
+      }
+
+      .authorBox {
+        padding-top: 8px;
+        padding-right: 8px;
+      }
+
+      .authorName {
+        padding-right: 8px;
+      }
     </style>
 
-    <div class="layout vertical container">
-      <google-translate class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c"
-                        item-id="[[item.id]]"
-                        text-to-translate="[[item.description]]"></google-translate>
-      <div class="layout horizontal description">[[item.description]]</div>
+    <div class="layout vertical">
+      <div class="layout horizontal center-center ratingCategoryHeader" hidden$="[[!item.rating_category_name]]">
+        [[item.rating_category_name]]
+      </div>
+      <div class="mainText">
+        <google-translate hidden$="[[!hasTranslatedText]]" class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c"
+                          item="[[item]]"
+                          item-id="[[item.id]]"
+                          translated-text="{{hasTranslatedText}}"></google-translate>
+        <div class="layout horizontal description" hidden$="[[hasTranslatedText]]">[[item.description]]</div>
+      </div>
+      <div class="layout vertical self-end authorBox">
+        <div class="layout horizontal">
+          <div class="layout vertical">
+            <div class="authorName self-end">[[item.data_object.author]]</div>
+            <div class="authorHeader self-end">Author</div>
+         </div>
+          <div class="layout horizontal self-end">
+            <iron-image preload width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
+          </div>
+        </div>
+      </div>
       <div class="link">
-        <div class="linkInfoText">
+        <div class="authorHeader">
           Link to original
         </div>
         <a class="dont-break-out" href$="[[item.data_object.link]]"
            target="_blank">[[item.data_object.link]]</a>
-      </div>
-      <div class="linkInfoText">Author</div>
-      <div class="layout horizontal">
-        <div class="layout horizontal self-end">
-          <iron-image preload width="50" height="50" src$="[[item.data_object.avatar]]"></iron-imagepreload>
-        </div>
-        <div class="author">[[item.data_object.author]]</div>
       </div>
       <template is="dom-if" if="[[item.rating_value]]">
         <div class="layout horizontal center-center ratingInfo">
@@ -136,7 +169,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ratingToWord: {
           type: String,
           computed: '_ratingToWord(item.rating_value)'
-        }
+        },
+
+        hasTranslatedText: String
       },
 
       _rateAgain: function () {

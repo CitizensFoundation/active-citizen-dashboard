@@ -27,7 +27,7 @@
 
       :host {
         display: block;
-        --app-primary-color: var(--paper-deep-orange-400);
+        --app-primary-color: var(--paper-purple-700);
         --app-secondary-color: black;
 
         --paper-tabs-selection-bar-color: var(--app-primary-color);
@@ -124,11 +124,11 @@
 
       <iron-pages class="tabPages" selected="{{selectedTab}}" attr-for-selected="name" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
         <ac-news-item-classification item-id="{{itemId}}" name="classify" name="classify"></ac-news-item-classification>
-        <ac-view-items name="all" category="all"></ac-view-items>
-        <ac-view-items name="finance" category="Finance"></ac-view-items>
-        <ac-view-items name="housing" category="Housing"></ac-view-items>
-        <ac-view-items name="university" category="University"></ac-view-items>
-        <ac-view-items name="other" category="Other"></ac-view-items>
+        <ac-view-items id="all" name="all" category="all"></ac-view-items>
+        <ac-view-items id="finance" name="finance" category="Finance"></ac-view-items>
+        <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>
+        <ac-view-items id="university" name="university" category="University"></ac-view-items>
+        <ac-view-items id="other" name="other" category="Other"></ac-view-items>
       </iron-pages>
 
       <div class="layout vertical center-center">
@@ -158,7 +158,8 @@
 
         selectedTab: {
           type: String,
-          value: "classify"
+          value: "classify",
+          observer: '_selectedTabChanged'
         },
 
         itemId: {
@@ -172,6 +173,20 @@
 
       listeners: {
         'rate-again': '_rateAgain'
+      },
+
+      _selectedTabChanged: function (tab) {
+        if (tab=="all") {
+          this.$.all.refresh();
+        } else if (tab=='finance') {
+          this.$.finance.refresh();
+        } else if (tab=='housing') {
+          this.$.housing.refresh();
+        } else if (tab=='university') {
+          this.$.university.refresh();
+        } else if (tab=='other') {
+          this.$.other.refresh();
+        }
       },
 
       _rateAgain: function (event, detail) {
