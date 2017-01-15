@@ -20,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="google-translate.html">
 <link rel="import" href="ac-rating-category.html">
 <link rel="import" href="ac-news-item.html">
+<link rel="import" href="ac-moment.html">
 
 <dom-module id="ac-news-item-classification">
 
@@ -58,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       paper-material {
         background-color: #FFF;
-        padding: 16px;
+        padding: 8px;
         margin-top: 24px;
         min-height: 420px;
       }
@@ -114,7 +115,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .next {
-        margin-top: 16px;
+        margin-top: 8px;
       }
 
       .raingText {
@@ -158,6 +159,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .ratingInfo {
         padding-top: 8px;
       }
+
+      .additionalInfo {
+        margin-left: 8px;
+        margin-right: 8px;
+        margin-top: 16px;
+        padding-top: 8px;
+        color: #777;
+      }
     </style>
 
     <div class="top">
@@ -166,6 +175,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="layout horizontal">
           </div>
           <div class="layout horizontal wrap">
+
+            <div class="layout vertical mainContentArea">
+              <ac-news-item item="[[item]]"></ac-news-item>
+
+              <div class="next layout horizontal center-center">
+                <paper-button raised on-tap="_next">Skip</paper-button>
+                <paper-button raised on-tap="_irrelevant">Irrelevant</paper-button>
+              </div>
+              <div class="additionalInfo">
+                <div class="searchQueryDate">[[itemDate]]</div>
+                <div class="searchQueryName">Query: [[currentSearchQuery]]</div>
+              </div>
+            </div>
 
             <div class="layout vertical ratingArea">
               <div class="layout horizontal center-center ratingHeader">
@@ -180,20 +202,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </div>
             </div>
 
-            <div class="layout vertical mainContentArea">
-              <ac-news-item item="[[response]]"></ac-news-item>
-
-              <div class="next layout horizontal center-center">
-                <paper-button raised on-tap="_next">Skip</paper-button>
-                <paper-button raised on-tap="_irrelevant">Irrelevant</paper-button>
-              </div>
-            </div>
-
           </div>
         </paper-material>
       </div>
     </div>
 
+    <yp-ajax id="getSearchQueries" method="GET" url="/api/news_items/getSearchQueries" on-response="_searchQueries"></yp-ajax>
     <yp-ajax id="getNextToClassifyAjax" method="GET" url="/api/news_items/next_to_rate" on-response="_nextResponse"></yp-ajax>
     <yp-ajax id="classifyItemAjax" method="PUT" on-response="_classifyDone"></yp-ajax>
     <yp-ajax id="getRatingStats" method="GET" url="/api/news_items/rating_stats" on-response="_statsResponse"></yp-ajax>
@@ -208,7 +222,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'ac-news-item-classification',
 
       properties: {
-        response: {
+        item: {
           type: Object
         },
 
@@ -218,11 +232,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         totalRated: Number,
-        totalCount: Number
+        totalCount: Number,
+        searchQueries: {
+          type: Object,
+          value: null
+        },
+        currentSearchQuery: {
+          type: String,
+          computed: '_currentSearchQuery(searchQueries, item)'
+        },
+        itemDate: {
+          type: String,
+          computed: '_itemDate(item)'
+        }
       },
 
       ready: function () {
         this._next();
+        this.$.getSearchQueries.generateRequest();
+      },
+
+      _itemDate: function (item) {
+        if (item) {
+          return moment(item.created_at).format("DD. MMM YYYY");
+        }
+      },
+
+      _currentSearchQuery: function (searchQueries, item) {
+        if (searchQueries && item) {
+          return searchQueries[parseInt(item.news_search_query_id)];
+        } else {
+          return null;
+        }
       },
 
       _itemIdChanged: function (itemId) {
@@ -231,8 +272,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      _searchQueries: function (event, detail) {
+        var searchQueries = {};
+        _.each(detail.response, function (query) {
+          searchQueries[parseInt(query.id)] = query.name;
+        });
+        this.set('searchQueries', searchQueries);
+      },
+
       _nextResponse: function (event, detail) {
-        this.set("response", detail.response);
+        this.set("item", detail.response);
         this.set('itemId', null);
       },
 
@@ -255,7 +304,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _classifyDone: function (value) {
-        this.set('response', null);
+        this.set('item', null);
         this._next();
       },
 
@@ -264,13 +313,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _rated: function (event, detail) {
-        this.$.classifyItemAjax.url = "/api/news_items/"+this.response.id+"/rate";
+        this.$.classifyItemAjax.url = "/api/news_items/"+this.item.id+"/rate";
         this.$.classifyItemAjax.body = { ratingValue: detail.ratingValue, ratingCategoryName: detail.categoryName};
         this.$.classifyItemAjax.generateRequest();
-      },
-
-      _responseChanged: function (newResponse) {
-
       }
     });
 

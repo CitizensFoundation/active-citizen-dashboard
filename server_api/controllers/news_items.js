@@ -93,11 +93,11 @@ router.get('/next_to_rate', function(req, res) {
   });
 });
 
-router.get('/getNewsQueries', function(req, res) {
+router.get('/getSearchQueries', function(req, res) {
   models.NewsSearchQuery.findAll(
     {
       attributes: ['id','name']
-    }).then(function (item) {
+    }).then(function (queries) {
     res.send(queries);
   }).catch(function (error) {
     res.sendStatus(500);

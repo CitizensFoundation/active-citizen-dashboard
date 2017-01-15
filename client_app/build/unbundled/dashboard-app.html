@@ -137,7 +137,7 @@
 
   </template>
 
-  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"classify"},selectedTab:{type:String,value:"classify",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e&&this.$.other.refresh()},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"view1"},_pageChanged:function(e){}});</script>
+  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"classify"},selectedTab:{type:String,value:"classify",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},ready:function(){window.acDashBoardApp=this},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e&&this.$.other.refresh()},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"view1"},_pageChanged:function(e){}});</script>
 
 </dom-module>
 </body></html>

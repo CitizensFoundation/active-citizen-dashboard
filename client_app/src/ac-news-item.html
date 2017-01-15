@@ -67,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .link {
         margin-top: 16px;
-        padding-bottom: 24px;
+        padding-bottom: 0px;
         border-color: #777;
       }
 
@@ -126,8 +126,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           item-id="[[item.id]]"
                           translated-text="{{hasTranslatedText}}"></google-translate>
         <div class="layout horizontal description" hidden$="[[hasTranslatedText]]">[[item.description]]</div>
-        <div>[[item.created_at]]</div>
-        <div>[[item.news_search_query_id]]</div>
       </div>
       <div class="layout vertical self-end authorBox">
         <div class="layout horizontal">

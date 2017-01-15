@@ -175,6 +175,10 @@
         'rate-again': '_rateAgain'
       },
 
+      ready: function () {
+        window.acDashBoardApp = this;
+      },
+
       _selectedTabChanged: function (tab) {
         if (tab=="all") {
           this.$.all.refresh();
