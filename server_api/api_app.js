@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+var FORCE_PRODUCTION_MODE = false;
+
 var debug = require('debug')('active-citizen-dashboard');
 var express = require('express');
 var session = require('express-session');
@@ -76,7 +78,7 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-if (app.get('env') === 'development') {
+if (app.get('env') === 'development' && !FORCE_PRODUCTION_MODE) {
   app.use(express.static(path.join(__dirname, '../client_app')));
 } else {
   app.use(express.static(path.join(__dirname, '../client_app/build/bundled')));
