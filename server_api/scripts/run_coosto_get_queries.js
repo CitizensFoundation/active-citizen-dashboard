@@ -31,6 +31,7 @@ var getAndSaveAllQueries = function (callback) {
                 name: query.name ? query.name : '',
                 data_object: query
               }).then(function () {
+                console.log("Saved new query: "+query.name);
                 seriesCallback();
               });
             }

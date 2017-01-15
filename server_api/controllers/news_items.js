@@ -6,6 +6,7 @@ var log = require('../utils/logger');
 var toJson = require('../utils/to_json');
 var _ = require('lodash');
 var async = require('async');
+var moment = require('moment');
 
 router.get('/:', function(req, res) {
   models.NewsItem.findAll(
@@ -74,6 +75,12 @@ router.get('/next_to_rate', function(req, res) {
         rating_value: null,
         description: {
           $ne: null
+        },
+        news_search_query_id: {
+          notIn: ["1"]
+        },
+        created_at: {
+          $gt:  moment().add(-3, 'months').toISOString()
         }
       },
       order: [
@@ -81,6 +88,17 @@ router.get('/next_to_rate', function(req, res) {
       ]
     }).then(function (item) {
     res.send(item);
+  }).catch(function (error) {
+    res.sendStatus(500);
+  });
+});
+
+router.get('/getNewsQueries', function(req, res) {
+  models.NewsSearchQuery.findAll(
+    {
+      attributes: ['id','name']
+    }).then(function (item) {
+    res.send(queries);
   }).catch(function (error) {
     res.sendStatus(500);
   });
