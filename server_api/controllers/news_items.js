@@ -8,12 +8,17 @@ var _ = require('lodash');
 var async = require('async');
 var moment = require('moment');
 
+var defaultOrder = [
+  ["rating_value", 'DESC'],
+  ["created_at", 'DESC']
+];
+
 router.get('/:', function(req, res) {
   models.NewsItem.findAll(
     {
       offset: 0,
       limit: 50,
-      order: [["rating_value", 'DESC']]
+      order: defaultOrder
     }).then(function (items) {
       res.send(items);
   });
@@ -35,7 +40,7 @@ router.get('/by_category/:category', function(req, res) {
     models.NewsItem.findAll(
       {
         offset: 0,
-        limit: 50,
+        limit: 100,
         where: {
           $and: [
             { rating_category_name: req.params.category },
@@ -43,7 +48,7 @@ router.get('/by_category/:category', function(req, res) {
             }
           ]
         },
-        order: [["rating_value", 'DESC']]
+        order: defaultOrder
       }).then(function (items) {
       res.send(items);
     }).catch(function (error) {
@@ -59,7 +64,7 @@ router.get('/by_category/:category', function(req, res) {
             $gt: 0
           }
         },
-        order: [["rating_value", 'DESC']]
+        order: defaultOrder
       }).then(function (items) {
       res.send(items);
     }).catch(function (error) {
