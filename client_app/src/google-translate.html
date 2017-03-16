@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <link rel="import" href="yp-ajax/yp-ajax.html">
+<link rel="import" href="ac-linkify-and-emoji.html">
 
 <dom-module id="google-translate">
   <style>
@@ -13,16 +14,20 @@
     .translatedText {
       border-color: #fff;
     }
+
+    a:link {
+      color: #444;
+    }
   </style>
 
   <template>
     <template is="dom-if" if="[[translatedText]]">
       <div class="layout vertical">
-        <div class="translatedText">[[translatedText]]</div>
+        <div id="translatedTextWithEmoji"></div>
         <div class="translatedBy">translated by Google Translate</div>
       </div>
     </template>
-    <div class="layout horizontal center-center">
+    <div class="layout horizontal center-center" hidden>
       <yp-ajax id="translateApi" on-response="_translatedResponse"></yp-ajax>
       <yp-ajax id="checkLanguageApi" on-response="_languageDetected"></yp-ajax>
       <yp-ajax id="updateLanguage" method="PUT"></yp-ajax>
@@ -76,8 +81,23 @@
 
         translatedText: {
           type: String,
-          notify: true
+          notify: true,
+          observer: '_translatedTextChanged'
         }
+      },
+
+      behaviors: [
+        Polymer.AcLinkifyAndEmjoi
+      ],
+
+      _translatedTextChanged: function (text) {
+        this.async(function () {
+          if (text && this.$$("#translatedTextWithEmoji")) {
+            this.$$("#translatedTextWithEmoji").innerHTML = this.addLinksAndEmjois(text);
+          } else if (this.$$("#translatedTextWithEmoji")) {
+            this.$$("#translatedTextWithEmoji").innerHTML = "";
+          }
+        });
       },
 
       _translatedResponse: function (event, detail) {
@@ -92,7 +112,7 @@
       },
 
       _removeBrackets: function (text) {
-        return text.replace(/\[/g, "").replace(/\]/g, "");
+        return text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").replace(/\&quot;/g, "").replace(/\&amp;/g, "");
       },
 
       _itemChanged: function (item) {

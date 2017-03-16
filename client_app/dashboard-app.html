@@ -153,12 +153,12 @@
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
-          value: 'classify'
+          value: 'housing'
         },
 
         selectedTab: {
           type: String,
-          value: "classify",
+          value: "housing",
           observer: '_selectedTabChanged'
         },
 
@@ -205,7 +205,7 @@
       },
 
       _routePageChanged: function(page) {
-        this.page = page || 'view1';
+        this.page = page || 'housing';
       },
 
       _pageChanged: function(page) {

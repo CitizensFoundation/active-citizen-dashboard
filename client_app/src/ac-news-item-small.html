@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="yp-ajax/yp-ajax.html">
 <link rel="import" href="google-translate.html">
+<link rel="import" href="ac-linkify-and-emoji.html">
 
 <dom-module id="ac-news-item-small">
 
@@ -58,7 +59,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: #FFF;
         padding: 16px;
         margin-top: 24px;
-        min-height: 420px;
       }
 
       .container {
@@ -116,16 +116,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div class="layout horizontal">
-      <div class="layout horizontal self-end">
-        <iron-image preload width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
-      </div>
+    <div class="layout vertical">
       <div class="mainText">
         <google-translate hidden$="[[!hasTranslatedText]]" class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c"
                           item="[[item]]"
                           item-id="[[item.id]]"
                           translated-text="{{hasTranslatedText}}"></google-translate>
-        <div class="layout horizontal description" hidden$="[[hasTranslatedText]]">[[_removeBrackets(item.description)]]</div>
+        <div class="layout horizontal description" id="textWithEmoji" hidden$="[[hasTranslatedText]]"></div>
+      </div>
+      <div class="layout horizontal self-end">
+        <iron-image preload width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
       </div>
     </div>
   </template>
@@ -138,14 +138,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
         item: {
-          type: Object
+          type: Object,
+          value: null
         },
 
-        hasTranslatedText: String
+        hasTranslatedText: {
+          type: String
+        }
+      },
+
+      observer: [
+        '_hasTranslatedText(item, hasTranslatedText)'
+      ],
+
+      behaviors: [
+        Polymer.AcLinkifyAndEmjoi
+      ],
+
+      _hasTranslatedText: function (item, hasTranslatedText) {
+        console.error("TRANSLATED TEXT: "+hasTranslatedText);
+        if (hasTranslatedText && hasTranslatedText!="") {
+          this.$.textWithEmoji.innerHTML = this._removeBrackets(this.addLinksAndEmjois(hasTranslatedText));
+        } else if (item) {
+          this.$.textWithEmoji.innerHTML = this._removeBrackets(this.addLinksAndEmjois(item.description));
+        }
       },
 
       _removeBrackets: function (text) {
-        return text.replace(/\[/g, "").replace(/\]/g, "");
+        return text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").replace(/\&quot;/g, "").replace(/\&amp;/g, "");
       },
 
       _rateAgain: function () {
