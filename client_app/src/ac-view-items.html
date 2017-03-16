@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 
 <link rel="import" href="ac-news-item.html">
+<link rel="import" href="ac-news-item-small.html">
 
 <dom-module id="ac-view-items">
 
@@ -32,7 +33,7 @@
     <div class="layout horizontal center-center wrap">
       <template is="dom-repeat" items="[[newsItems]]">
         <paper-material elevation="2" class="layout horizontal center-center">
-          <ac-news-item item="[[item]]"></ac-news-item>
+          <ac-news-item-small item="[[item]]"></ac-news-item-small>
         </paper-material>
       </template>
     </div>
