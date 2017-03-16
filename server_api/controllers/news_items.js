@@ -17,7 +17,7 @@ router.get('/:', function(req, res) {
   models.NewsItem.findAll(
     {
       offset: 0,
-      limit: 50,
+      limit: 500,
       order: defaultOrder
     }).then(function (items) {
       res.send(items);
@@ -40,7 +40,7 @@ router.get('/by_category/:category', function(req, res) {
     models.NewsItem.findAll(
       {
         offset: 0,
-        limit: 100,
+        limit: 500,
         where: {
           $and: [
             { rating_category_name: req.params.category },
@@ -58,7 +58,7 @@ router.get('/by_category/:category', function(req, res) {
     models.NewsItem.findAll(
       {
         offset: 0,
-        limit: 50,
+        limit: 500,
         where: {
           rating_value: {
             $gt: 0

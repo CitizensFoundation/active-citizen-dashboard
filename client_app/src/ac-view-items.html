@@ -23,6 +23,7 @@
         background-color: #FFF;
         width: 420px;
         height: 180px;
+        padding: 0;
         margin: 8px;
       }
 
@@ -33,7 +34,7 @@
 
     <div class="layout horizontal center-center wrap">
       <template is="dom-repeat" items="[[newsItems]]">
-        <paper-material elevation="2" class="layout horizontal center-center">
+        <paper-material elevation="2" class="layout vertical self-start">
           <ac-news-item-small item="[[item]]"></ac-news-item-small>
         </paper-material>
       </template>

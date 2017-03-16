@@ -27,7 +27,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
-        padding: 8px;
       }
 
       .dont-break-out {
@@ -55,11 +54,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #212121;
       }
 
-      paper-material {
-        background-color: #FFF;
-        padding: 16px;
-        margin-top: 24px;
-      }
 
       .container {
 
@@ -114,18 +108,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .authorName {
         padding-right: 8px;
       }
+
+      .mainItemContainer {
+        padding: 8px;
+      }
+
+      .avatar {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+      }
     </style>
 
-    <div class="layout vertical">
+    <div class="layout vertical mainItemContainer">
       <div class="mainText">
         <google-translate hidden$="[[!hasTranslatedText]]" class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c"
                           item="[[item]]"
                           item-id="[[item.id]]"
                           translated-text="{{hasTranslatedText}}"></google-translate>
-        <div class="layout horizontal description" id="textWithEmoji" hidden$="[[hasTranslatedText]]"></div>
+        <div class="" id="textWithEmoji" hidden$="[[hasTranslatedText]]"></div>
       </div>
-      <div class="layout horizontal self-end">
-        <iron-image preload width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
+      <div class="avatar">
+        <iron-image preload placeholder="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
       </div>
     </div>
   </template>
@@ -144,12 +148,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         hasTranslatedText: {
           type: String
+        },
+
+        finalText: {
+          type: String,
+          computed: '_hasTranslatedText(item, hasTranslatedText)'
         }
       },
-
-      observer: [
-        '_hasTranslatedText(item, hasTranslatedText)'
-      ],
 
       behaviors: [
         Polymer.AcLinkifyAndEmjoi
@@ -158,9 +163,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _hasTranslatedText: function (item, hasTranslatedText) {
         console.error("TRANSLATED TEXT: "+hasTranslatedText);
         if (hasTranslatedText && hasTranslatedText!="") {
-          this.$.textWithEmoji.innerHTML = this._removeBrackets(this.addLinksAndEmjois(hasTranslatedText));
+          this.$.textWithEmoji.innerHTML = this.addLinksAndEmjois(this._removeBrackets(hasTranslatedText));
         } else if (item) {
-          this.$.textWithEmoji.innerHTML = this._removeBrackets(this.addLinksAndEmjois(item.description));
+          this.$.textWithEmoji.innerHTML = this.addLinksAndEmjois(this._removeBrackets(item.description));
         }
       },
 
