@@ -66,7 +66,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .description {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .authorHeader {
@@ -90,7 +90,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .mainText {
         background-color: #FFF;
         color: #000;
-        padding: 8px;
+        padding-top: 4px;
       }
 
       .ratingCategoryHeader {
@@ -111,25 +111,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .mainItemContainer {
         padding: 8px;
+        height: 80px;
+        overflow: hidden;
       }
 
       .avatar {
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
+        padding: 8px;
+        padding-top: 9px;
+        padding-left: 4px;
+        width: 50px;
+        height: 50px;
+      }
+
+      @media (max-width: 560px) {
+        .description {
+          font-size: 16px;
+        }
+
+        .mainItemContainer {
+          padding: 8px;
+          height: 170px;
+          overflow: hidden;
+        }
       }
     </style>
 
-    <div class="layout vertical mainItemContainer">
+    <div class="layout horizontal mainItemContainer" on-tap="_openItem">
+      <div class="avatar layout self-start">
+        <iron-image preload sizing="cover" placeholder="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
+      </div>
       <div class="mainText">
         <google-translate hidden$="[[!hasTranslatedText]]" class="description" api-key="AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c"
                           item="[[item]]"
                           item-id="[[item.id]]"
                           translated-text="{{hasTranslatedText}}"></google-translate>
         <div class="" id="textWithEmoji" hidden$="[[hasTranslatedText]]"></div>
-      </div>
-      <div class="avatar">
-        <iron-image preload placeholder="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
       </div>
     </div>
   </template>
@@ -160,8 +176,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         Polymer.AcLinkifyAndEmjoi
       ],
 
+      _openItem: function () {
+        this.fire('ac-open-full-item', this.item);
+      },
+
       _hasTranslatedText: function (item, hasTranslatedText) {
-        console.error("TRANSLATED TEXT: "+hasTranslatedText);
         if (hasTranslatedText && hasTranslatedText!="") {
           this.$.textWithEmoji.innerHTML = this.addLinksAndEmjois(this._removeBrackets(hasTranslatedText));
         } else if (item) {

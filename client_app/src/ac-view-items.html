@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="ac-news-item.html">
 <link rel="import" href="ac-news-item-small.html">
@@ -21,8 +22,8 @@
 
       paper-material {
         background-color: #FFF;
-        width: 420px;
-        height: 180px;
+        width: 550px;
+        height: 100px;
         padding: 0;
         margin: 8px;
       }
@@ -30,11 +31,27 @@
       yp-ajax {
         margin: 16px;
       }
+
+      ac-news-item {
+        max-width: 420px;
+      }
+
+      @media (max-width: 560px) {
+        paper-material {
+          width: 360px;
+          height: 180px;
+        }
+      }
+
     </style>
+
+    <paper-dialog id="dialog">
+      <ac-news-item item="[[selectedItem]]"></ac-news-item>
+    </paper-dialog>
 
     <div class="layout horizontal center-center wrap">
       <template is="dom-repeat" items="[[newsItems]]">
-        <paper-material elevation="2" class="layout vertical self-start">
+        <paper-material elevation="1" class="layout vertical self-start">
           <ac-news-item-small item="[[item]]"></ac-news-item-small>
         </paper-material>
       </template>
@@ -55,7 +72,23 @@
         newsItems: {
           type: Array,
           observer: '_newsItemsChanged'
+        },
+
+        selectedItem: {
+          type: Object,
+          value: null
         }
+      },
+
+      listeners: {
+        'ac-open-full-item':'_openSelectedItem'
+      },
+
+      _openSelectedItem: function (event, detail) {
+        this.set('selectedItem', detail);
+        this.async(function () {
+          this.$.dialog.open();
+        })
       },
 
       _newsItemsChanged: function (newsItems) {
