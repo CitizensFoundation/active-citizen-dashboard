@@ -15,6 +15,10 @@
         display: block;
       }
 
+      :host([focused]) {
+        outline: none;
+      }
+
       :host([hidden]) {
         display: none !important;
       }
@@ -33,6 +37,10 @@
 
       input:-ms-input-placeholder {
         color: var(--paper-input-container-color, --secondary-text-color);
+      }
+
+      label {
+        pointer-events: none;
       }
     </style>
 

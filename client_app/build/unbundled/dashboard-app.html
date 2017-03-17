@@ -105,7 +105,7 @@
       <app-header condenses="" reveals="" effects="waterfall">
         <app-toolbar>
           <iron-image sizing="contain" src="http://deeplinkingyouth.eu/wp-content/uploads/2016/05/slider_logo_001.png"></iron-image>
-          <div title="">DEEP-Linking Youth Dashboard BETA</div>
+          <div title="">DEEP-Linking Youth Dashboard BETA 2</div>
         </app-toolbar>
       </app-header>
 
@@ -137,7 +137,7 @@
 
   </template>
 
-  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"classify"},selectedTab:{type:String,value:"classify",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},ready:function(){window.acDashBoardApp=this},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e&&this.$.other.refresh()},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"view1"},_pageChanged:function(e){}});</script>
+  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"all"},selectedTab:{type:String,value:"all",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},ready:function(){window.acDashBoardApp=this},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e&&this.$.other.refresh()},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){this.page=e||"housing"},_pageChanged:function(e){}});</script>
 
 </dom-module>
 </body></html>

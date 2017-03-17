@@ -84,8 +84,8 @@
       }
 
       .mainText {
-        background-color: var(--app-primary-color);
-        color: #FFF;
+        background-color: #FFF;
+        color: #000;
         padding: 8px;
       }
 
@@ -121,7 +121,7 @@
             <div class="authorHeader self-end">Author</div>
          </div>
           <div class="layout horizontal self-end">
-            <iron-image preload="" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
+            <iron-image preload="" sizing="cover" placeholder="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
           </div>
         </div>
       </div>
