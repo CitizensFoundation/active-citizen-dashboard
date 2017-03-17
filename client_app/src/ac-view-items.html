@@ -13,7 +13,6 @@
 
     <style include="iron-flex iron-flex-alignment">
       :host {
-
       }
 
       iron-list {
@@ -24,10 +23,12 @@
         background-color: #FFF;
         width: 550px;
         height: 100px;
-        padding: 0;
         margin: 8px;
       }
 
+      .card {
+        margin: 8px;
+      }
       yp-ajax {
         margin: 16px;
       }
@@ -47,14 +48,21 @@
 
     <paper-dialog id="dialog">
       <ac-news-item item="[[selectedItem]]"></ac-news-item>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+      </div>
     </paper-dialog>
 
     <div class="layout horizontal center-center wrap">
-      <template is="dom-repeat" items="[[newsItems]]">
-        <paper-material elevation="1" class="layout vertical self-start">
-          <ac-news-item-small item="[[item]]"></ac-news-item-small>
-        </paper-material>
-      </template>
+      <iron-list id="ironList" override-padding-top="350" items="[[newsItems]]" scroll-target="document" grid>
+        <template>
+          <div class="card">
+            <paper-material elevation="1" class="layout vertical self-start">
+              <ac-news-item-small item="[[item]]"></ac-news-item-small>
+            </paper-material>
+          </div>
+        </template>
+      </iron-list>
     </div>
 
     <div class="layout horizontal center-center">

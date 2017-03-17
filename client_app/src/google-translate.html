@@ -81,8 +81,12 @@
 
         translatedText: {
           type: String,
-          notify: true,
-          observer: '_translatedTextChanged'
+          notify: true
+        },
+
+        translatedTextChanged: {
+          type: Boolean,
+          computed: '_translatedTextChanged(item, translatedText)'
         }
       },
 
@@ -90,14 +94,14 @@
         Polymer.AcLinkifyAndEmjoi
       ],
 
-      _translatedTextChanged: function (text) {
+      _translatedTextChanged: function (item, text) {
         this.async(function () {
-          if (text && this.$$("#translatedTextWithEmoji")) {
+          if (item && text && this.$$("#translatedTextWithEmoji")) {
             this.$$("#translatedTextWithEmoji").innerHTML = this.addLinksAndEmjois(text);
           } else if (this.$$("#translatedTextWithEmoji")) {
             this.$$("#translatedTextWithEmoji").innerHTML = "";
           }
-        });
+        }, 50);
       },
 
       _translatedResponse: function (event, detail) {
@@ -132,6 +136,8 @@
               this.set('translatedText', null);
             }
           }
+        } else {
+          this.set('translatedText', null);
         }
       },
 
