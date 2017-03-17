@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var FORCE_PRODUCTION_MODE = false;
+var FORCE_PRODUCTION_MODE = true;
 
 var debug = require('debug')('active-citizen-dashboard');
 var express = require('express');
