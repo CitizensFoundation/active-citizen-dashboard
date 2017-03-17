@@ -191,6 +191,7 @@
         } else if (tab=='other') {
           this.$.other.refresh();
         }
+        ga('send', 'pageview', '/'+tab);
       },
 
       _rateAgain: function (event, detail) {
