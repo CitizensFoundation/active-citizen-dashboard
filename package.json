@@ -2,6 +2,7 @@
   "name": "active-citizen-dashboard",
   "version": "6.0.332",
   "dependencies": {
+    "@google-cloud/translate": "^0.7.0",
     "airbrake": "^1.0.1",
     "async": "^1.4.2",
     "authorized": "^1.0.0",
