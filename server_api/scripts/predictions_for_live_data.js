@@ -168,5 +168,6 @@ models.NewsItem.findAll({
       console.error(error);
     }
     console.log("Done with "+goodCounter+" good and "+badCounter+" bad");
+    process.exit();
   });
 });
