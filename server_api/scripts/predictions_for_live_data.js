@@ -157,7 +157,7 @@ models.NewsItem.findAll({
     rating_value: null,
     predicted_rating_value: null,
     created_at: {
-      $gt:  moment().add(-4, 'days').toISOString()
+      $gt:  moment().add(-3, 'days').toISOString()
     }
   }
 }).then(function (items) {
