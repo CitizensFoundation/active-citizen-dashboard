@@ -35,6 +35,14 @@
         }
       }
 
+      .languageInfo {
+        color: #888;
+        font-size: 14px;
+        padding: 8px;
+        margin-right: 32px;
+        margin-left: 32px;
+      }
+
     </style>
 
     <paper-dialog id="dialog">
@@ -44,24 +52,26 @@
       </div>
     </paper-dialog>
 
-    <div class="layout horizontal center-center wrap">
-      <iron-list id="ironList" override-padding-top="350" items="[[newsItems]]" scroll-target="document" grid="">
-        <template>
-          <div class="card">
-            <paper-material elevation="1" class="layout vertical self-start">
-              <ac-news-item-small item="[[item]]"></ac-news-item-small>
-            </paper-material>
-          </div>
-        </template>
-      </iron-list>
+    <div class="languageInfo layout horizontal">
+      <div id="languageCounts" class="layout vertical"></div>
     </div>
 
-    <div class="layout horizontal center-center">
-      <yp-ajax id="getAllItems" method="GET" url="/api/news_items/by_category/[[category]]" last-response="{{newsItems}}"></yp-ajax>
-    </div>
+    <div class="layout horizontal center-center wrap">
+        <iron-list id="ironList" override-padding-top="350" items="[[newsItems]]" scroll-target="document" grid="">
+          <template>
+            <div class="card">
+              <paper-material elevation="1" class="layout vertical self-start">
+                <ac-news-item-small item="[[item]]"></ac-news-item-small>
+              </paper-material>
+            </div>
+          </template>
+        </iron-list>
+      </div>
+
+    <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
   </template>
 
-  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null}},listeners:{"ac-open-full-item":"_openSelectedItem"},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_newsItemsChanged:function(e){},refresh:function(){this.$.getAllItems.generateRequest()}});</script>
+  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null}},behaviors:[Polymer.languageNames],listeners:{"ac-open-full-item":"_openSelectedItem"},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){var t={};this.async(function(){_.forEach(e,function(e){var n=e.language?e.language:"en";t[n]||(t[n]=0),t[n]+=1}),this.$.languageCounts.innerHTML=this._languageCountsToString(t)})}},refresh:function(){this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest()}});</script>
 
 </dom-module>
 </body></html>
