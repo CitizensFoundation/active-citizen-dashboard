@@ -4,20 +4,23 @@ var fs = require('fs');
 var moment = require('moment');
 const Translate = require('@google-cloud/translate');
 var request = require('request');
+var google = require('googleapis');
 
 var counter = 0;
 var goodCounter = 0;
 var badCounter = 0;
 
 // Your Google Cloud Platform project ID
-const projectId = 'AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c';
+// const projectId = 'AIzaSyD6XEccr0-SvPNpgKdqaZpuxNlij-ior3c';
+
+const projectId = 'active-citizen-dashboard';
 
 // Instantiates a client
 const translateClient = Translate({
   projectId: projectId
 });
 
-var translateItemToEn = function (text, callback) {
+var translateItemToEn = function (text, authClient, callback) {
   translateClient.translate(text, "en")
     .then( function (results) {
       callback(null, results[0]);
@@ -26,7 +29,7 @@ var translateItemToEn = function (text, callback) {
   });
 };
 
-var detectLanguage = function (text, callback) {
+var detectLanguage = function (text, authClient, callback) {
   translateClient.detect(text)
     .then( function (results) {
       var detections = results[0];
@@ -65,16 +68,16 @@ truncate = function (input, length, killwords, end) {
   return input;
 };
 
-var removeBrackets = function (text) {
+var cleanForPrediction = function (text) {
   if (text) {
     return truncate(text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").
-                replace(/\&quot;/g, "").replace(/\&amp;/g, "").replace(/(?:https?|ftp):\/\/[\n\S]+/g, '').
-                trim().toLowerCase().replace(/#/g,'').replace(/@/g,'').replace(/"/g,'').replace(/'/g,'').
-                replace(/\n/g,' ').replace(/\r/g,' ').
-                replace(/[^\x00-\x7F]/g, "").
-                replace(/rt /g,'').
-                replace(/([#0-9]\u20E3)|[\xA9\xAE\u203C\u2047-\u2049\u2122\u2139\u3030\u303D\u3297\u3299][\uFE00-\uFEFF]?|[\u2190-\u21FF][\uFE00-\uFEFF]?|[\u2300-\u23FF][\uFE00-\uFEFF]?|[\u2460-\u24FF][\uFE00-\uFEFF]?|[\u25A0-\u25FF][\uFE00-\uFEFF]?|[\u2600-\u27BF][\uFE00-\uFEFF]?|[\u2900-\u297F][\uFE00-\uFEFF]?|[\u2B00-\u2BF0][\uFE00-\uFEFF]?|(?:\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDEFF])[\uFE00-\uFEFF]?/g, '')
-           , 220);
+      replace(/\&quot;/g, "").replace(/\&amp;/g, "").replace(/(?:https?|ftp):\/\/[\n\S]+/g, '').
+      trim().toLowerCase().replace(/#/g,'').replace(/@/g,'').replace(/"/g,'').replace(/'/g,'').
+      replace(/\n/g,' ').replace(/\r/g,' ').
+      replace(/[^\x00-\x7F]/g, "").
+      replace(/rt /g,'').
+      replace(/([#0-9]\u20E3)|[\xA9\xAE\u203C\u2047-\u2049\u2122\u2139\u3030\u303D\u3297\u3299][\uFE00-\uFEFF]?|[\u2190-\u21FF][\uFE00-\uFEFF]?|[\u2300-\u23FF][\uFE00-\uFEFF]?|[\u2460-\u24FF][\uFE00-\uFEFF]?|[\u25A0-\u25FF][\uFE00-\uFEFF]?|[\u2600-\u27BF][\uFE00-\uFEFF]?|[\u2900-\u297F][\uFE00-\uFEFF]?|[\u2B00-\u2BF0][\uFE00-\uFEFF]?|(?:\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDEFF])[\uFE00-\uFEFF]?/g, '')
+      , 220);
   } else {
     return null;
   }
@@ -82,27 +85,26 @@ var removeBrackets = function (text) {
 
 var trimForTranslation = function (text) {
   if (text) {
-    return truncate(text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").
-      replace(/\&quot;/g, "").replace(/\&amp;/g, "").replace(/(?:https?|ftp):\/\/[\n\S]+/g, '').
-      replace(/\n/g,' ').replace(/\r/g,' ')
-      , 220);
+    return text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").
+      replace(/\&quot;/g, "").replace(/\&amp;/g, "").
+      replace(/\n/g,' ').replace(/\r/g,' ');
   } else {
     return null;
   }
 };
 
-var getTranslatedItemText = function (item, callback) {
+var getTranslatedItemText = function (item, authClient, callback) {
   if (item.translated_text) {
     callback(null, item.translated_text)
   } else {
-    detectLanguage(trimForTranslation(item.description), function (error, language) {
+    detectLanguage(trimForTranslation(item.description), authClient, function (error, language) {
       if (error) {
         callback(error);
       } else if (language=='en') {
-        callback(null, item.description)
+        callback(null, item.description, 'en')
       } else {
-        translateItemToEn(trimForTranslation(item.description), function (error, translatedText) {
-          callback(error, translatedText);
+        translateItemToEn(trimForTranslation(item.description), authClient, function (error, translatedText) {
+          callback(error, translatedText, language);
         });
       }
     });
@@ -111,33 +113,42 @@ var getTranslatedItemText = function (item, callback) {
 
 var processItem = function (item, callback) {
   console.log("Item: "+(counter+=1));
-  getTranslatedItemText(item, function (error, translatedText) {
-    if (error) {
-      callback(error)
-    } else {
-      request("localhost:4227/?text_to_eval="+translatedText, function (error, results) {
-        console.log("Eval results: "+results);
-        if (error) {
-          callback(error);
-        } else if (parseFloat(results)==1.0) {
-          item.predicted_rating_value = 1.0;
-          item.save().then(function () {
-            callback(null);
-          }).catch(function (error) {
-            callback(error);
-          });
-          goodCounter+=1;
-        } else {
-          item.predicted_rating_value = -1.0;
-          item.save().then(function () {
-            callback(null);
-          }).catch(function (error) {
-            callback(error);
-          });
-          badCounter+=1;
-        }
-      });
+  google.auth.getApplicationDefault(function(err, authClient) {
+    if (err) {
+      return callback(err);
     }
+    getTranslatedItemText(item, authClient, function (error, translatedText, language) {
+      if (error) {
+        callback(error)
+      } else {
+        request("http://localhost:4227/?text_to_eval="+cleanForPrediction(translatedText), function (error, results) {
+          console.log("Debug text: "+translatedText);
+          console.log("Eval results: "+parseFloat(results ? results.body : "-1"));
+          var ratingValue;
+          if (error) {
+            console.error("Error: "+error.code);
+            return callback();
+          } else if (parseFloat(results.body)==1.0) {
+            ratingValue = 1.0;
+            goodCounter+=1;
+          } else {
+            ratingValue = -1.0;
+            badCounter+=1;
+          }
+          item.set('predicted_rating_value', ratingValue);
+          if (language!='en') {
+            item.set('translated_text', translatedText);
+            item.set('language', language);
+          }
+          item.save().then(function () {
+            callback();
+          }).catch(function (error) {
+            callback(error);
+          });
+
+        });
+      }
+    });
   });
 };
 

@@ -95,7 +95,7 @@ def application(request):
 
 if __name__ == '__main__':
     from werkzeug.serving import run_simple
-    run_simple('localhost', 4000, application)
+    run_simple('localhost', 4227, application)
 
 
 #out_path = os.path.join(FLAGS.checkpoint_dir, "..", "prediction.csv")

@@ -27,7 +27,7 @@ truncate = function (input, length, killwords, end) {
   return input;
 };
 
-var removeBrackets = function (text) {
+var cleanForPrediction = function (text) {
   if (text) {
     return truncate(text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").
                 replace(/\&quot;/g, "").replace(/\&amp;/g, "").replace(/(?:https?|ftp):\/\/[\n\S]+/g, '').
@@ -66,21 +66,21 @@ models.NewsItem.findAll({
       console.log("Good rating value: "+item.rating_value);
       goodCounter+=1;
       if (item.translated_text) {
-        console.log(removeBrackets(item.translated_text));
-        pos += removeBrackets(item.translated_text) + "\n";
+        console.log(cleanForPrediction(item.translated_text));
+        pos += cleanForPrediction(item.translated_text) + "\n";
       } else {
-        console.log(removeBrackets(item.description));
-        pos += removeBrackets(item.description)+ "\n";
+        console.log(cleanForPrediction(item.description));
+        pos += cleanForPrediction(item.description)+ "\n";
       }
     } else {
       console.log("Bad rarting at: "+item.rating_value);
       badCounter+=1;
       if (item.translated_text) {
-        console.log(removeBrackets(item.translated_text));
-        neg += removeBrackets(item.translated_text) + "\n";
+        console.log(cleanForPrediction(item.translated_text));
+        neg += cleanForPrediction(item.translated_text) + "\n";
       } else {
-        console.log(removeBrackets(item.description));
-        neg += removeBrackets(item.description)+ "\n";
+        console.log(cleanForPrediction(item.description));
+        neg += cleanForPrediction(item.description)+ "\n";
       }
     }
     console.log("---------------");

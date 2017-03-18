@@ -120,6 +120,8 @@
         <paper-tab name="housing" class="tab">Housing</paper-tab>
         <paper-tab name="university" class="tab">University</paper-tab>
         <paper-tab name="other" class="tab">Other</paper-tab>
+        <paper-tab name="predictedRelevant" class="tab">Live</paper-tab>
+        <paper-tab name="predictedNotRelevant" class="tab">Live Rejected</paper-tab>
       </paper-tabs>
 
       <iron-pages class="tabPages" selected="{{selectedTab}}" attr-for-selected="name" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
@@ -129,6 +131,8 @@
         <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>
         <ac-view-items id="university" name="university" category="University"></ac-view-items>
         <ac-view-items id="other" name="other" category="Other"></ac-view-items>
+        <ac-view-items id="predictedRelevant" name="predictedRelevant" predicted-relevant></ac-view-items>
+        <ac-view-items id="predictedNotRelevant" name="predictedNotRelevant" predicted-not-relevant></ac-view-items>
       </iron-pages>
 
       <div class="layout vertical center-center">
@@ -190,6 +194,10 @@
           this.$.university.refresh();
         } else if (tab=='other') {
           this.$.other.refresh();
+        } else if (tab=='predictedRelevant') {
+          this.$.predictedRelevant.refresh();
+        } else if (tab=='predictedNotRelevant') {
+          this.$.predictedNotRelevant.refresh();
         }
         ga('send', 'pageview', '/'+tab);
       },

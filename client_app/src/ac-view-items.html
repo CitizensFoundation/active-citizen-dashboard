@@ -6,6 +6,7 @@
 
 <link rel="import" href="ac-news-item.html">
 <link rel="import" href="ac-news-item-small.html">
+<link rel="import" href="language-names.html">
 
 <dom-module id="ac-view-items">
 
@@ -44,6 +45,14 @@
         }
       }
 
+      .languageInfo {
+        color: #888;
+        font-size: 14px;
+        padding: 8px;
+        margin-right: 32px;
+        margin-left: 32px;
+      }
+
     </style>
 
     <paper-dialog id="dialog">
@@ -53,21 +62,26 @@
       </div>
     </paper-dialog>
 
-    <div class="layout horizontal center-center wrap">
-      <iron-list id="ironList" override-padding-top="350" items="[[newsItems]]" scroll-target="document" grid>
-        <template>
-          <div class="card">
-            <paper-material elevation="1" class="layout vertical self-start">
-              <ac-news-item-small item="[[item]]"></ac-news-item-small>
-            </paper-material>
-          </div>
-        </template>
-      </iron-list>
+    <div class="languageInfo layout horizontal">
+      <div class="languageHeader">
+        Language counts
+      </div>
+      <div id="languageCounts" class="layout vertical"></div>
     </div>
 
-    <div class="layout horizontal center-center">
-      <yp-ajax id="getAllItems" method="GET" url="/api/news_items/by_category/[[category]]" last-response="{{newsItems}}"></yp-ajax>
-    </div>
+    <div class="layout horizontal center-center wrap">
+        <iron-list id="ironList" override-padding-top="350" items="[[newsItems]]" scroll-target="document" grid>
+          <template>
+            <div class="card">
+              <paper-material elevation="1" class="layout vertical self-start">
+                <ac-news-item-small item="[[item]]"></ac-news-item-small>
+              </paper-material>
+            </div>
+          </template>
+        </iron-list>
+      </div>
+
+    <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
   </template>
 
   <script>
@@ -85,8 +99,31 @@
         selectedItem: {
           type: Object,
           value: null
+        },
+
+        languageCounts: {
+          type: String
+        },
+
+        predictedRelevant: {
+          type: Boolean,
+          value: false
+        },
+
+        predictedNotRelevant: {
+          type: Boolean,
+          value: false
+        },
+
+        category: {
+          type: String,
+          value: null
         }
       },
+
+      behaviors: [
+        Polymer.languageNames
+      ],
 
       listeners: {
         'ac-open-full-item':'_openSelectedItem'
@@ -99,11 +136,47 @@
         })
       },
 
+      _languageCountsToString: function (obj) {
+        var objArray = [];
+        obj = _.forEach(obj, function (count, language) {
+          objArray.push({ language: language, count: count});
+        });
+        objArray = _.sortBy(objArray, function (obj) {
+          return obj.count;
+        });
+        objArray = objArray.reverse();
+        var str = '';
+        _.forEach(objArray, function (obj) {
+          str += '<div class="languageClass">'+this.getLanguageName(obj.language)+": "+obj.count+"</div>";
+        }.bind(this));
+        return str;
+      },
+
       _newsItemsChanged: function (newsItems) {
+        if (newsItems) {
+          var languageCounts = {};
+          this.async(function () {
+            _.forEach(newsItems, function (item) {
+              var language = item.language ? item.language : 'en';
+              if (!languageCounts[language]) {
+                languageCounts[language] = 0;
+              }
+              languageCounts[language]+=1;
+            });
+            this.$.languageCounts.innerHTML = this._languageCountsToString(languageCounts);
+          });
+        }
       },
 
       refresh: function () {
-       this.$.getAllItems.generateRequest();
+        if (this.predictedRelevant) {
+          this.$.getAllItems.url = "/api/news_items/predicted_relevant";
+        } else if (this.predictedNotRelevant) {
+          this.$.getAllItems.url = "/api/news_items/predicted_not_relevant";
+        } else if (this.category) {
+          this.$.getAllItems.url = "/api/news_items/by_category/"+this.category;
+        }
+       this.$$("#getAllItems").generateRequest();
       }
     });
 

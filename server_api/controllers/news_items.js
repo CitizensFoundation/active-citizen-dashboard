@@ -35,6 +35,45 @@ router.get('/get_item/:id', function(req, res) {
   });
 });
 
+router.get('/predicted_relevant', function(req, res) {
+  models.NewsItem.findAll(
+    {
+      offset: 0,
+      limit: 1000,
+      where: {
+        predicted_rating_value: {
+          $gt: 0
+        },
+        rating_value: null
+      },
+      order: defaultOrder
+    }).then(function (items) {
+    res.send(items);
+  }).catch(function (error) {
+    res.sendStatus(500);
+  });
+});
+
+router.get('/predicted_not_relevant', function(req, res) {
+  models.NewsItem.findAll(
+    {
+      offset: 0,
+      limit: 1000,
+      where: {
+        predicted_rating_value: {
+          $lt: 0
+        },
+        rating_value: null
+      },
+      order: defaultOrder
+    }).then(function (items) {
+    res.send(items);
+  }).catch(function (error) {
+    res.sendStatus(500);
+  });
+});
+
+
 router.get('/by_category/:category', function(req, res) {
   if (req.params.category!="all") {
     models.NewsItem.findAll(
