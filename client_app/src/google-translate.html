@@ -121,8 +121,8 @@
 
       _itemChanged: function (item) {
         if (item) {
-          if (this.item.translated_text) {
-            this.set('translatedText', this._removeBrackets(this.item.translated_text));
+          if (item.translated_text) {
+            this.set('translatedText', this._removeBrackets(item.translated_text));
           } else {
             if (item.description) {
               this.set('textToTranslate', this._removeBrackets(item.description));
