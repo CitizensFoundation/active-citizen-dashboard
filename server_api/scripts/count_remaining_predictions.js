@@ -8,7 +8,7 @@ models.NewsItem.count({
     rating_value: null,
     predicted_rating_value: null,
     created_at: {
-      $gt:  moment().add(-1, 'weeks').toISOString()
+      $gt:  moment().add(-4, 'days').toISOString()
     }
   }
 }).then(function (count) {
