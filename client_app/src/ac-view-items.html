@@ -63,9 +63,6 @@
     </paper-dialog>
 
     <div class="languageInfo layout horizontal">
-      <div class="languageHeader">
-        Language counts
-      </div>
       <div id="languageCounts" class="layout vertical"></div>
     </div>
 
@@ -147,7 +144,7 @@
         objArray = objArray.reverse();
         var str = '';
         _.forEach(objArray, function (obj) {
-          str += '<div class="languageClass">'+this.getLanguageName(obj.language)+": "+obj.count+"</div>";
+          str += ''+this.getLanguageName(obj.language)+": "+obj.count+" ";
         }.bind(this));
         return str;
       },

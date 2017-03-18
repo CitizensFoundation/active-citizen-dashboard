@@ -94,14 +94,13 @@
 
     <ac-dialog-container id="dialogContainer"></ac-dialog-container>
 
-    <app-location route="{{route}}"></app-location>
+    <app-location route="{{route}}" use-hash-as-path></app-location>
 
     <app-route
         route="{{route}}"
         pattern="/:page"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
-
 
     <!-- Main content -->
     <app-header-layout >
@@ -199,6 +198,7 @@
         } else if (tab=='predictedNotRelevant') {
           this.$.predictedNotRelevant.refresh();
         }
+        this.set('page', tab);
         ga('send', 'pageview', '/'+tab);
       },
 
@@ -214,13 +214,13 @@
       },
 
       _routePageChanged: function(page) {
-        this.page = page || 'housing';
+        console.error("Route change: "+page);
+        this.page = page || 'all';
       },
 
       _pageChanged: function(page) {
-        // load page import on demand.
-    //    this.importHref(
-      //    this.resolveUrl('my-' + page + '.html'), null, null, true);
+        console.error("page change: "+page);
+         this.set('selectedTab', page)
       }
 
     });
