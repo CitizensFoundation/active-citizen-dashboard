@@ -13,6 +13,11 @@ var defaultOrder = [
   ["created_at", 'DESC']
 ];
 
+var defaultPredictionOrder = [
+  ["predicted_rating_value", 'DESC'],
+  ["created_at", 'DESC']
+];
+
 router.get('/:', function(req, res) {
   models.NewsItem.findAll(
     {
@@ -46,7 +51,7 @@ router.get('/predicted_relevant', function(req, res) {
         },
         rating_value: null
       },
-      order: defaultOrder
+      order: defaultPredictionOrder
     }).then(function (items) {
     res.send(items);
   }).catch(function (error) {
@@ -65,7 +70,7 @@ router.get('/predicted_not_relevant', function(req, res) {
         },
         rating_value: null
       },
-      order: defaultOrder
+      order: defaultPredictionOrder
     }).then(function (items) {
     res.send(items);
   }).catch(function (error) {
@@ -209,6 +214,23 @@ router.put('/:id/add_translation', function(req, res) {
   }).then(function (item) {
     if (item) {
       item.set('translated_text', req.body.translated_text);
+      item.set('language', req.body.language);
+      item.save().then(function () {
+        res.sendStatus(200);
+      });
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
+router.put('/:id/update_language', function(req, res) {
+  models.NewsItem.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (item) {
+    if (item) {
       item.set('language', req.body.language);
       item.save().then(function () {
         res.sendStatus(200);

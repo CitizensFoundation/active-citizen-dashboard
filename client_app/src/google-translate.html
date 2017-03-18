@@ -28,13 +28,13 @@
       </div>
     </template>
     <div class="layout horizontal center-center" hidden>
-      <yp-ajax id="translateApi" on-response="_translatedResponse"></yp-ajax>
-      <yp-ajax id="checkLanguageApi" on-response="_languageDetected"></yp-ajax>
+      <yp-ajax id="translateApi" dispatch-error on-response="_translatedResponse"></yp-ajax>
+      <yp-ajax id="checkLanguageApi" dispatch-error on-response="_languageDetected"></yp-ajax>
       <yp-ajax id="updateLanguage" method="PUT"></yp-ajax>
     </div>
 
 
-  </template>
+  </template>a
 
   <script>
 
@@ -119,9 +119,21 @@
         return text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").replace(/\&quot;/g, "").replace(/\&amp;/g, "");
       },
 
+      _abortRequest: function (ajax) {
+        if (ajax.lastRequest) {
+          console.warn("Aborting request");
+          ajax.lastRequest.abort();
+        }
+      },
+
       _itemChanged: function (item) {
         if (item) {
-          if (item.translated_text) {
+          this._abortRequest(this.$.checkLanguageApi);
+          this._abortRequest(this.$.updateLanguage);
+          this._abortRequest(this.$.translateApi);
+          if (item.language=='en') {
+            this.set('translatedText', null);
+          } else if (item.translated_text) {
             this.set('translatedText', this._removeBrackets(item.translated_text));
           } else {
             if (item.description) {
@@ -152,6 +164,11 @@
             q: this.textToTranslate
           };
           this.$$("#translateApi").generateRequest();
+        } else if (value && value.data.detections[0][0].language=="en") {
+          this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/update_language";
+          this.$$("#updateLanguage").body = { language: "en"};
+          this.$$("#updateLanguage").generateRequest();
+          this.set('translatedText', null);
         } else {
           this.set('translatedText', null);
         }

@@ -126,6 +126,15 @@
         'ac-open-full-item':'_openSelectedItem'
       },
 
+      ready: function () {
+      },
+
+      _refreshTimer: function () {
+        this.async(function () {
+          this.refresh();
+        },1000*60*11);
+      },
+
       _openSelectedItem: function (event, detail) {
         this.set('selectedItem', detail);
         this.async(function () {
@@ -174,6 +183,9 @@
           this.$.getAllItems.url = "/api/news_items/by_category/"+this.category;
         }
        this.$$("#getAllItems").generateRequest();
+        if (this.predictedRelevant) {
+          this._refreshTimer();
+        }
       }
     });
 
