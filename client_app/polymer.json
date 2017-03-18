@@ -10,5 +10,8 @@
     "src/ac-news-item-classification.html",
     "src/ac-view-items.html",
     "src/ac-rating-category.html"
+  ],
+  "includeDependencies": [
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }

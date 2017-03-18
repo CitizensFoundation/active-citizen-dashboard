@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "active-citizen-dashboard",
+  "private_key_id": "2a63c286d33a9826f365dc99b518d284782ed335",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDUhVB+hFcs6nJf\ncAPFXE3c/M5fS58+hhujW8IjTJ81O9ASoXXEctC6PcAX5Xmd6S1Wvi/f6WrRYDBY\nW3x7JbqLz/B7+EpeIBeP2kLAPBoAPlQvQWZDc6SvYIy75MQZklsPZgNyIpAI9+5j\nCK1GtxLjhT9D2SvE0ztI5KkYk2Zj9s1I8RrUEzRVDPAZiO22kVy388olWRqY6ekn\n12BAVeN4jESVaGGzZF7zQMZAmlo11ZrwzKxT3wJMGlG6P297bP4sd+1jpqaYHo6i\nh+rih+cl2ztoj3ANrH5ck4LyZIY+MCZ167JB5TxZ5a91NGgQMpurMzZNBehsCsQd\np4I1/UHbAgMBAAECggEAKV4t9gKiyX51dvhh84ftLCgVr90TiWMnfBv/ZUmj8APN\nk+LT/sJuuOIOQ1iK3N8n0SvCO+6+uTTlFD3ytDH65v46DJefOkU68OiGd877LLL1\nRiGP229mTjEYE/cK6QNhMFUmNJBfwy8nuyVUPWCjj6A/WWCrsWuArca816jRlIF5\n/lCbxFmZe4R4FhZonVP3QOmPgPPIirJtu7CMRk1wmbIxJ77VmlM2YOhkLgkqgqCA\nfRTi6a/WYgDjiLrG+sqR7+IELjCxcJyWdpAdpE6V5k4LHrGffha5t8nTrmU0mEP1\nMbnjEkEOhECtQzdsFEp1NLVzMtM1lsUkqOfvwa1YaQKBgQD+HbEqahHMbRAiqswb\nolCukQr3CA+zHvM4f4+J9Q/2rd7VEGXPiYlgwO6eRXd8aJRxQFYsmGc8kw+XQfLU\ndqAAfAuloA+YtchNPK89tQ5TfhLDaq0c4JIm10CZ7IDkhpr4zZHnC7ZH3czV4t8T\nifalf2jjy13uSQlEVCeBRJLQTQKBgQDWGKziKsQF5QS8r2epFjADPYJVAB9+V/hT\ns+TdhXRNfmzr/74YDNJUbIA/0AEfRA2q5ET5Ahw0DoDqKGJx2V0kAkJCBUXy/Nhu\nZ/EdTkz2eDRSkj9k0ju3xhxRRM2EgnQEi7ulhbAdDgsiLXsXUxJU8jQo4ZH5k0Sy\nQXN34+2uxwKBgEtKzOV+TAu//NnotVUywKkYfKE5GD3AW9xPn14G6FX0qmOC2kel\nvriWMZ1fg8muytzLbT0FYwFFqYbtmV9uTnYWSvUl+bkLk2+fHWUxMi922WRhRS2b\nNHKhsJhqxL3xTBWQAzzr8XRVuY1eDS6i4BulJpTn+srRhRdjv9jDUqS5AoGBALDA\nFFJvjf9z0BJaGRFOAPtb13KHNHjg9WFc/dAoMhkcC55WN0CxrR8HqGWGOrbuPv5b\nj9mndVNAugsWphdppOxqdPr+UX5GYgPcCgHwt7cvC7szg+Sfb6/LfWtWivkfndp2\n5cbD9N43ztc7hwh9i3/XqVoqx5GslCU5xbMv1/TXAoGAHkE3reVDSKULyMrKC7o+\n3wrKAzx/9O2aSZfmnzme/anNpJBeUCFmxld8HaJIEyEgmHw3DoKb+soTnHvkVonj\nfBGStmyuD56pkYzY3nhn2xa3L+26Q4P3w5dYkE813jt9FOES3k9omC1TJRd2ob7g\nWsZQZGHdRR6u9Vdvo6KauhA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "active-citizen-dashboard@appspot.gserviceaccount.com",
+  "client_id": "108395314984033632487",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/active-citizen-dashboard%40appspot.gserviceaccount.com"
+}

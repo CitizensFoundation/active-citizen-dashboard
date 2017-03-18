@@ -121,7 +121,7 @@ var processItem = function (item, callback) {
       if (error) {
         callback(error)
       } else {
-        request("http://localhost:4227/?text_to_eval="+cleanForPrediction(translatedText), function (error, results) {
+        request(process.env.AC_TENSORFLOW_EVAL_URL+"?text_to_eval="+cleanForPrediction(translatedText), function (error, results) {
           console.log("Debug text: "+translatedText);
           console.log("Eval results: "+parseFloat(results ? results.body : "-1"));
           var ratingValue;
