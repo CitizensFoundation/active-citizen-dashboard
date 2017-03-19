@@ -136,9 +136,11 @@ var processItem = function (item, callback) {
             badCounter+=1;
           }
           item.set('predicted_rating_value', ratingValue);
+          if (language) {
+            item.set('language', language);
+          }
           if (language!='en') {
             item.set('translated_text', translatedText);
-            item.set('language', language);
           }
           item.save().then(function () {
             callback();
