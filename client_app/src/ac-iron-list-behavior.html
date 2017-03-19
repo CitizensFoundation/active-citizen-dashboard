@@ -37,12 +37,12 @@
         }
         windowWidth = windowWidth - 16;
         list.style.height = height + 'px';
-        console.log("Set list height to: "+height);
+        //console.log("Set list height to: "+height);
         if (!this.skipIronListWidth) {
           list.style.width = windowWidth + 'px';
-          console.log("Set list width to: "+windowWidth);
+          //console.log("Set list width to: "+windowWidth);
         } else {
-          console.log("Skipping setting iron-list width");
+          //console.log("Skipping setting iron-list width");
         }
         this.async(function () {
           list.updateViewportBoundaries();

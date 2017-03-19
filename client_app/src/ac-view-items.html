@@ -131,7 +131,7 @@
             <div class="subjectHeader">
               Subject: Youth mobility and Erasmus
             </div>
-            <div class="langHeader">
+            <div class="langHeader" hidden$="[[!totalLanguageCount]]">
               [[totalItemCount]] voices in [[totalLanguageCount]] languages
             </div>
             <div hidden class="autoTranslateInfo">Automatically translated when needed</div>
@@ -183,7 +183,8 @@
         wide: Boolean,
 
         totalLanguageCount: {
-          type: Number
+          type: Number,
+          value: null
         },
 
         totalItemCount: {
