@@ -11,7 +11,14 @@
     "src/ac-view-items.html",
     "src/ac-rating-category.html"
   ],
+  "sourceGlobs": [
+    "src/**/*",
+    "images/**/*",
+    "manifest.json",
+    "bower.json"
+  ],
   "includeDependencies": [
+    "manifest.json",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }
