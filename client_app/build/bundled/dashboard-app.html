@@ -2984,7 +2984,7 @@ var u=t("domelementtype"),h=t("entities"),l={__proto__:null,allowfullscreen:!0,a
 <dom-module id="google-translate" assetpath="src/">
   <style>
     .translatedBy {
-      color: #aaa;
+      color: #888;
       font-size: 9px;
     }
 
@@ -3001,7 +3001,7 @@ var u=t("domelementtype"),h=t("entities"),l={__proto__:null,allowfullscreen:!0,a
     <template is="dom-if" if="[[translatedText]]">
       <div class="layout vertical">
         <div id="translatedTextWithEmoji"></div>
-        <div class="translatedBy">translated by Google Translate</div>
+        <div class="translatedBy">automatically translated</div>
       </div>
     </template>
     <div class="layout horizontal center-center" hidden="">
@@ -3013,7 +3013,7 @@ var u=t("domelementtype"),h=t("entities"),l={__proto__:null,allowfullscreen:!0,a
 
   </template>a
 
-  <script>Polymer({is:"google-translate",properties:{item:{type:Object,observer:"_itemChanged"},translatedResponse:{type:Object,observer:"_translatedResponseChanged"},action:{type:String},apiKey:{type:String},textToTranslate:{type:String},languageDetected:{type:Object,observer:"_languageDetected"},itemId:{type:Number},sourceLanguage:{type:String},translatedText:{type:String,notify:!0},translatedTextChanged:{type:Boolean,computed:"_translatedTextChanged(item, translatedText)"}},behaviors:[Polymer.AcLinkifyAndEmjoi],_translatedTextChanged:function(t,e){this.async(function(){t&&e&&this.$$("#translatedTextWithEmoji")?this.$$("#translatedTextWithEmoji").innerHTML=this.addLinksAndEmjois(e):this.$$("#translatedTextWithEmoji")&&(this.$$("#translatedTextWithEmoji").innerHTML="")},50)},_translatedResponse:function(t,e){var a=e.response;if(a&&a.data.translations&&a.data.translations.length>0){var s=a.data.translations[0].translatedText;this.set("translatedText",s),this.$$("#updateLanguage").url="/api/news_items/"+this.itemId+"/add_translation",this.$$("#updateLanguage").body={translated_text:s,language:this.sourceLanguage},this.$$("#updateLanguage").generateRequest()}},_removeBrackets:function(t){return t.replace(/\[/g,"").replace(/\]/g,"").replace(/\&#39;/g,"").replace(/\&quot;/g,"").replace(/\&amp;/g,"")},_abortRequest:function(t){t.lastRequest&&(console.warn("Aborting request"),t.lastRequest.abort())},_itemChanged:function(t){t?(this._abortRequest(this.$.checkLanguageApi),this._abortRequest(this.$.updateLanguage),this._abortRequest(this.$.translateApi),"en"==t.language?this.set("translatedText",null):t.translated_text?this.set("translatedText",this._removeBrackets(t.translated_text)):t.description?(this.set("textToTranslate",this._removeBrackets(t.description)),this.$$("#checkLanguageApi").url="https://www.googleapis.com/language/translate/v2/detect",this.$$("#checkLanguageApi").params={key:this.apiKey,q:this.textToTranslate},this.$$("#checkLanguageApi").generateRequest()):this.set("translatedText",null)):this.set("translatedText",null)},_languageDetected:function(t,e){var a=e.response;a&&"en"!=a.data.detections[0][0].language?(this.set("sourceLanguage",a.data.detections[0][0].language),this.$$("#translateApi").url="https://www.googleapis.com/language/translate/v2",this.$$("#translateApi").params={key:this.apiKey,target:"en",q:this.textToTranslate},this.$$("#translateApi").generateRequest()):a&&"en"==a.data.detections[0][0].language?(this.$$("#updateLanguage").url="/api/news_items/"+this.itemId+"/update_language",this.$$("#updateLanguage").body={language:"en"},this.$$("#updateLanguage").generateRequest(),this.set("translatedText",null)):this.set("translatedText",null)}});</script>
+  <script>Polymer({is:"google-translate",properties:{item:{type:Object,observer:"_itemChanged"},translatedResponse:{type:Object,observer:"_translatedResponseChanged"},action:{type:String},apiKey:{type:String},textToTranslate:{type:String},languageDetected:{type:Object,observer:"_languageDetected"},itemId:{type:Number},sourceLanguage:{type:String},translatedText:{type:String,notify:!0},translatedTextChanged:{type:Boolean,computed:"_translatedTextChanged(item, translatedText)"}},behaviors:[Polymer.AcLinkifyAndEmjoi],_translatedTextChanged:function(t,e){this.async(function(){t&&e&&this.$$("#translatedTextWithEmoji")?this.$$("#translatedTextWithEmoji").innerHTML=this.addLinksAndEmjois(e):this.$$("#translatedTextWithEmoji")&&(this.$$("#translatedTextWithEmoji").innerHTML="")},50)},_translatedResponse:function(t,e){var a=e.response;if(a&&a.data.translations&&a.data.translations.length>0){var s=a.data.translations[0].translatedText;this.set("translatedText",s),this.$$("#updateLanguage").url="/api/news_items/"+this.itemId+"/add_translation",this.$$("#updateLanguage").body={},this.$$("#updateLanguage").generateRequest()}},_removeBrackets:function(t){return t.replace(/\[/g,"").replace(/\]/g,"").replace(/\&#39;/g,"").replace(/\&quot;/g,"").replace(/\&amp;/g,"")},_abortRequest:function(t){t.lastRequest&&(console.warn("Aborting request"),t.lastRequest.abort())},_itemChanged:function(t){t?"en"==t.language?this.set("translatedText",null):t.translated_text?this.set("translatedText",this._removeBrackets(t.translated_text)):t.description?(this.set("textToTranslate",this._removeBrackets(t.description)),this.$$("#checkLanguageApi").url="https://www.googleapis.com/language/translate/v2/detect",this.$$("#checkLanguageApi").params={key:this.apiKey,q:this.textToTranslate},this.$$("#checkLanguageApi").generateRequest()):this.set("translatedText",null):this.set("translatedText",null)},_languageDetected:function(t,e){var a=e.response;a&&"en"!=a.data.detections[0][0].language?(this.set("sourceLanguage",a.data.detections[0][0].language),this.$$("#translateApi").url="https://www.googleapis.com/language/translate/v2",this.$$("#translateApi").params={key:this.apiKey,target:"en",q:this.textToTranslate},this.$$("#translateApi").generateRequest()):a&&"en"==a.data.detections[0][0].language?(this.$$("#updateLanguage").url="/api/news_items/"+this.itemId+"/update_language",this.$$("#updateLanguage").body={},this.$$("#updateLanguage").generateRequest(),this.set("translatedText",null)):this.set("translatedText",null)}});</script>
 
 </dom-module>
 <dom-module id="ac-rating-category" assetpath="src/">
@@ -3223,6 +3223,9 @@ var u=t("domelementtype"),h=t("entities"),l={__proto__:null,allowfullscreen:!0,a
       <div class="link">
         <div class="authorHeader">
           Link to original
+        </div>
+        <div>
+          Language: [[item.language]]
         </div>
         <a class="dont-break-out" href$="[[item.data_object.link]]" target="_blank">[[item.data_object.link]]</a>
       </div>
@@ -4327,9 +4330,35 @@ weekdays:"星期日_星期一_星期二_星期三_星期四_星期五_星期六"
       .languageInfo {
         color: #888;
         font-size: 14px;
-        padding: 8px;
+        padding: 16px;
         margin-right: 32px;
         margin-left: 32px;
+        background-color: #FFF;
+      }
+
+      .langHeader {
+        font-size: 16px;
+        color: #555;
+        padding-bottom: 4px;
+      }
+
+      .subjectHeader {
+        font-size: 16px;
+        color: #111;
+      }
+
+      .languageItem {
+        font-size: 9px;
+      }
+
+      .headerImage {
+        width: 103px;
+        height: 103px;
+        margin-right: 16px;
+      }
+
+      .autoTranslateInfo {
+        font-size: 12px;
       }
 
     </style>
@@ -4341,8 +4370,24 @@ weekdays:"星期日_星期一_星期二_星期三_星期四_星期五_星期六"
       </div>
     </paper-dialog>
 
-    <div class="languageInfo layout horizontal">
-      <div id="languageCounts" class="layout vertical"></div>
+    <div class="layout horizontal center-center">
+      <paper-material elevation="1" class="languageInfo layout horizontal">
+        <div class="layout horizontal">
+          <div>
+            <iron-image class="headerImage" src="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png"></iron-image>
+          </div>
+          <div>
+            <div class="subjectHeader">
+              Subject: Youth mobility and Erasmus
+            </div>
+            <div class="langHeader">
+              [[totalItemCount]] voices in [[totalLanguageCount]] languages
+            </div>
+            <div hidden="" class="autoTranslateInfo">Automatically translated when needed</div>
+            <div id="languageCounts" class="layout vertical languageItem">[[languageCounts]]</div>
+          </div>
+        </div>
+      </paper-material>
     </div>
 
     <div class="layout horizontal center-center wrap">
@@ -4360,7 +4405,7 @@ weekdays:"星期日_星期一_星期二_星期三_星期四_星期五_星期六"
     <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
   </template>
 
-  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null}},behaviors:[Polymer.languageNames],listeners:{"ac-open-full-item":"_openSelectedItem"},ready:function(){},_refreshTimer:function(){this.async(function(){this.refresh()},66e4)},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){var t={};this.async(function(){_.forEach(e,function(e){var n=e.language?e.language:"en";t[n]||(t[n]=0),t[n]+=1}),this.$.languageCounts.innerHTML=this._languageCountsToString(t)})}},refresh:function(){this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest(),this.predictedRelevant&&this._refreshTimer()}});</script>
+  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},totalLanguageCount:{type:Number},totalItemCount:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null}},behaviors:[Polymer.languageNames],listeners:{"ac-open-full-item":"_openSelectedItem"},ready:function(){},formatNumber:function(e){return e?e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","):"0"},_refreshTimer:function(){this.async(function(){this.refresh()},6e5)},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){this.set("totalItemCount",this.formatNumber(e.length));var t={};this.async(function(){var n=0;_.forEach(e,function(e){var a=e.language?e.language:"en";t[a]||(t[a]=0,n+=1),t[a]+=1}),this.set("totalLanguageCount",n-1),this.set("languageCounts",this._languageCountsToString(t))})}},refresh:function(){this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest(),this.predictedRelevant&&this._refreshTimer()}});</script>
 
 </dom-module>
 </div><dom-module id="dashboard-app">

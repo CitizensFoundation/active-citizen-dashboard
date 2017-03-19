@@ -38,9 +38,35 @@
       .languageInfo {
         color: #888;
         font-size: 14px;
-        padding: 8px;
+        padding: 16px;
         margin-right: 32px;
         margin-left: 32px;
+        background-color: #FFF;
+      }
+
+      .langHeader {
+        font-size: 16px;
+        color: #555;
+        padding-bottom: 4px;
+      }
+
+      .subjectHeader {
+        font-size: 16px;
+        color: #111;
+      }
+
+      .languageItem {
+        font-size: 9px;
+      }
+
+      .headerImage {
+        width: 103px;
+        height: 103px;
+        margin-right: 16px;
+      }
+
+      .autoTranslateInfo {
+        font-size: 12px;
       }
 
     </style>
@@ -52,8 +78,24 @@
       </div>
     </paper-dialog>
 
-    <div class="languageInfo layout horizontal">
-      <div id="languageCounts" class="layout vertical"></div>
+    <div class="layout horizontal center-center">
+      <paper-material elevation="1" class="languageInfo layout horizontal">
+        <div class="layout horizontal">
+          <div>
+            <iron-image class="headerImage" src="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png"></iron-image>
+          </div>
+          <div>
+            <div class="subjectHeader">
+              Subject: Youth mobility and Erasmus
+            </div>
+            <div class="langHeader">
+              [[totalItemCount]] voices in [[totalLanguageCount]] languages
+            </div>
+            <div hidden="" class="autoTranslateInfo">Automatically translated when needed</div>
+            <div id="languageCounts" class="layout vertical languageItem">[[languageCounts]]</div>
+          </div>
+        </div>
+      </paper-material>
     </div>
 
     <div class="layout horizontal center-center wrap">
@@ -71,7 +113,7 @@
     <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
   </template>
 
-  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null}},behaviors:[Polymer.languageNames],listeners:{"ac-open-full-item":"_openSelectedItem"},ready:function(){},_refreshTimer:function(){this.async(function(){this.refresh()},66e4)},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){var t={};this.async(function(){_.forEach(e,function(e){var n=e.language?e.language:"en";t[n]||(t[n]=0),t[n]+=1}),this.$.languageCounts.innerHTML=this._languageCountsToString(t)})}},refresh:function(){this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest(),this.predictedRelevant&&this._refreshTimer()}});</script>
+  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},totalLanguageCount:{type:Number},totalItemCount:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null}},behaviors:[Polymer.languageNames],listeners:{"ac-open-full-item":"_openSelectedItem"},ready:function(){},formatNumber:function(e){return e?e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","):"0"},_refreshTimer:function(){this.async(function(){this.refresh()},6e5)},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){this.set("totalItemCount",this.formatNumber(e.length));var t={};this.async(function(){var n=0;_.forEach(e,function(e){var a=e.language?e.language:"en";t[a]||(t[a]=0,n+=1),t[a]+=1}),this.set("totalLanguageCount",n-1),this.set("languageCounts",this._languageCountsToString(t))})}},refresh:function(){this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest(),this.predictedRelevant&&this._refreshTimer()}});</script>
 
 </dom-module>
 </body></html>
