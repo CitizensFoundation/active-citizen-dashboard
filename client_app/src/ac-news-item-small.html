@@ -135,6 +135,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           overflow: hidden;
         }
       }
+
+      @media (max-width: 360px) {
+        .description {
+          font-size: 16px;
+        }
+
+        .mainItemContainer {
+          padding: 8px;
+          height: 180px;
+          overflow: hidden;
+        }
+      }
+
+      @media (max-width: 320px) {
+        .description {
+          font-size: 15px;
+        }
+
+        .mainItemContainer {
+          padding: 8px;
+          height: 180px;
+          overflow: hidden;
+        }
+      }
     </style>
 
     <div class="layout horizontal mainItemContainer" on-tap="_openItem">
@@ -147,7 +171,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           item-id="[[item.id]]"
                           translated-text="{{hasTranslatedText}}"
                           disable-update-language></google-translate>
-        <div class="" id="textWithEmoji" hidden$="[[hasTranslatedText]]"></div>
+        <div class="description" id="textWithEmoji" hidden$="[[hasTranslatedText]]"></div>
       </div>
     </div>
   </template>

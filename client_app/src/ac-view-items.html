@@ -40,12 +40,6 @@
         max-width: 420px;
       }
 
-      @media (max-width: 560px) {
-        paper-material {
-          width: 360px;
-          height: 180px;
-        }
-      }
 
       .languageInfo {
         color: #888;
@@ -81,6 +75,31 @@
         font-size: 12px;
       }
 
+      .ajaxes {
+        margin: 32px;
+      }
+
+      @media (max-width: 560px) {
+        .itemMaterial {
+          width: 320px;
+          height: 190px;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .itemMaterial {
+          width: 310px;
+          height: 180px;
+        }
+      }
+
+      @media (max-width: 320px) {
+        .itemMaterial {
+          width: 280px;
+          height: 190px;
+        }
+      }
+
     </style>
 
     <paper-dialog id="dialog">
@@ -108,25 +127,28 @@
               [[totalItemCount]] voices in [[totalLanguageCount]] languages
             </div>
             <div hidden class="autoTranslateInfo">Automatically translated when needed</div>
-            <div id="languageCounts" class="layout vertical languageItem">[[languageCounts]]</div>
+            <div id="languageCounts" class="layout vertical languageItem"  hidden$="[[!wide]]">[[languageCounts]]</div>
           </div>
         </div>
       </paper-material>
     </div>
 
-    <div class="layout horizontal center-center wrap">
-        <iron-list id="ironList" override-padding-top="350" items="[[newsItems]]" scroll-target="document" grid>
-          <template>
-            <div class="card">
-              <paper-material elevation="1" class="layout vertical self-start">
-                <ac-news-item-small item="[[item]]"></ac-news-item-small>
-              </paper-material>
-            </div>
-          </template>
-        </iron-list>
-      </div>
+    <div class="layout vertical center-center">
+      <iron-list id="ironList" override-padding-top="120" items="[[newsItems]]" scroll-target="document" grid>
+        <template>
+          <div class="card">
+            <paper-material elevation="1" class="itemMaterial layout vertical self-start">
+              <ac-news-item-small item="[[item]]"></ac-news-item-small>
+            </paper-material>
+          </div>
+        </template>
+      </iron-list>
+    </div>
 
-    <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
+    <div class="ajaxes layout vertical center-center">
+      <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
+    </div>
+
   </template>
 
   <script>
@@ -149,6 +171,8 @@
         languageCounts: {
           type: String
         },
+
+        wide: Boolean,
 
         totalLanguageCount: {
           type: Number
@@ -229,6 +253,9 @@
 
       _newsItemsChanged: function (newsItems) {
         if (newsItems) {
+          this.async(function () {
+            this.$.ironList.notifyResize();
+          }, 20);
           this.set('totalItemCount', this.formatNumber(newsItems.length));
           var languageCounts = {};
           this.async(function () {

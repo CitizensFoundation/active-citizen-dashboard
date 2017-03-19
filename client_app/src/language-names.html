@@ -6,9 +6,13 @@
    */
   Polymer.languageNames = {
     getLanguageName: function(key) {
-      key = key.slice(0,2);
-      var lang = this.isoLangs[key];
-      return lang ? lang.name : undefined;
+      if (key) {
+        key = key.slice(0,2);
+        var lang = this.isoLangs[key];
+        return lang ? lang.name : undefined;
+      } else {
+        return null;
+      }
     },
 
     getLanguageNativeName: function(key) {

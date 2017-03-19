@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="yp-ajax/yp-ajax.html">
 <link rel="import" href="google-translate.html">
+<link rel="import" href="language-names.html">
 
 <dom-module id="ac-news-item">
 
@@ -114,6 +115,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .authorName {
         padding-right: 8px;
       }
+
+      @media (max-width: 560px) {
+      }
+
+      @media (max-width: 360px) {
+        .description {
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 320px) {
+        .description {
+          font-size: 17px;
+        }
+      }
     </style>
 
     <div class="layout vertical">
@@ -131,7 +147,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="layout horizontal">
           <div class="layout vertical">
             <div class="authorName self-end">[[item.data_object.author]]</div>
-            <div class="authorHeader self-end">Author</div>
+            <div hidden class="authorHeader self-end">Author</div>
+            <div class="authorHeader self-end">
+              [[getLanguageName(item.language)]]
+            </div>
          </div>
           <div class="layout horizontal self-end">
             <iron-image preload sizing="cover" placeholder="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
@@ -139,14 +158,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </div>
       <div class="link">
-        <div class="authorHeader">
-          Link to original
-        </div>
-        <div>
-          Language: [[item.language]]
-        </div>
-        <a class="dont-break-out" href$="[[item.data_object.link]]"
-           target="_blank">[[item.data_object.link]]</a>
+          <div class="authorHeader">
+            Link to original
+          </div>
+          <a class="dont-break-out" href$="[[item.data_object.link]]"
+             target="_blank">[[item.data_object.link]]</a>
       </div>
       <template is="dom-if" if="[[item.rating_value]]">
         <div class="layout horizontal center-center ratingInfo">
@@ -178,6 +194,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         hasTranslatedText: String
       },
+
+      behaviors: [
+        Polymer.languageNames
+      ],
 
       _rateAgain: function () {
         this.fire('rate-again', { itemId: this.item.id })
