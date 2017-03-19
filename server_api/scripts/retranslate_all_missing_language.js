@@ -126,7 +126,7 @@ var processItem = function (item, callback) {
           console.log("Item saved");
           setTimeout(function () {
             callback();
-          }, 200);
+          }, 300);
         }).catch(function (error) {
           callback(error);
         });
