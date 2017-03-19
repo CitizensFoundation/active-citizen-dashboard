@@ -122,11 +122,15 @@ var processItem = function (item, callback) {
         callback(error)
       } else {
         item.set('language', language);
+        console.log("Set language: "+language);
         if (language!='en' && translatedText && translatedText!="") {
           item.set('translated_text', translatedText);
         }
         item.save().then(function () {
-          callback();
+          console.log("Item saved");
+          setTimeout(function () {
+            callback();
+          }, 100);
         }).catch(function (error) {
           callback(error);
         });
