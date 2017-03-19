@@ -8,6 +8,7 @@
 
 <link rel="import" href="yp-ajax/yp-ajax.html">
 <link rel="import" href="google-translate.html">
+<link rel="import" href="language-names.html">
 
 </head><body><dom-module id="ac-news-item">
 
@@ -104,6 +105,21 @@
       .authorName {
         padding-right: 8px;
       }
+
+      @media (max-width: 560px) {
+      }
+
+      @media (max-width: 360px) {
+        .description {
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 320px) {
+        .description {
+          font-size: 17px;
+        }
+      }
     </style>
 
     <div class="layout vertical">
@@ -118,7 +134,10 @@
         <div class="layout horizontal">
           <div class="layout vertical">
             <div class="authorName self-end">[[item.data_object.author]]</div>
-            <div class="authorHeader self-end">Author</div>
+            <div hidden="" class="authorHeader self-end">Author</div>
+            <div class="authorHeader self-end">
+              [[getLanguageName(item.language)]]
+            </div>
          </div>
           <div class="layout horizontal self-end">
             <iron-image preload="" sizing="cover" placeholder="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
@@ -126,13 +145,10 @@
         </div>
       </div>
       <div class="link">
-        <div class="authorHeader">
-          Link to original
-        </div>
-        <div>
-          Language: [[item.language]]
-        </div>
-        <a class="dont-break-out" href$="[[item.data_object.link]]" target="_blank">[[item.data_object.link]]</a>
+          <div class="authorHeader">
+            Link to original
+          </div>
+          <a class="dont-break-out" href$="[[item.data_object.link]]" target="_blank">[[item.data_object.link]]</a>
       </div>
       <template is="dom-if" if="[[item.rating_value]]">
         <div class="layout horizontal center-center ratingInfo">
@@ -140,11 +156,13 @@
         </div>
         <paper-button class="rateAgain" on-tap="_rateAgain">Reclassify</paper-button>
       </template>
+      <template is="dom-if" if="[[item.predicted_rating_value]]">
+        <paper-button class="rateAgain" on-tap="_rateAgain">Reclassify</paper-button>
+      </template>
     </div>
-    
   </template>
 
-  <script>Polymer({is:"ac-news-item",properties:{item:{type:Object},ratingToWord:{type:String,computed:"_ratingToWord(item.rating_value)"},hasTranslatedText:String},_rateAgain:function(){this.fire("rate-again",{itemId:this.item.id})},_ratingToWord:function(t){return t?0==t?"Low":1==t?"Medium":2==t?"High":t==-1?"Irrelevant":"Unknown":null}});</script>
+  <script>Polymer({is:"ac-news-item",properties:{item:{type:Object},ratingToWord:{type:String,computed:"_ratingToWord(item.rating_value)"},hasTranslatedText:String},behaviors:[Polymer.languageNames],_rateAgain:function(){this.fire("rate-again",{itemId:this.item.id})},_ratingToWord:function(e){return e?0==e?"Low":1==e?"Medium":2==e?"High":e==-1?"Irrelevant":"Unknown":null}});</script>
 
 </dom-module>
 </body></html>

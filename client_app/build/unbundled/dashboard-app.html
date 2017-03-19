@@ -9,6 +9,7 @@
 <link rel="import" href="bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tab.html">
@@ -90,9 +91,18 @@
            font-size: 10px;
         }
       }
+
+      .euLogo {
+        height: 45px;
+      }
+
+      .projectLink {
+        padding-top: 6px;
+      }
     </style>
 
     <ac-dialog-container id="dialogContainer"></ac-dialog-container>
+    <iron-media-query query="(min-width: 600px)" query-matches="{{wide}}"></iron-media-query>
 
     <app-location route="{{route}}" use-hash-as-path=""></app-location>
 
@@ -105,6 +115,10 @@
         <app-toolbar>
           <iron-image sizing="contain" src="http://deeplinkingyouth.eu/wp-content/uploads/2016/05/slider_logo_001.png"></iron-image>
           <div title="">DEEP-Linking Youth Dashboard BETA 2</div>
+          <div class="flex"></div>
+          <div class="layout vertical center-center" hidden$="[[!wide]]">
+            <a class="projectLink" target="_blank" href="http://deeplinkingyouth.eu/"><img class="euLogo" src="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/erasmus.png"></a>
+          </div>
         </app-toolbar>
       </app-header>
 
@@ -129,11 +143,6 @@
         <ac-view-items id="predictedRelevant" name="predictedRelevant" predicted-relevant=""></ac-view-items>
         <ac-view-items id="predictedNotRelevant" name="predictedNotRelevant" predicted-not-relevant=""></ac-view-items>
       </iron-pages>
-
-      <div class="layout vertical center-center">
-        <a class="bottomInfo" href="http://deeplinkingyouth.eu/">http://deeplinkingyouth.eu/</a>
-        <img src="http://deeplinkingyouth.eu/wp-content/uploads/2016/06/erasmus.png">
-      </div>
 
     </app-header-layout>
 

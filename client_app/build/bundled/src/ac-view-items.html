@@ -28,12 +28,6 @@
         max-width: 420px;
       }
 
-      @media (max-width: 560px) {
-        paper-material {
-          width: 360px;
-          height: 180px;
-        }
-      }
 
       .languageInfo {
         color: #888;
@@ -69,6 +63,39 @@
         font-size: 12px;
       }
 
+      .ajaxes {
+        margin: 32px;
+      }
+
+      @media (max-width: 560px) {
+        .itemMaterial {
+          width: 320px;
+          height: 190px;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .itemMaterial {
+          width: 310px;
+          height: 180px;
+        }
+
+        .subjectHeader {
+          font-size: 14px;
+        }
+
+        .langHeader {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 320px) {
+        .itemMaterial {
+          width: 280px;
+          height: 190px;
+        }
+      }
+
     </style>
 
     <paper-dialog id="dialog">
@@ -79,6 +106,8 @@
         <paper-button dialog-dismiss="" on-tap="_resetSelectedItem">Cancel</paper-button>
       </div>
     </paper-dialog>
+
+    <iron-media-query query="(min-width: 600px)" query-matches="{{wide}}"></iron-media-query>
 
     <div class="layout horizontal center-center">
       <paper-material elevation="1" class="languageInfo layout horizontal">
@@ -94,28 +123,31 @@
               [[totalItemCount]] voices in [[totalLanguageCount]] languages
             </div>
             <div hidden="" class="autoTranslateInfo">Automatically translated when needed</div>
-            <div id="languageCounts" class="layout vertical languageItem">[[languageCounts]]</div>
+            <div id="languageCounts" class="layout vertical languageItem" hidden$="[[!wide]]">[[languageCounts]]</div>
           </div>
         </div>
       </paper-material>
     </div>
 
-    <div class="layout horizontal center-center wrap">
-        <iron-list id="ironList" override-padding-top="350" items="[[newsItems]]" scroll-target="document" grid="">
-          <template>
-            <div class="card">
-              <paper-material elevation="1" class="layout vertical self-start">
-                <ac-news-item-small item="[[item]]"></ac-news-item-small>
-              </paper-material>
-            </div>
-          </template>
-        </iron-list>
-      </div>
+    <div class="layout vertical center-center">
+      <iron-list id="ironList" override-padding-top="120" items="[[newsItems]]" scroll-target="document" grid="">
+        <template>
+          <div class="card">
+            <paper-material elevation="1" class="itemMaterial layout vertical self-start">
+              <ac-news-item-small item="[[item]]"></ac-news-item-small>
+            </paper-material>
+          </div>
+        </template>
+      </iron-list>
+    </div>
 
-    <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
+    <div class="ajaxes layout vertical center-center">
+      <yp-ajax id="getAllItems" method="GET" last-response="{{newsItems}}"></yp-ajax>
+    </div>
+
   </template>
 
-  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},totalLanguageCount:{type:Number},totalItemCount:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null}},behaviors:[Polymer.languageNames],listeners:{"ac-open-full-item":"_openSelectedItem"},ready:function(){},_resetSelectedItem:function(){this.set("selectedItem",null)},formatNumber:function(e){return e?e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","):"0"},_refreshTimer:function(){this.async(function(){this.refresh()},6e5)},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){this.set("totalItemCount",this.formatNumber(e.length));var t={};this.async(function(){var n=0;_.forEach(e,function(e){var a=e.language?e.language:"en";t[a]||(t[a]=0,n+=1),t[a]+=1}),this.set("totalLanguageCount",n-1),this.set("languageCounts",this._languageCountsToString(t))})}},refresh:function(){this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest(),this.predictedRelevant&&this._refreshTimer()}});</script>
+  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},wide:Boolean,totalLanguageCount:{type:Number},totalItemCount:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null}},behaviors:[Polymer.languageNames,Polymer.acIronListBehavior],listeners:{"ac-open-full-item":"_openSelectedItem"},ready:function(){},_resetSelectedItem:function(){this.set("selectedItem",null)},formatNumber:function(e){return e?e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","):"0"},_refreshTimer:function(){this.async(function(){this.refresh()},6e5)},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){this.async(function(){this.$.ironList.notifyResize()},20),this.set("totalItemCount",this.formatNumber(e.length));var t={};this.async(function(){var n=0;_.forEach(e,function(e){var i=e.language?e.language:"en";t[i]||(t[i]=0,n+=1),t[i]+=1}),this.set("totalLanguageCount",n-1),this.set("languageCounts",this._languageCountsToString(t))})}},refresh:function(){this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest(),this.predictedRelevant&&this._refreshTimer()}});</script>
 
 </dom-module>
 </body></html>
