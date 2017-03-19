@@ -82,9 +82,11 @@
     </style>
 
     <paper-dialog id="dialog">
-      <ac-news-item item="[[selectedItem]]"></ac-news-item>
+      <template is="dom-if" if="[[selectedItem]]" restamp>
+        <ac-news-item item="[[selectedItem]]"></ac-news-item>
+      </template>
       <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-dismiss on-tap="_resetSelectedItem">Cancel</paper-button>
       </div>
     </paper-dialog>
 
@@ -177,6 +179,10 @@
       },
 
       ready: function () {
+      },
+
+      _resetSelectedItem: function () {
+        this.set('selectedItem', null);
       },
 
       formatNumber: function (value) {

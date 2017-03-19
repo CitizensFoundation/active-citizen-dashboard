@@ -87,6 +87,11 @@
         translatedTextChanged: {
           type: Boolean,
           computed: '_translatedTextChanged(item, translatedText)'
+        },
+
+        disableUpdateLanguage: {
+          type: Boolean,
+          value: false
         }
       },
 
@@ -109,9 +114,11 @@
         if (value && value.data.translations && value.data.translations.length > 0) {
           var translatedText = value.data.translations[0].translatedText;
           this.set('translatedText', translatedText);
-          this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/add_translation";
-          this.$$("#updateLanguage").body = {};
-          this.$$("#updateLanguage").generateRequest();
+          if (!this.disableUpdateLanguage) {
+            this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/add_translation";
+            this.$$("#updateLanguage").body = {};
+            this.$$("#updateLanguage").generateRequest();
+          }
         }
       },
 
@@ -145,6 +152,11 @@
               this.set('translatedText', null);
             }
           }
+          if (!this.disableUpdateLanguage && item.translated_text && !item.language) {
+            this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/update_language";
+            this.$$("#updateLanguage").body = {};
+            this.$$("#updateLanguage").generateRequest();
+          }
         } else {
           this.set('translatedText', null);
         }
@@ -162,9 +174,13 @@
           };
           this.$$("#translateApi").generateRequest();
         } else if (value && value.data.detections[0][0].language=="en") {
-          this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/update_language";
-          this.$$("#updateLanguage").body = {};
-          this.$$("#updateLanguage").generateRequest();
+          if (!this.disableUpdateLanguage) {
+            this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/update_language";
+            this.$$("#updateLanguage").body = {};
+            this.$$("#updateLanguage").generateRequest();
+          } else {
+            console.log("Not updating language");
+          }
           this.set('translatedText', null);
         } else {
           this.set('translatedText', null);
