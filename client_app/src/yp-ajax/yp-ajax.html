@@ -20,6 +20,14 @@
       --paper-spinner-stroke-width: 7px;
     }
 
+    .smallSpinner {
+      height: 16px !important;
+      width: 16px !important;
+      --paper-spinner-stroke-width: 1px;
+      padding:0;
+      margin: 0;
+    }
+
     paper-spinner {
       background: transparent;
     }
@@ -109,6 +117,11 @@
           value: false
         },
 
+        smallSpinner: {
+          type: Boolean,
+          value: false
+        },
+
         dispatchError: {
           type: Boolean,
           value: false
@@ -131,6 +144,9 @@
         }
         if (this.largeSpinner) {
           this.$.spinner.toggleClass('large',true);
+        }
+        if (this.smallSpinner) {
+          this.$.spinner.toggleClass('smallSpinner',true);
         }
       },
 
