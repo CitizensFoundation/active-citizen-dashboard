@@ -7,6 +7,8 @@
 <link rel="import" href="ac-news-item.html">
 <link rel="import" href="ac-news-item-small.html">
 <link rel="import" href="language-names.html">
+<link rel="import" href="ac-iron-list-behavior.html">
+
 
 <dom-module id="ac-view-items">
 
@@ -90,6 +92,8 @@
       </div>
     </paper-dialog>
 
+    <iron-media-query query="(min-width: 600px)" query-matches="{{wide}}"></iron-media-query>
+
     <div class="layout horizontal center-center">
       <paper-material elevation="1" class="languageInfo layout horizontal">
         <div class="layout horizontal">
@@ -171,7 +175,8 @@
       },
 
       behaviors: [
-        Polymer.languageNames
+        Polymer.languageNames,
+        Polymer.acIronListBehavior
       ],
 
       listeners: {

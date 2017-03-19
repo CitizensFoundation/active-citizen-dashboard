@@ -50,8 +50,8 @@ var cleanForPrediction = function (text) {
 var pos = "";
 var neg = "";
 
-var posFilename="/tmp/deepy1.pos";
-var negFilename="/tmp/deepy1.neg";
+var posFilename="/tmp/deepy2.pos";
+var negFilename="/tmp/deepy2.neg";
 
 models.NewsItem.findAll({
   where: {
