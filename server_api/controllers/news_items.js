@@ -7,6 +7,8 @@ var toJson = require('../utils/to_json');
 var _ = require('lodash');
 var async = require('async');
 var moment = require('moment');
+var detectLanguage = require('../utils/google_translate').detectLanguage;
+var translateItemToEn = require('../utils/google_translate').translateItemToEn;
 
 var defaultOrder = [
   ["rating_value", 'DESC'],
@@ -18,11 +20,56 @@ var defaultPredictionOrder = [
   ["created_at", 'DESC']
 ];
 
+var defaultLimit = 1500;
+
+var updateItemLanguageIfNeeded = function (itemId, req, res) {
+  models.NewsItem.find({
+    where: {
+      id: itemId
+    }
+  }).then(function (item) {
+    if (item) {
+      detectLanguage(item.description, function (error, language) {
+        if (error) {
+          res.sendStatus(200);
+          console.error(error);
+        } else if (language=='en') {
+          item.set('language', 'en');
+          item.save().then(function () {
+            res.sendStatus(200);
+          }).catch(function (error) {
+            console.error(error);
+            res.sendStatus(200);
+          });
+        } else {
+          translateItemToEn(item.description, function (error, translatedText) {
+            if (error) {
+              res.sendStatus(200);
+              console.error(error);
+            } else {
+              item.set('language', language);
+              item.set('translated_text', translatedText);
+              item.save().then(function () {
+                res.sendStatus(200);
+              }).catch(function (error) {
+                console.error(error);
+                res.sendStatus(200);
+              });
+            }
+          })
+        }
+      });
+    } else {
+      res.sendStatus(404);
+    }
+  });
+};
+
 router.get('/:', function(req, res) {
   models.NewsItem.findAll(
     {
       offset: 0,
-      limit: 1000,
+      limit: defaultLimit,
       order: defaultOrder
     }).then(function (items) {
       res.send(items);
@@ -44,7 +91,7 @@ router.get('/predicted_relevant', function(req, res) {
   models.NewsItem.findAll(
     {
       offset: 0,
-      limit: 1000,
+      limit: defaultLimit,
       where: {
         predicted_rating_value: {
           $gt: 0
@@ -63,7 +110,7 @@ router.get('/predicted_not_relevant', function(req, res) {
   models.NewsItem.findAll(
     {
       offset: 0,
-      limit: 1000,
+      limit: defaultLimit,
       where: {
         predicted_rating_value: {
           $lt: 0
@@ -84,7 +131,7 @@ router.get('/by_category/:category', function(req, res) {
     models.NewsItem.findAll(
       {
         offset: 0,
-        limit: 1000,
+        limit: defaultLimit,
         where: {
           $and: [
             { rating_category_name: req.params.category },
@@ -102,7 +149,7 @@ router.get('/by_category/:category', function(req, res) {
     models.NewsItem.findAll(
       {
         offset: 0,
-        limit: 1000,
+        limit: defaultLimit,
         where: {
           rating_value: {
             $gt: 0
@@ -207,38 +254,11 @@ router.put('/:id/rate', function(req, res) {
 });
 
 router.put('/:id/add_translation', function(req, res) {
-  models.NewsItem.find({
-    where: {
-      id: req.params.id
-    }
-  }).then(function (item) {
-    if (item) {
-      item.set('translated_text', req.body.translated_text);
-      item.set('language', req.body.language);
-      item.save().then(function () {
-        res.sendStatus(200);
-      });
-    } else {
-      res.sendStatus(404);
-    }
-  });
+  updateItemLanguageIfNeeded(req.params.id, req, res);
 });
 
 router.put('/:id/update_language', function(req, res) {
-  models.NewsItem.find({
-    where: {
-      id: req.params.id
-    }
-  }).then(function (item) {
-    if (item) {
-      item.set('language', req.body.language);
-      item.save().then(function () {
-        res.sendStatus(200);
-      });
-    } else {
-      res.sendStatus(404);
-    }
-  });
+  updateItemLanguageIfNeeded(req.params.id, req, res);
 });
 
 module.exports = router;

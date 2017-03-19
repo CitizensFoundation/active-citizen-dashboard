@@ -48,9 +48,35 @@
       .languageInfo {
         color: #888;
         font-size: 14px;
-        padding: 8px;
+        padding: 16px;
         margin-right: 32px;
         margin-left: 32px;
+        background-color: #FFF;
+      }
+
+      .langHeader {
+        font-size: 16px;
+        color: #555;
+        padding-bottom: 4px;
+      }
+
+      .subjectHeader {
+        font-size: 16px;
+        color: #111;
+      }
+
+      .languageItem {
+        font-size: 9px;
+      }
+
+      .headerImage {
+        width: 103px;
+        height: 103px;
+        margin-right: 16px;
+      }
+
+      .autoTranslateInfo {
+        font-size: 12px;
       }
 
     </style>
@@ -62,8 +88,24 @@
       </div>
     </paper-dialog>
 
-    <div class="languageInfo layout horizontal">
-      <div id="languageCounts" class="layout vertical"></div>
+    <div class="layout horizontal center-center">
+      <paper-material elevation="1" class="languageInfo layout horizontal">
+        <div class="layout horizontal">
+          <div>
+            <iron-image class="headerImage" src="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png"></iron-image>
+          </div>
+          <div>
+            <div class="subjectHeader">
+              Subject: Youth mobility and Erasmus
+            </div>
+            <div class="langHeader">
+              [[totalItemCount]] voices in [[totalLanguageCount]] languages
+            </div>
+            <div hidden class="autoTranslateInfo">Automatically translated when needed</div>
+            <div id="languageCounts" class="layout vertical languageItem">[[languageCounts]]</div>
+          </div>
+        </div>
+      </paper-material>
     </div>
 
     <div class="layout horizontal center-center wrap">
@@ -102,6 +144,14 @@
           type: String
         },
 
+        totalLanguageCount: {
+          type: Number
+        },
+
+        totalItemCount: {
+          type: String
+        },
+
         predictedRelevant: {
           type: Boolean,
           value: false
@@ -129,10 +179,18 @@
       ready: function () {
       },
 
+      formatNumber: function (value) {
+        if (value) {
+          return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+          return "0";
+        }
+      },
+
       _refreshTimer: function () {
         this.async(function () {
           this.refresh();
-        },1000*60*11);
+        },1000*60*10);
       },
 
       _openSelectedItem: function (event, detail) {
@@ -160,16 +218,20 @@
 
       _newsItemsChanged: function (newsItems) {
         if (newsItems) {
+          this.set('totalItemCount', this.formatNumber(newsItems.length));
           var languageCounts = {};
           this.async(function () {
+            var totalCount = 0;
             _.forEach(newsItems, function (item) {
               var language = item.language ? item.language : 'en';
               if (!languageCounts[language]) {
                 languageCounts[language] = 0;
+                totalCount += 1;
               }
               languageCounts[language]+=1;
             });
-            this.$.languageCounts.innerHTML = this._languageCountsToString(languageCounts);
+            this.set('totalLanguageCount', totalCount-1);
+            this.set('languageCounts', this._languageCountsToString(languageCounts));
           });
         }
       },

@@ -7,7 +7,7 @@
 <dom-module id="google-translate">
   <style>
     .translatedBy {
-      color: #aaa;
+      color: #888;
       font-size: 9px;
     }
 
@@ -24,7 +24,7 @@
     <template is="dom-if" if="[[translatedText]]">
       <div class="layout vertical">
         <div id="translatedTextWithEmoji"></div>
-        <div class="translatedBy">translated by Google Translate</div>
+        <div class="translatedBy">automatically translated</div>
       </div>
     </template>
     <div class="layout horizontal center-center" hidden>
@@ -110,7 +110,7 @@
           var translatedText = value.data.translations[0].translatedText;
           this.set('translatedText', translatedText);
           this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/add_translation";
-          this.$$("#updateLanguage").body = { translated_text: translatedText, language: this.sourceLanguage};
+          this.$$("#updateLanguage").body = {};
           this.$$("#updateLanguage").generateRequest();
         }
       },
@@ -128,9 +128,6 @@
 
       _itemChanged: function (item) {
         if (item) {
-          this._abortRequest(this.$.checkLanguageApi);
-          this._abortRequest(this.$.updateLanguage);
-          this._abortRequest(this.$.translateApi);
           if (item.language=='en') {
             this.set('translatedText', null);
           } else if (item.translated_text) {
@@ -166,7 +163,7 @@
           this.$$("#translateApi").generateRequest();
         } else if (value && value.data.detections[0][0].language=="en") {
           this.$$("#updateLanguage").url = "/api/news_items/"+this.itemId+"/update_language";
-          this.$$("#updateLanguage").body = { language: "en"};
+          this.$$("#updateLanguage").body = {};
           this.$$("#updateLanguage").generateRequest();
           this.set('translatedText', null);
         } else {
