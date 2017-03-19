@@ -94,8 +94,8 @@ var trimForTranslation = function (text) {
 };
 
 var getTranslatedItemText = function (item, authClient, callback) {
-  if (item.translated_text) {
-    callback(null, item.translated_text)
+  if (item.translated_text && item.language) {
+    callback(null, item.translated_text, item.language)
   } else {
     detectLanguage(trimForTranslation(item.description), authClient, function (error, language) {
       if (error) {
