@@ -20,7 +20,7 @@ var defaultPredictionOrder = [
   ["created_at", 'DESC']
 ];
 
-var defaultLimit = 1000;
+var defaultLimit = 1500;
 
 var updateItemLanguageIfNeeded = function (itemId, req, res) {
   models.NewsItem.find({
