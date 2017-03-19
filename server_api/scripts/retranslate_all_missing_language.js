@@ -94,21 +94,17 @@ var trimForTranslation = function (text) {
 };
 
 var getTranslatedItemText = function (item, authClient, callback) {
-  if (item.translated_text) {
-    callback(null, item.translated_text)
-  } else {
-    detectLanguage(trimForTranslation(item.description), authClient, function (error, language) {
-      if (error) {
-        callback(error);
-      } else if (language=='en') {
-        callback(null, item.description, 'en')
-      } else {
-        translateItemToEn(trimForTranslation(item.description), authClient, function (error, translatedText) {
-          callback(error, translatedText, language);
-        });
-      }
-    });
-  }
+  detectLanguage(trimForTranslation(item.description), authClient, function (error, language) {
+    if (error) {
+      callback(error);
+    } else if (language=='en') {
+      callback(null, item.description, 'en')
+    } else {
+      translateItemToEn(trimForTranslation(item.description), authClient, function (error, translatedText) {
+        callback(error, translatedText, language);
+      });
+    }
+  });
 };
 
 var processItem = function (item, callback) {
@@ -130,7 +126,7 @@ var processItem = function (item, callback) {
           console.log("Item saved");
           setTimeout(function () {
             callback();
-          }, 100);
+          }, 50);
         }).catch(function (error) {
           callback(error);
         });
