@@ -154,6 +154,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
         <paper-button class="rateAgain" on-tap="_rateAgain">Reclassify</paper-button>
       </template>
+      <template is="dom-if" if="[[item.predicted_rating_value]]">
+        <paper-button class="rateAgain" on-tap="_rateAgain">Reclassify</paper-button>
+      </template>
+
     </div>
     </div>
   </template>
