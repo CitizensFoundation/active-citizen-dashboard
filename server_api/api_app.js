@@ -39,9 +39,9 @@ if (process.env.REDISTOGO_URL) {
 var app = express();
 app.set('port', process.env.PORT || 7272);
 
-var airbrake = require('airbrake').createClient(process.env.AIRBRAKE_PROJECT_ID, process.env.AIRBRAKE_API_KEY);
-airbrake.handleExceptions();
-app.use(airbrake.expressHandler());
+//var airbrake = require('airbrake').createClient(process.env.AIRBRAKE_PROJECT_ID, process.env.AIRBRAKE_API_KEY);
+//airbrake.handleExceptions();
+//app.use(airbrake.expressHandler());
 
 if (app.get('env') != 'development') {
   app.use(function(req, res, next) {
@@ -137,21 +137,24 @@ passport.deserializeUser(function(sessionUser, done) {
       done(null, user);
     } else {
       log.error("User Deserialized Not found", { context: 'deserializeUser' });
+      /*
       airbrake.notify("User Deserialized Not found", function(airbrakeErr, url) {
         if (airbrakeErr) {
           log.error("AirBrake Error", { context: 'airbrake', user: toJson(req.user), err: airbrakeErr, errorStatus: 500 });
         }
         done(null, false);
-      });
+      });*/
     }
   }).catch(function(error) {
     log.error("User Deserialize Error", { context: 'deserializeUser', user: id, err: error, errorStatus: 500 });
+    /*
     airbrake.notify(error, function(airbrakeErr, url) {
       if (airbrakeErr) {
         log.error("AirBrake Error", { context: 'airbrake', user: toJson(req.user), err: airbrakeErr, errorStatus: 500 });
       }
       done(null, false);
     });
+    */
   });
 });
 
