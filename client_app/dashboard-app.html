@@ -127,24 +127,24 @@
       </app-header>
 
       <paper-tabs id="paper_tabs" class="tabs" selected="{{selectedTab}}" attr-for-selected="name" focused>
+        <paper-tab name="predictedRelevant" class="tab">Live</paper-tab>
         <paper-tab name="classify" class="tab">Classify</paper-tab>
         <paper-tab name="all" class="tab">All</paper-tab>
         <paper-tab name="finance" class="tab">Finance</paper-tab>
         <paper-tab name="housing" class="tab">Housing</paper-tab>
         <paper-tab name="university" class="tab">University</paper-tab>
         <paper-tab name="other" class="tab">Other</paper-tab>
-        <paper-tab name="predictedRelevant" class="tab">Live</paper-tab>
         <paper-tab hidden name="predictedNotRelevant" class="tab">Live Rejected</paper-tab>
       </paper-tabs>
 
       <iron-pages class="tabPages" selected="{{selectedTab}}" attr-for-selected="name" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+        <ac-view-items id="predictedRelevant" name="predictedRelevant" predicted-relevant></ac-view-items>
         <ac-news-item-classification item-id="{{itemId}}" name="classify" name="classify"></ac-news-item-classification>
         <ac-view-items id="all" name="all" category="all"></ac-view-items>
         <ac-view-items id="finance" name="finance" category="Finance"></ac-view-items>
         <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>
         <ac-view-items id="university" name="university" category="University"></ac-view-items>
         <ac-view-items id="other" name="other" category="Other"></ac-view-items>
-        <ac-view-items id="predictedRelevant" name="predictedRelevant" predicted-relevant></ac-view-items>
         <ac-view-items id="predictedNotRelevant" name="predictedNotRelevant" predicted-not-relevant></ac-view-items>
       </iron-pages>
 
@@ -165,12 +165,12 @@
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
-          value: 'all'
+          value: 'predictedRelevant'
         },
 
         selectedTab: {
           type: String,
-          value: "all",
+          value: "predictedRelevant",
           observer: '_selectedTabChanged'
         },
 
@@ -224,7 +224,7 @@
 
       _routePageChanged: function(page) {
         console.debug("Route change: "+page);
-        this.page = page || 'all';
+        this.page = page || 'predictedRelevant';
       },
 
       _pageChanged: function(page) {

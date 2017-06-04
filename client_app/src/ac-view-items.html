@@ -2,7 +2,11 @@
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="ac-news-item.html">
 <link rel="import" href="ac-news-item-small.html">
@@ -107,6 +111,22 @@
         }
       }
 
+      .searchIcon {
+        margin-top: 16px;
+      }
+
+      .searchingFor {
+        margin-top: 16px;
+        font-size: 20px;
+      }
+
+      .clearSearchIcon {
+        margin-top: 10px;
+        margin-left: 4px;
+        width: 42px;
+        height: 42px;
+      }
+
     </style>
 
     <paper-dialog id="dialog">
@@ -147,6 +167,17 @@
       </paper-material>
     </div>
 
+    <div class="layout horizontal center-center">
+      <div hidden$="[[searchActive]]" class="layout horizontal">
+        <paper-input id="searchInput" label="Search..." value="{{searchingFor}}" class="searchBox"></paper-input>
+        <paper-icon-button class="searchIcon" icon="search" on-tap="_search"></paper-icon-button>
+      </div>
+      <div hidden$="[[!searchActive]]" class="layout horizontal">
+        <div class="searchingFor">Searching for: [[searchingFor]]</div>
+        <paper-icon-button class="clearSearchIcon" icon="close" on-tap="_clearSearch" hidden$="[[!searchActive]]"></paper-icon-button>
+      </div>
+    </div>
+
     <div class="layout vertical center-center">
       <iron-list id="ironList" override-padding-top="120" items="[[newsItems]]" scroll-target="document" grid>
         <template>
@@ -159,7 +190,8 @@
       </iron-list>
     </div>
 
-
+    <iron-a11y-keys id="a11y" target$="[[keyTarget]]" keys="enter"
+                    on-keys-pressed="_search"></iron-a11y-keys>
   </template>
 
   <script>
@@ -207,6 +239,20 @@
         category: {
           type: String,
           value: null
+        },
+
+        searchingFor: String,
+
+        searchActive: {
+          type: Boolean,
+          value: false
+        },
+
+        keyTarget: {
+          type: Object,
+          value: function() {
+            return this.$.searchInput;
+          }
         }
       },
 
@@ -286,13 +332,30 @@
         }
       },
 
+      _search: function () {
+        if (this.searchingFor && this.searchingFor!=="") {
+          this.refresh();
+          this.set('searchActive', true);
+        }
+      },
+
+      _clearSearch: function () {
+        this.set('searchActive', false);
+        this.set('searchingFor', "");
+        this.refresh();
+      },
+
       refresh: function () {
-        if (this.predictedRelevant) {
-          this.$.getAllItems.url = "/api/news_items/predicted_relevant";
-        } else if (this.predictedNotRelevant) {
-          this.$.getAllItems.url = "/api/news_items/predicted_not_relevant";
-        } else if (this.category) {
-          this.$.getAllItems.url = "/api/news_items/by_category/"+this.category;
+        if (this.searchingFor && this.searchingFor!=="") {
+          this.$.getAllItems.url = "/api/news_items/search/"+this.searchingFor;
+        } else {
+          if (this.predictedRelevant) {
+            this.$.getAllItems.url = "/api/news_items/predicted_relevant";
+          } else if (this.predictedNotRelevant) {
+            this.$.getAllItems.url = "/api/news_items/predicted_not_relevant";
+          } else if (this.category) {
+            this.$.getAllItems.url = "/api/news_items/by_category/"+this.category;
+          }
         }
        this.$$("#getAllItems").generateRequest();
         if (this.predictedRelevant) {

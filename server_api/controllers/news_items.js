@@ -87,6 +87,16 @@ router.get('/get_item/:id', function(req, res) {
   });
 });
 
+router.get('/search/:term', function(req, res) {
+  models.NewsItem.search(req.params.term).then(function(items) {
+    posts = _.reject(items, function (item) {
+      return item.deleted == true;
+    });
+    res.send(items);
+  });
+});
+
+
 router.get('/predicted_relevant', function(req, res) {
   models.NewsItem.findAll(
     {
@@ -104,6 +114,7 @@ router.get('/predicted_relevant', function(req, res) {
   }).catch(function (error) {
     res.sendStatus(500);
   });
+
 });
 
 router.get('/predicted_not_relevant', function(req, res) {

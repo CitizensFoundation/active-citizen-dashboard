@@ -47,7 +47,7 @@
     "passport-saml": "git+https://github.com/rbjarnason/passport-saml.git",
     "passport-sso": "git+https://github.com/rbjarnason/passport-sso.git",
     "passport-twitter": "^1.0.3",
-    "pg": "^3.6.3",
+    "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "polylint": "^2.9.1",
     "posix": "^4.0.0",
