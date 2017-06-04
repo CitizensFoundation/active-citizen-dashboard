@@ -123,24 +123,24 @@
       </app-header>
 
       <paper-tabs id="paper_tabs" class="tabs" selected="{{selectedTab}}" attr-for-selected="name" focused="">
+        <paper-tab name="predictedRelevant" class="tab">Live</paper-tab>
         <paper-tab name="classify" class="tab">Classify</paper-tab>
         <paper-tab name="all" class="tab">All</paper-tab>
         <paper-tab name="finance" class="tab">Finance</paper-tab>
         <paper-tab name="housing" class="tab">Housing</paper-tab>
         <paper-tab name="university" class="tab">University</paper-tab>
         <paper-tab name="other" class="tab">Other</paper-tab>
-        <paper-tab name="predictedRelevant" class="tab">Live</paper-tab>
         <paper-tab hidden="" name="predictedNotRelevant" class="tab">Live Rejected</paper-tab>
       </paper-tabs>
 
       <iron-pages class="tabPages" selected="{{selectedTab}}" attr-for-selected="name" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+        <ac-view-items id="predictedRelevant" name="predictedRelevant" predicted-relevant=""></ac-view-items>
         <ac-news-item-classification item-id="{{itemId}}" name="classify"></ac-news-item-classification>
         <ac-view-items id="all" name="all" category="all"></ac-view-items>
         <ac-view-items id="finance" name="finance" category="Finance"></ac-view-items>
         <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>
         <ac-view-items id="university" name="university" category="University"></ac-view-items>
         <ac-view-items id="other" name="other" category="Other"></ac-view-items>
-        <ac-view-items id="predictedRelevant" name="predictedRelevant" predicted-relevant=""></ac-view-items>
         <ac-view-items id="predictedNotRelevant" name="predictedNotRelevant" predicted-not-relevant=""></ac-view-items>
       </iron-pages>
 
@@ -149,7 +149,7 @@
 
   </template>
 
-  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"all"},selectedTab:{type:String,value:"all",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},ready:function(){window.acDashBoardApp=this},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e?this.$.other.refresh():"predictedRelevant"==e?this.$.predictedRelevant.refresh():"predictedNotRelevant"==e&&this.$.predictedNotRelevant.refresh(),this.set("page",e),ga("send","pageview","/"+e)},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){console.debug("Route change: "+e),this.page=e||"all"},_pageChanged:function(e){console.debug("page change: "+e)}});</script>
+  <script>Polymer({is:"dashboard-app",properties:{page:{type:String,reflectToAttribute:!0,observer:"_pageChanged",value:"predictedRelevant"},selectedTab:{type:String,value:"predictedRelevant",observer:"_selectedTabChanged"},itemId:{type:Number}},observers:["_routePageChanged(routeData.page)"],listeners:{"rate-again":"_rateAgain"},ready:function(){window.acDashBoardApp=this},_selectedTabChanged:function(e){"all"==e?this.$.all.refresh():"finance"==e?this.$.finance.refresh():"housing"==e?this.$.housing.refresh():"university"==e?this.$.university.refresh():"other"==e?this.$.other.refresh():"predictedRelevant"==e?this.$.predictedRelevant.refresh():"predictedNotRelevant"==e&&this.$.predictedNotRelevant.refresh(),this.set("page",e),ga("send","pageview","/"+e)},_rateAgain:function(e,t){t.itemId&&(this.set("itemId",t.itemId),this.set("selectedTab","classify"))},getDialog:function(e){return this.$$("#dialogContainer").getDialog(e)},_routePageChanged:function(e){console.debug("Route change: "+e),this.page=e||"predictedRelevant"},_pageChanged:function(e){console.debug("page change: "+e)}});</script>
 
 </dom-module>
 </body></html>
