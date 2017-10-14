@@ -27,6 +27,7 @@
     "lodash-element": "^1.0.2",
     "moment": "^2.13.0",
     "iron-list": "rbjarnason/iron-list#v117",
+    "upper88-wordcloud": "rbjarnason/wordcloud",
     "paper-tabs": "^1.6.2",
     "linkifyjs": "^2.1.0"
   },
