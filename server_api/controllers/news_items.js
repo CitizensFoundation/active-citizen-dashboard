@@ -96,6 +96,18 @@ router.get('/search/:term', function(req, res) {
   });
 });
 
+router.get('/chart/:name', function(req, res) {
+  models.DashboardChart.find({
+    order: "created_at DESC",
+    where: {
+      name: req.params.name
+    }
+  }).then(function (chart) {
+    res.send(chart);
+  });
+});
+
+
 router.get('/predicted_relevant', function(req, res) {
   models.NewsItem.findAll(
     {

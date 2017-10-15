@@ -6,6 +6,9 @@ var nlp = require('compromise');
 var _ = require("lodash");
 
 var monthsCount = {};
+var monthsCountArray = [];
+var monthsCountSorted = [];
+var monthsCountFinal = [];
 
 models.NewsItem.findAll({
   where: {
@@ -24,9 +27,21 @@ models.NewsItem.findAll({
     }
   });
 
+  _.forEach(monthsCount, function (monthsCount) {
+    monthsCountArray.push([monthsCount.name, monthsCount.count, monthsCount.monthId]);
+  });
+
+  monthsCountSorted = _.sortBy(monthsCountArray, function (monthsCountArray) {
+    return monthsCountArray[2];
+  });
+
+  _.forEach(monthsCountSorted, function (monthsCount) {
+    monthsCountFinal.push([monthsCount[0], monthsCount[1]]);
+  });
+
   models.DashboardChart.create({
     name: "Volume",
-    results_object: monthsCount
+    results_object: monthsCountFinal
   }).then(function (createResults) {
     console.log("Have saved item");
     console.log("Done with");
