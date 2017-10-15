@@ -96,7 +96,6 @@ router.get('/search/:term', function(req, res) {
   });
 });
 
-
 router.get('/predicted_relevant', function(req, res) {
   models.NewsItem.findAll(
     {

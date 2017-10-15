@@ -63,7 +63,7 @@ models.NewsItem.findAll({
     var filteredWords = filterWords(_.dropRight(results,results.length-60));
 
     models.DashboardChart.create({
-      name: "WordCloud",
+      name: "Word Cloud 30 days",
       results_object: filteredWords
     }).then(function (createResults) {
       console.log("Have saved item");
