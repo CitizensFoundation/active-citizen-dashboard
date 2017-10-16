@@ -29,7 +29,7 @@
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["/dashboard-app.html?v=6.1.0","b49153dd62b4654a5e04c84b571f95fb"],["/index.html?v=6.1.0","9e8a44f9c2fc1cb56b885c661f9189e6"],["/src/ac-dialog-container.html?v=6.1.0","dcf8a4cce6129dcab47284d294b1f070"],["/src/ac-news-item-classification.html?v=6.1.0","bb8aec1609d8921b65fed831db103f54"],["/src/ac-rating-category.html?v=6.1.0","7e66c28acc6246fda52a27ab5d587861"],["/src/ac-view-items.html?v=6.1.0","7395ec82361ea6a9b05229699bfcb446"],["/src/app-helpers.html?v=6.1.0","0393af41b2bee588c1f247b1550ad944"],["/src/google-translate.html?v=6.1.0","e4e39941111d4ddc4498b0b64e9860db"],["/src/yp-ajax/yp-ajax-error-dialog.html?v=6.1.0","f3b979999f2c55724c81851e8f08de71"],["/src/yp-ajax/yp-ajax.html?v=6.1.0","d05ab4ac59b14e640ea33d2516b3bb24"]];
+var PrecacheConfig = [["/dashboard-app.html?v=6.1.1","c9663094a66af6d7e91f8b3ef58d18d3"],["/index.html?v=6.1.1","9e8a44f9c2fc1cb56b885c661f9189e6"],["/src/ac-dialog-container.html?v=6.1.1","dcf8a4cce6129dcab47284d294b1f070"],["/src/ac-news-item-classification.html?v=6.1.1","bb8aec1609d8921b65fed831db103f54"],["/src/ac-rating-category.html?v=6.1.1","7e66c28acc6246fda52a27ab5d587861"],["/src/ac-view-items.html?v=6.1.1","7395ec82361ea6a9b05229699bfcb446"],["/src/app-helpers.html?v=6.1.1","0393af41b2bee588c1f247b1550ad944"],["/src/google-translate.html?v=6.1.1","e4e39941111d4ddc4498b0b64e9860db"],["/src/yp-ajax/yp-ajax-error-dialog.html?v=6.1.1","f3b979999f2c55724c81851e8f08de71"],["/src/yp-ajax/yp-ajax.html?v=6.1.1","d05ab4ac59b14e640ea33d2516b3bb24"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
