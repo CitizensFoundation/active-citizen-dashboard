@@ -1,0 +1,118 @@
+<!--
+`upper88-wordclod` Displays a Word Cloud in a custom HTML element
+
+    <upper88-wordclod
+      options='{"maxFont":60}'
+      rows='[["Kenya", 7], ["Jamaica", 7], ["United States", 6], ["Great Britain", 4], ["Ethiopia", 3], ["Poland", 3], ["Canada", 2], ["Germany", 2], ["Russia", 2], ["Cuba", 2]]'>
+    </upper88-wordclod>
+
+Height and width are specified as style attributes:
+
+    upper88-wordclod {
+      height: 300px;
+      width: 500px;
+    }
+
+Data is provided Via the `rows` attribute:
+
+     rows='[["Kenya", 7], ["Jamaica", 7], ["United States", 6], ["Great Britain", 4], ["Ethiopia", 3], ["Poland", 3], ["Canada", 2], ["Germany", 2], ["Russia", 2], ["Cuba", 2]]'
+Each row should have a text as the first value and a number as the second.
+
+@demo
+--><html><head><script src="../wordcloud2.js/src/wordcloud2.js"></script>
+<script>
+	(function() {
+		var element = Object.create(HTMLElement.prototype);
+
+		element.createdCallback = function() {
+			init(this);
+		};
+
+		element.attachedCallback = function() {
+			var me = this;
+			me.redraw = function() {
+				render(me);
+			};
+			window.addEventListener("resize", me.redraw);
+			setTimeout(me.redraw, 100);
+		};
+
+		element.detachedCallback = function() {
+			window.removeEventListener("resize", this.redraw);
+		}
+
+		element.attributeChangedCallback = function(attr, oldVal, newVal) {
+			render(this);
+		};
+		element.drawChart = function() {
+            render(this);
+        }
+			// Registers custom element
+		document.registerElement('upper88-wordcloud', {
+			prototype: element
+		});
+		//implementation
+		function init(element) {
+			//sets up the custom element
+			var shadow = element.createShadowRoot();
+			element.root = document.createElement('div');
+			element.root.setAttribute("style", "width:100%;height:100%;margin:32px;");
+			shadow.appendChild(element.root);
+		}
+
+		function render(element) {
+			var w = window.getComputedStyle(element).getPropertyValue("width");
+			var rows, cols, options;
+			if (element.hasAttribute("rows")) {
+				rows = JSON.parse(element.getAttribute("rows"));
+				if (element.hasAttribute("cols")) {
+					cols = JSON.parse(element.getAttribute("cols"));
+				}
+			} else if (element.hasAttribute("data")) {
+				rows = JSON.parse(element.getAttribute("data"));
+				cols = rows.splice(0, 1);
+			}
+			if (!rows) {
+				return;
+			}
+			if (element.hasAttribute("options")) {
+				options = JSON.parse(element.getAttribute("options"));
+			} else {
+				options = {};
+			}
+			options.maxFont = options.maxFont || 24;
+			options.minFont = options.minFont || 12;
+			//sortera
+			var list = rows.sort(function(a, b) {
+				if (a[1] === b[1]) {
+					return b[0].length - a[0].length;
+				}
+				return b[1] - a[1];
+			});
+			//
+			var maxVal = rows[0][1],
+				minVal = rows[rows.length - 1][1],
+				szFactor = (options.maxFont - options.minFont) / (maxVal - minVal);
+
+			WordCloud(element.root, {
+				list: list,
+				rotateRatio: 0.8,
+				shape: "square",
+				backgroundColor: "transparent",
+				weightFactor: function(size) {
+					if (size === maxVal) {
+						return options.maxFont;
+					}
+					if (size === minVal) {
+						return options.minFont;
+					}
+					var sz = Math.trunc((size - minVal) * szFactor) + options.minFont;
+					return sz;
+				}
+			});
+
+		}
+
+	}());
+</script>
+</head><body></body></html>

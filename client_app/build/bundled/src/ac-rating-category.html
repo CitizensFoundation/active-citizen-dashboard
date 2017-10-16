@@ -1,4 +1,12 @@
-<html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html"></head><body><dom-module id="ac-rating-category">
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html?v=6.1.0"></head><body><dom-module id="ac-rating-category">
 
   <template>
 
@@ -32,7 +40,42 @@
     </div>
   </template>
 
-  <script>Polymer({is:"ac-rating-category",properties:{categoryName:{type:String}},_rate:function(e,r){var t;if(r.sourceEvent.currentTarget?t=r.sourceEvent.currentTarget.id:r.sourceEvent.target?t=r.sourceEvent.target.id:console.error("Can't find rating value"),t){var a=0;"low"==t?a=0:"medium"==t?a=1:"high"==t&&(a=2),this.fire("rated",{categoryName:this.categoryName,ratingValue:a})}}});</script>
+  <script>
+
+    Polymer({
+
+      is: 'ac-rating-category',
+
+      properties: {
+        categoryName: {
+          type: String
+        }
+      },
+
+      _rate: function (event, detail) {
+        var relevanceId;
+        if (detail.sourceEvent.currentTarget) {
+          relevanceId = detail.sourceEvent.currentTarget.id;
+        } else if (detail.sourceEvent.target) {
+          relevanceId = detail.sourceEvent.target.id;
+        } else {
+          console.error("Can't find rating value");
+        }
+        if (relevanceId) {
+          var ratingValue = 0;
+          if (relevanceId=='low') {
+            ratingValue = 0;
+          } else if (relevanceId=='medium') {
+            ratingValue = 1;
+          } else if (relevanceId=='high') {
+            ratingValue = 2;
+          }
+          this.fire('rated', { categoryName: this.categoryName, ratingValue: ratingValue })
+        }
+      }
+    });
+
+  </script>
 
 </dom-module>
 </body></html>

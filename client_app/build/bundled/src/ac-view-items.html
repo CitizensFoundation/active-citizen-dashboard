@@ -1,4 +1,4 @@
-<html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html"></head><body><dom-module id="ac-view-items">
+<html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html?v=6.1.0"></head><body><dom-module id="ac-view-items">
 
   <template>
 
@@ -36,6 +36,25 @@
         margin-right: 32px;
         margin-left: 32px;
         background-color: #FFF;
+      }
+
+      .chartPaperMaterial {
+        color: #888;
+        font-size: 14px;
+        padding: 16px;
+        padding-bottom: 0;
+        margin-right: 32px;
+        margin-left: 32px;
+        background-color: #FFF;
+        margin-top: 8px;
+        height: 100%;
+        width: 550px;
+      }
+
+      .worldCloudMaterial {
+        color: #888;
+        width: 550px;
+        height: 200px;
       }
 
       .langHeader {
@@ -111,6 +130,28 @@
         height: 42px;
       }
 
+      #wordCloud {
+        width: 100%;
+        height: 100%;
+        margin-top: 16px;
+      }
+
+      #languagePie {
+        width: 100%;
+        height 100%;
+      }
+      .chartMaterial {
+        padding: 16px;
+      }
+      .wordCloudContainer {
+        padding: 16px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .wordMapInfo {
+        padding-top: 8px;
+      }
     </style>
 
     <paper-dialog id="dialog">
@@ -151,6 +192,22 @@
       </paper-material>
     </div>
 
+    <div class="layout vertical center-center">
+      <div class="wordMapInfo">Most commonly used words past 30 days</div>
+      <paper-material elevation="1" class="layout horizontal worldCloudMaterial">
+        <div class="wordCloudContainer">
+          <ac-chart-word-cloud id="wordCloud"></ac-chart-word-cloud>
+        </div>
+      </paper-material>
+    </div>
+
+    <div class="layout vertical center-center">
+      <paper-material elevation="1" class="layout horizontal chartPaperMaterial">
+        <ac-chart-languages id="languagePie"></ac-chart-languages>
+        <ac-chart-volume id="volumeColumns"></ac-chart-volume>
+      </paper-material>
+    </div>
+
     <div class="layout horizontal center-center">
       <div hidden$="[[searchActive]]" class="layout horizontal">
         <paper-input id="searchInput" label="Search..." value="{{searchingFor}}" class="searchBox"></paper-input>
@@ -166,7 +223,7 @@
       <iron-list id="ironList" override-padding-top="120" items="[[newsItems]]" scroll-target="document" grid="">
         <template>
           <div class="card">
-            <paper-material elevation="1" class="itemMaterial layout vertical self-start">
+            <paper-material elevation="1" class="layout vertical">
               <ac-news-item-small item="[[item]]"></ac-news-item-small>
             </paper-material>
           </div>
@@ -177,7 +234,177 @@
     <iron-a11y-keys id="a11y" target$="[[keyTarget]]" keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
   </template>
 
-  <script>Polymer({is:"ac-view-items",properties:{newsItems:{type:Array,observer:"_newsItemsChanged"},selectedItem:{type:Object,value:null},languageCounts:{type:String},wide:Boolean,totalLanguageCount:{type:Number,value:null},totalItemCount:{type:String},predictedRelevant:{type:Boolean,value:!1},predictedNotRelevant:{type:Boolean,value:!1},category:{type:String,value:null},searchingFor:String,searchActive:{type:Boolean,value:!1},keyTarget:{type:Object,value:function(){return this.$.searchInput}}},behaviors:[Polymer.languageNames,Polymer.acIronListBehavior],listeners:{"ac-open-full-item":"_openSelectedItem"},ready:function(){},_resetSelectedItem:function(){this.set("selectedItem",null)},formatNumber:function(e){return e?e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","):"0"},_refreshTimer:function(){this.async(function(){this.refresh()},6e5)},_openSelectedItem:function(e,t){this.set("selectedItem",t),this.async(function(){this.$.dialog.open()})},_languageCountsToString:function(e){var t=[];e=_.forEach(e,function(e,n){t.push({language:n,count:e})}),t=_.sortBy(t,function(e){return e.count}),t=t.reverse();var n="";return _.forEach(t,function(e){n+=this.getLanguageName(e.language)+": "+e.count+" "}.bind(this)),n},_newsItemsChanged:function(e){if(e){this.async(function(){this.$.ironList.notifyResize()},20),this.set("totalItemCount",this.formatNumber(e.length));var t={};this.async(function(){var n=0;_.forEach(e,function(e){var s=e.language?e.language:"en";t[s]||(t[s]=0,n+=1),t[s]+=1}),this.set("totalLanguageCount",n-1),this.set("languageCounts",this._languageCountsToString(t))})}},_search:function(){this.searchingFor&&""!==this.searchingFor&&(this.refresh(),this.set("searchActive",!0))},_clearSearch:function(){this.set("searchActive",!1),this.set("searchingFor",""),this.refresh()},refresh:function(){this.searchingFor&&""!==this.searchingFor?this.$.getAllItems.url="/api/news_items/search/"+this.searchingFor:this.predictedRelevant?this.$.getAllItems.url="/api/news_items/predicted_relevant":this.predictedNotRelevant?this.$.getAllItems.url="/api/news_items/predicted_not_relevant":this.category&&(this.$.getAllItems.url="/api/news_items/by_category/"+this.category),this.$$("#getAllItems").generateRequest(),this.predictedRelevant&&this._refreshTimer()}});</script>
+  <script>
+
+    Polymer({
+
+      is: 'ac-view-items',
+
+      properties: {
+        newsItems: {
+          type: Array,
+          observer: '_newsItemsChanged'
+        },
+
+        selectedItem: {
+          type: Object,
+          value: null
+        },
+
+        languageCounts: {
+          type: String
+        },
+
+        wide: Boolean,
+
+        totalLanguageCount: {
+          type: Number,
+          value: null
+        },
+
+        totalItemCount: {
+          type: String
+        },
+
+        predictedRelevant: {
+          type: Boolean,
+          value: false
+        },
+
+        predictedNotRelevant: {
+          type: Boolean,
+          value: false
+        },
+
+        category: {
+          type: String,
+          value: null
+        },
+
+        searchingFor: String,
+
+        searchActive: {
+          type: Boolean,
+          value: false
+        },
+
+        keyTarget: {
+          type: Object,
+          value: function() {
+            return this.$.searchInput;
+          }
+        }
+      },
+
+      behaviors: [
+        Polymer.languageNames,
+        Polymer.acIronListBehavior
+      ],
+
+      listeners: {
+        'ac-open-full-item':'_openSelectedItem'
+      },
+
+      ready: function () {
+      },
+
+      _resetSelectedItem: function () {
+        this.set('selectedItem', null);
+      },
+
+      formatNumber: function (value) {
+        if (value) {
+          return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+          return "0";
+        }
+      },
+
+      _refreshTimer: function () {
+        this.async(function () {
+          this.refresh();
+        },1000*60*10);
+      },
+
+      _openSelectedItem: function (event, detail) {
+        this.set('selectedItem', detail);
+        this.async(function () {
+          this.$.dialog.open();
+        })
+      },
+
+      _languageCountsToString: function (obj) {
+        var objArray = [];
+        obj = _.forEach(obj, function (count, language) {
+          objArray.push({ language: language, count: count});
+        });
+        objArray = _.sortBy(objArray, function (obj) {
+          return obj.count;
+        });
+        objArray = objArray.reverse();
+        var str = '';
+        _.forEach(objArray, function (obj) {
+          str += ''+this.getLanguageName(obj.language)+": "+obj.count+" ";
+        }.bind(this));
+        return str;
+      },
+
+      _newsItemsChanged: function (newsItems) {
+        if (newsItems) {
+          this.async(function () {
+            this.$.ironList.notifyResize();
+          }, 20);
+          this.set('totalItemCount', this.formatNumber(newsItems.length));
+          var languageCounts = {};
+          this.async(function () {
+            var totalCount = 0;
+            _.forEach(newsItems, function (item) {
+              var language = item.language ? item.language : 'en';
+              if (!languageCounts[language]) {
+                languageCounts[language] = 0;
+                totalCount += 1;
+              }
+              languageCounts[language]+=1;
+            });
+            this.set('totalLanguageCount', totalCount-1);
+            this.set('languageCounts', this._languageCountsToString(languageCounts));
+          });
+        }
+      },
+
+      _search: function () {
+        if (this.searchingFor && this.searchingFor!=="") {
+          this.refresh();
+          this.set('searchActive', true);
+        }
+      },
+
+      _clearSearch: function () {
+        this.set('searchActive', false);
+        this.set('searchingFor', "");
+        this.refresh();
+      },
+
+      refresh: function () {
+        if (this.searchingFor && this.searchingFor!=="") {
+          this.$.getAllItems.url = "/api/news_items/search/"+this.searchingFor;
+        } else {
+          if (this.predictedRelevant) {
+            this.$.getAllItems.url = "/api/news_items/predicted_relevant";
+          } else if (this.predictedNotRelevant) {
+            this.$.getAllItems.url = "/api/news_items/predicted_not_relevant";
+          } else if (this.category) {
+            this.$.getAllItems.url = "/api/news_items/by_category/"+this.category;
+          }
+        }
+       this.$$("#getAllItems").generateRequest();
+        if (this.predictedRelevant) {
+          this._refreshTimer();
+        }
+      }
+    });
+
+  </script>
 
 </dom-module>
 </body></html>

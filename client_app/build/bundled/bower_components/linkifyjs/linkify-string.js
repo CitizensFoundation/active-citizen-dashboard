@@ -1,1 +1,95 @@
-"use strict";!function(t,r){var n=function(t){function r(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}function n(t){return t.replace(/"/g,"&quot;")}function e(t){if(!t)return"";var r=[];for(var e in t){var i=t[e]+"";r.push(e+'="'+n(i)+'"')}return r.join(" ")}function i(t){var i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};i=new u(i);for(var a=o(t),f=[],l=0;l<a.length;l++){var s=a[l];if("nl"===s.type&&i.nl2br)f.push("<br>\n");else if(s.isLink&&i.check(s)){var c=i.resolve(s),p=c.formatted,g=c.formattedHref,v=c.tagName,h=c.className,k=c.target,y=c.attributes,m="<"+v+' href="'+n(g)+'"';h&&(m+=' class="'+n(h)+'"'),k&&(m+=' target="'+n(k)+'"'),y&&(m+=" "+e(y)),m+=">"+r(p)+"</"+v+">",f.push(m)}else f.push(r(s.toString()))}return f.join("")}var o=t.tokenize,a=t.options,u=a.Options;return String.prototype.linkify||(String.prototype.linkify=function(t){return i(this,t)}),i}(r);t.linkifyStr=n}(window,linkify);
+'use strict';
+
+;(function (window, linkify) {
+	var linkifyString = function (linkify) {
+		'use strict';
+
+		/**
+  	Convert strings of text into linkable HTML text
+  */
+
+		var tokenize = linkify.tokenize,
+		    options = linkify.options;
+		var Options = options.Options;
+
+
+		function escapeText(text) {
+			return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		}
+
+		function escapeAttr(href) {
+			return href.replace(/"/g, '&quot;');
+		}
+
+		function attributesToString(attributes) {
+			if (!attributes) {
+				return '';
+			}
+			var result = [];
+
+			for (var attr in attributes) {
+				var val = attributes[attr] + '';
+				result.push(attr + '="' + escapeAttr(val) + '"');
+			}
+			return result.join(' ');
+		}
+
+		function linkifyStr(str) {
+			var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+			opts = new Options(opts);
+
+			var tokens = tokenize(str);
+			var result = [];
+
+			for (var i = 0; i < tokens.length; i++) {
+				var token = tokens[i];
+
+				if (token.type === 'nl' && opts.nl2br) {
+					result.push('<br>\n');
+					continue;
+				} else if (!token.isLink || !opts.check(token)) {
+					result.push(escapeText(token.toString()));
+					continue;
+				}
+
+				var _opts$resolve = opts.resolve(token),
+				    formatted = _opts$resolve.formatted,
+				    formattedHref = _opts$resolve.formattedHref,
+				    tagName = _opts$resolve.tagName,
+				    className = _opts$resolve.className,
+				    target = _opts$resolve.target,
+				    attributes = _opts$resolve.attributes;
+
+				var link = '<' + tagName + ' href="' + escapeAttr(formattedHref) + '"';
+
+				if (className) {
+					link += ' class="' + escapeAttr(className) + '"';
+				}
+
+				if (target) {
+					link += ' target="' + escapeAttr(target) + '"';
+				}
+
+				if (attributes) {
+					link += ' ' + attributesToString(attributes);
+				}
+
+				link += '>' + escapeText(formatted) + '</' + tagName + '>';
+				result.push(link);
+			}
+
+			return result.join('');
+		}
+
+		if (!String.prototype.linkify) {
+			String.prototype.linkify = function (opts) {
+				return linkifyStr(this, opts);
+			};
+		}
+
+		return linkifyStr;
+	}(linkify);
+
+	window.linkifyStr = linkifyString;
+})(window, linkify);

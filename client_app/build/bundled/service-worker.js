@@ -29,7 +29,7 @@
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["/dashboard-app.html","4d1dd5f04f71b000c0c9db6b86c0e014"],["/index.html","0e09aea74399e2d9cc47f1bb30f6aedc"],["/src/ac-dialog-container.html","cc7c98a43957277150cc48665b329c9a"],["/src/ac-news-item-classification.html","a6ea7a5f93c4fb8fcb4c506cae2edb5c"],["/src/ac-rating-category.html","a2585a366777a9ee31dadfff26422d0e"],["/src/ac-view-items.html","32d3b781dcbc3fa5b1eeff86044e1a2b"],["/src/app-helpers.html","fb0c213ea59f46d5b2dba3c5ec392b1e"],["/src/google-translate.html","a62989d7c9434c37780d90340b35710a"],["/src/yp-ajax/yp-ajax-error-dialog.html","978c242ffd4d4598a2581f48b5251e70"],["/src/yp-ajax/yp-ajax.html","cdce6e7754fe9285c21570663179eb98"]];
+var PrecacheConfig = [["/dashboard-app.html?v=6.1.0","b49153dd62b4654a5e04c84b571f95fb"],["/index.html?v=6.1.0","9e8a44f9c2fc1cb56b885c661f9189e6"],["/src/ac-dialog-container.html?v=6.1.0","dcf8a4cce6129dcab47284d294b1f070"],["/src/ac-news-item-classification.html?v=6.1.0","bb8aec1609d8921b65fed831db103f54"],["/src/ac-rating-category.html?v=6.1.0","7e66c28acc6246fda52a27ab5d587861"],["/src/ac-view-items.html?v=6.1.0","7395ec82361ea6a9b05229699bfcb446"],["/src/app-helpers.html?v=6.1.0","0393af41b2bee588c1f247b1550ad944"],["/src/google-translate.html?v=6.1.0","e4e39941111d4ddc4498b0b64e9860db"],["/src/yp-ajax/yp-ajax-error-dialog.html?v=6.1.0","f3b979999f2c55724c81851e8f08de71"],["/src/yp-ajax/yp-ajax.html?v=6.1.0","d05ab4ac59b14e640ea33d2516b3bb24"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
@@ -216,7 +216,7 @@ self.addEventListener('fetch', function(event) {
       cacheName = AbsoluteUrlToCacheName[urlWithoutIgnoredParameters];
     }
 
-    var navigateFallback = '';
+    var navigateFallback = '/index_yp.html';
     // Ideally, this would check for event.request.mode === 'navigate', but that is not widely
     // supported yet:
     // https://code.google.com/p/chromium/issues/detail?id=540967

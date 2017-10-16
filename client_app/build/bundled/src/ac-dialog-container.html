@@ -1,4 +1,4 @@
-<html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html"></head><body><dom-module id="ac-dialog-container">
+<html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html?v=6.1.0"></head><body><dom-module id="ac-dialog-container">
   <template>
     <style>
       :host {
@@ -15,6 +15,19 @@
     </div>
   </template>
 
-  <script>Polymer({is:"ac-dialog-container",getDialog:function(o){return this.$$("#"+o)},_forgotPassword:function(){this.$.forgotPassword.open()}});</script>
+  <script>
+    Polymer({
+      is: 'ac-dialog-container',
+
+      getDialog: function (idName) {
+        return this.$$("#"+idName);
+      },
+
+      _forgotPassword: function () {
+        this.$.forgotPassword.open();
+      }
+
+    });
+  </script>
 </dom-module>
 </body></html>

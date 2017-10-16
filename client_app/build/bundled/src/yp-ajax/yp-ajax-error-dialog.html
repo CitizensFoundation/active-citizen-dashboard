@@ -1,4 +1,4 @@
-<html><head><meta charset="UTF-8"><link rel="import" href="../../dashboard-app.html"></head><body><dom-module id="yp-ajax-error-dialog">
+<html><head><meta charset="UTF-8"><link rel="import" href="../../dashboard-app.html?v=6.1.0"></head><body><dom-module id="yp-ajax-error-dialog">
   <style>
 
     paper-dialog {
@@ -19,6 +19,35 @@
 
 </dom-module>
 
-<script>!function(){Polymer({is:"yp-ajax-error-dialog",properties:{errorText:{type:String,value:""}},showErrorDialog:function(r){this.errorText=r,this.$$("#error").open();this.$$("#error")},resetErrorText:function(r){this.$.error.close(),this.$.errorText=""}})}();</script>
+<script>
+  (function() {
+    Polymer({
+
+      is: 'yp-ajax-error-dialog',
+
+
+      properties: {
+
+        errorText: {
+          type: String,
+          value: ""
+        }
+
+      },
+
+      showErrorDialog: function(errorText) {
+        this.errorText = errorText;
+        this.$$("#error").open();
+        var errorDialog = this.$$("#error");
+      },
+
+      resetErrorText: function(event) {
+        this.$.error.close();
+        this.$.errorText="";
+      }
+    })
+  })();
+
+</script>
 
 </body></html>

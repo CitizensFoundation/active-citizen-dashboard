@@ -1,9 +1,34 @@
-<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html?v=6.1.0">
 <script src="../bower_components/linkifyjs/linkify.js"></script>
 <script src="../bower_components/linkifyjs/linkify-string.js"></script>
 <script type="text/javascript" src="sanitize-html.min.js"></script>
 
 <script src="twemoji.min-2.1.2.js"></script>
 
-<script>Polymer.AcLinkifyAndEmjoi={addLinksAndEmjois:function(i){var n=sanitizeHtml(i,{allowedTags:["b","i","em","strong"]});return n=linkifyStr(n,{format:function(i,n){return"url"===n&&i.length>34&&(i=i.slice(0,35)+"…"),i},ignoreTags:["b","i","em","strong"]}),twemoji.parse(n).replace(/&amp\;quot\;/g,'"')}};</script>
+<script>
+  /**
+   * @polymerBehavior YpLinkifyAndEmjoi
+   */
+  Polymer.AcLinkifyAndEmjoi = {
+    addLinksAndEmjois: function (text) {
+      var sanitizedText = sanitizeHtml(text, {
+        allowedTags: [ 'b', 'i', 'em', 'strong'] });
+      sanitizedText = linkifyStr(sanitizedText, {
+        format: function (value, type) {
+          if (type === 'url' && value.length > 34) {
+            value = value.slice(0, 35) + '…';
+          }
+          return value;
+        },
+        ignoreTags: [
+          'b',
+          'i',
+          'em',
+          'strong'
+        ]
+      });
+      return twemoji.parse(sanitizedText).replace(/&amp\;quot\;/g,"\"");
+    }
+  }
+</script>
 </head><body></body></html>

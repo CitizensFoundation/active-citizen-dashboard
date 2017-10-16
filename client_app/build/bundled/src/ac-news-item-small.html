@@ -1,14 +1,22 @@
-<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head><link rel="import" href="../bower_components/polymer/polymer.html?v=6.1.0">
+<link rel="import" href="../bower_components/paper-material/paper-material.html?v=6.1.0">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html?v=6.1.0">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html?v=6.1.0">
+<link rel="import" href="../bower_components/paper-button/paper-button.html?v=6.1.0">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html?v=6.1.0">
+<link rel="import" href="../bower_components/iron-image/iron-image.html?v=6.1.0">
 
-<link rel="import" href="yp-ajax/yp-ajax.html">
-<link rel="import" href="google-translate.html">
-<link rel="import" href="ac-linkify-and-emoji.html">
+<link rel="import" href="yp-ajax/yp-ajax.html?v=6.1.0">
+<link rel="import" href="google-translate.html?v=6.1.0">
+<link rel="import" href="ac-linkify-and-emoji.html?v=6.1.0">
 
 </head><body><dom-module id="ac-news-item-small">
 
@@ -162,7 +170,54 @@
     </div>
   </template>
 
-  <script>Polymer({is:"ac-news-item-small",properties:{item:{type:Object,value:null},hasTranslatedText:{type:String},finalText:{type:String,computed:"_hasTranslatedText(item, hasTranslatedText)"}},behaviors:[Polymer.AcLinkifyAndEmjoi],_openItem:function(){this.fire("ac-open-full-item",this.item)},_hasTranslatedText:function(e,t){t&&""!=t?this.$.textWithEmoji.innerHTML=this.addLinksAndEmjois(this._removeBrackets(t)):e&&(this.$.textWithEmoji.innerHTML=this.addLinksAndEmjois(this._removeBrackets(e.description)))},_removeBrackets:function(e){return e.replace(/\[/g,"").replace(/\]/g,"").replace(/\&#39;/g,"").replace(/\&quot;/g,"").replace(/\&amp;/g,"")},_rateAgain:function(){this.fire("rate-again",{itemId:this.item.id})}});</script>
+  <script>
+
+    Polymer({
+
+      is: 'ac-news-item-small',
+
+      properties: {
+        item: {
+          type: Object,
+          value: null
+        },
+
+        hasTranslatedText: {
+          type: String
+        },
+
+        finalText: {
+          type: String,
+          computed: '_hasTranslatedText(item, hasTranslatedText)'
+        }
+      },
+
+      behaviors: [
+        Polymer.AcLinkifyAndEmjoi
+      ],
+
+      _openItem: function () {
+        this.fire('ac-open-full-item', this.item);
+      },
+
+      _hasTranslatedText: function (item, hasTranslatedText) {
+        if (hasTranslatedText && hasTranslatedText!="") {
+          this.$.textWithEmoji.innerHTML = this.addLinksAndEmjois(this._removeBrackets(hasTranslatedText));
+        } else if (item) {
+          this.$.textWithEmoji.innerHTML = this.addLinksAndEmjois(this._removeBrackets(item.description));
+        }
+      },
+
+      _removeBrackets: function (text) {
+        return text.replace(/\[/g, "").replace(/\]/g, "").replace(/\&#39;/g, "").replace(/\&quot;/g, "").replace(/\&amp;/g, "");
+      },
+
+      _rateAgain: function () {
+        this.fire('rate-again', { itemId: this.item.id })
+      }
+    });
+
+  </script>
 
 </dom-module>
 </body></html>

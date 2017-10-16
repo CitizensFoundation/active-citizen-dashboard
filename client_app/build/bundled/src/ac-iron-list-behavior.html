@@ -1,4 +1,59 @@
-<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html?v=6.1.0">
 
-<script>Polymer.acIronListBehavior={properties:{wide:{type:Boolean,observer:"_wideChanged"}},attached:function(){this.async(function(){this.resetSize()}.bind(this))},_wideChanged:function(){this.resetSize()},resetSize:function(){var i=this.$$("#ironList"),e=window.innerHeight,t=window.innerWidth;if(i){console.log("In list");var n;n=this.wide?e-this.wideListOffset?this.wideListOffset:360:e-100,t-=16,i.style.height=n+"px",this.skipIronListWidth||(i.style.width=t+"px"),this.async(function(){i.updateViewportBoundaries(),this.async(function(){i.notifyResize()})})}else console.error("Can't find iron list")}};</script>
+<script>
+  /**
+   * @polymerBehavior appHelpers
+   */
+  Polymer.acIronListBehavior = {
+
+    properties: {
+      wide: {
+        type: Boolean,
+        observer: '_wideChanged'
+      }
+    },
+
+    attached: function () {
+      this.async(function () {
+        this.resetSize();
+      }.bind(this));
+    },
+
+    _wideChanged: function () {
+      this.resetSize();
+    },
+
+    resetSize: function () {
+      var list = this.$$("#ironList");
+      var windowHeight = window.innerHeight;
+      var windowWidth = window.innerWidth;
+      if (list) {
+        console.log("In list");
+        var height;
+        if (this.wide) {
+          height = windowHeight - this.wideListOffset ? this.wideListOffset : 360;
+        } else {
+          height = windowHeight - 100;
+        }
+        windowWidth = windowWidth - 16;
+        list.style.height = height + 'px';
+        //console.log("Set list height to: "+height);
+        if (!this.skipIronListWidth) {
+          list.style.width = windowWidth + 'px';
+          //console.log("Set list width to: "+windowWidth);
+        } else {
+          //console.log("Skipping setting iron-list width");
+        }
+        this.async(function () {
+          list.updateViewportBoundaries();
+          this.async(function () {
+            list.notifyResize();
+          })
+        });
+      } else {
+        console.error("Can't find iron list");
+      }
+    }
+  };
+</script>
 </head><body></body></html>

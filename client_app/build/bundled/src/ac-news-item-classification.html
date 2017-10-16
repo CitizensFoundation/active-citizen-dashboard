@@ -1,4 +1,12 @@
-<html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html"></head><body><dom-module id="ac-news-item-classification">
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head><meta charset="UTF-8"><link rel="import" href="../dashboard-app.html?v=6.1.0"></head><body><dom-module id="ac-news-item-classification">
 
   <template>
 
@@ -191,7 +199,111 @@
 
   </template>
 
-  <script>Polymer({is:"ac-news-item-classification",properties:{item:{type:Object},itemId:{type:Number,observer:"_itemIdChanged"},totalRated:Number,totalCount:Number,searchQueries:{type:Object,value:null},currentSearchQuery:{type:String,computed:"_currentSearchQuery(searchQueries, item)"},itemDate:{type:String,computed:"_itemDate(item)"}},ready:function(){this._next(),this.$.getSearchQueries.generateRequest()},_itemDate:function(e){if(e)return moment(e.created_at).format("DD. MMM YYYY")},_currentSearchQuery:function(e,t){return e&&t?e[parseInt(t.news_search_query_id)]:null},_itemIdChanged:function(e){e&&this.$.getItemToClassifyAjax.generateRequest()},_searchQueries:function(e,t){var s={};_.each(t.response,function(e){s[parseInt(e.id)]=e.name}),this.set("searchQueries",s)},_nextResponse:function(e,t){this.set("item",t.response),this.set("itemId",null)},_statsResponse:function(e,t){this.set("totalRated",this.formatNumber(t.response.totalRated)),this.set("totalCount",this.formatNumber(t.response.totalCount))},formatNumber:function(e){return e?e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","):"0"},_next:function(){this.$.getNextToClassifyAjax.generateRequest(),this.$.getRatingStats.generateRequest()},_classifyDone:function(e){this.set("item",null),this._next()},_irrelevant:function(){this._rated(null,{ratingValue:-1,categoryName:"other"})},_rated:function(e,t){this.$.classifyItemAjax.url="/api/news_items/"+this.item.id+"/rate",this.$.classifyItemAjax.body={ratingValue:t.ratingValue,ratingCategoryName:t.categoryName},this.$.classifyItemAjax.generateRequest()}});</script>
+  <script>
+
+    Polymer({
+
+      is: 'ac-news-item-classification',
+
+      properties: {
+        item: {
+          type: Object
+        },
+
+        itemId: {
+          type: Number,
+          observer: '_itemIdChanged'
+        },
+
+        totalRated: Number,
+        totalCount: Number,
+        searchQueries: {
+          type: Object,
+          value: null
+        },
+        currentSearchQuery: {
+          type: String,
+          computed: '_currentSearchQuery(searchQueries, item)'
+        },
+        itemDate: {
+          type: String,
+          computed: '_itemDate(item)'
+        }
+      },
+
+      ready: function () {
+        this._next();
+        this.$.getSearchQueries.generateRequest();
+      },
+
+      _itemDate: function (item) {
+        if (item) {
+          return moment(item.created_at).format("DD. MMM YYYY");
+        }
+      },
+
+      _currentSearchQuery: function (searchQueries, item) {
+        if (searchQueries && item) {
+          return searchQueries[parseInt(item.news_search_query_id)];
+        } else {
+          return null;
+        }
+      },
+
+      _itemIdChanged: function (itemId) {
+        if (itemId) {
+          this.$.getItemToClassifyAjax.generateRequest();
+        }
+      },
+
+      _searchQueries: function (event, detail) {
+        var searchQueries = {};
+        _.each(detail.response, function (query) {
+          searchQueries[parseInt(query.id)] = query.name;
+        });
+        this.set('searchQueries', searchQueries);
+      },
+
+      _nextResponse: function (event, detail) {
+        this.set("item", detail.response);
+        this.set('itemId', null);
+      },
+
+      _statsResponse: function (event, detail) {
+        this.set('totalRated', this.formatNumber(detail.response.totalRated));
+        this.set('totalCount', this.formatNumber(detail.response.totalCount));
+      },
+
+      formatNumber: function (value) {
+        if (value) {
+          return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+          return "0";
+        }
+      },
+
+      _next: function () {
+        this.$.getNextToClassifyAjax.generateRequest();
+        this.$.getRatingStats.generateRequest();
+      },
+
+      _classifyDone: function (value) {
+        this.set('item', null);
+        this._next();
+      },
+
+      _irrelevant: function () {
+        this._rated(null, {ratingValue: -1, categoryName: 'other'});
+      },
+
+      _rated: function (event, detail) {
+        this.$.classifyItemAjax.url = "/api/news_items/"+this.item.id+"/rate";
+        this.$.classifyItemAjax.body = { ratingValue: detail.ratingValue, ratingCategoryName: detail.categoryName};
+        this.$.classifyItemAjax.generateRequest();
+      }
+    });
+
+  </script>
 
 </dom-module>
 </body></html>
