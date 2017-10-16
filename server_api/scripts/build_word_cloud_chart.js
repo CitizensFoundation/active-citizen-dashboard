@@ -30,7 +30,12 @@ var filterWords = function (words) {
 var allTheText = "";
 
 var processItem = function (item, done) {
-  var text = item.translated_text.trim()+" ";
+  var text;
+  if (item.translated_text) {
+    text = item.translated_text.trim()+" ";
+  } else {
+    text = item.description.trim()+" ";
+  }
   allTheText += text;
   console.log(text);
   done();
@@ -39,14 +44,11 @@ var processItem = function (item, done) {
 models.NewsItem.findAll({
   order: "created_at DESC",
   where: {
-    translated_text: {
-      $ne: null
-    },
     predicted_rating_value: {
       $gt: 0
     },
     created_at: {
-      $gt:  moment().add(-45, 'days').toISOString()
+      $gt:  moment().add(-30, 'days').toISOString()
     }
   }
 }).then(function (items) {
@@ -60,7 +62,7 @@ models.NewsItem.findAll({
     console.log("Analytics text...");
     var results = nlp(allTheText).nouns().out('freq');
 
-    var filteredWords = filterWords(_.dropRight(results,results.length-60));
+    var filteredWords = filterWords(_.dropRight(results,results.length-90));
 
     var filteredArray = [];
 

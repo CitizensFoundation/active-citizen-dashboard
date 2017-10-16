@@ -60,10 +60,19 @@
         color: #888;
         font-size: 14px;
         padding: 16px;
+        padding-bottom: 0;
         margin-right: 32px;
         margin-left: 32px;
         background-color: #FFF;
         margin-top: 8px;
+        height: 100%;
+        width: 550px;
+      }
+
+      .worldCloudMaterial {
+        color: #888;
+        width: 550px;
+        height: 200px;
       }
 
       .langHeader {
@@ -157,6 +166,10 @@
         width: 100%;
         height: 100%;
       }
+
+      .wordMapInfo {
+        padding-top: 8px;
+      }
     </style>
 
     <paper-dialog id="dialog">
@@ -198,8 +211,8 @@
     </div>
 
     <div class="layout vertical center-center">
-      <div>Most common words past 45 days</div>
-      <paper-material elevation="1" class="layout horizontal chartPaperMaterial">
+      <div class="wordMapInfo">Most commonly used words past 30 days</div>
+      <paper-material elevation="1" class="layout horizontal worldCloudMaterial">
         <div class="wordCloudContainer">
           <ac-chart-word-cloud id="wordCloud"></ac-chart-word-cloud>
         </div>

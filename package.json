@@ -1,6 +1,6 @@
 {
   "name": "active-citizen-dashboard",
-  "version": "6.0.333",
+  "version": "6.1.0",
   "dependencies": {
     "@google-cloud/translate": "^0.7.0",
     "airbrake": "^1.0.1",
@@ -26,6 +26,7 @@
     "express-session": "git+https://github.com/rbjarnason/session.git",
     "express-useragent": "^0.2.4",
     "flickrapi": "~0.3.28",
+    "fuzzball": "^0.13.5",
     "googleapis": "^18.0.0",
     "gulp-version-append": "^0.2.0",
     "i18next": "^3.0.0",

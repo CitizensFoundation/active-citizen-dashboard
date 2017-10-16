@@ -20,11 +20,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
 
     <style>
+      .outer {
+        padding: 16px;
+      }
     </style>
 
-    <template is="dom-if" if="chartData">
-      <upper88-wordcloud min-font="10" id="wordCloud" rows$="[[chartData]]"></upper88-wordcloud>
-    </template>
+      <template is="dom-if" if="chartData">
+        <upper88-wordcloud min-font="10" id="wordCloud" rows$="[[chartData]]"></upper88-wordcloud>
+      </template>
     <yp-ajax id="getCharts" auto method="GET" url="/api/news_items/chart/WordCloud" on-response="_chartDataResponse"></yp-ajax>
 
   </template>
