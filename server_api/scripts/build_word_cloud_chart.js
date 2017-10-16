@@ -14,7 +14,8 @@ var _ = require("lodash");
 
 var wordToFilter = ["erasmus","african culture","french culture","frdesouche","rebeudeter",
   "jsuis en teme","spain","italy","france","all","month","months","day","days","her","him","thing","my",
-  "the erasmus girl","if","be","english","student","discover","year","years","what","times","things"];
+  "the erasmus girl","if","be","english","student","discover","year","years","what","times","things",
+"[erasmus]","[#erasmus]","[study abroad]","[your study abroad]"];
 
 var filterWords = function (words) {
   words = _.filter(words, function (word) {
@@ -48,7 +49,7 @@ models.NewsItem.findAll({
       $gt: 0
     },
     created_at: {
-      $gt:  moment().add(-30, 'days').toISOString()
+      $gt:  moment().add(-45, 'days').toISOString()
     }
   }
 }).then(function (items) {
