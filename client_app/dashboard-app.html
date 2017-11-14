@@ -119,7 +119,8 @@
       <app-header condenses reveals effects="waterfall">
         <app-toolbar>
           <iron-image sizing="contain" src="http://deeplinkingyouth.eu/wp-content/uploads/2016/05/slider_logo_001.png"></iron-image>
-          <div title>DEEP-Linking Youth / DIGITAL DASHBOARD</div>
+          <div title hidden$="[[!wide]]">Deep-Linking Youth / Experimental AI Social Media Listening</div>
+          <div title hidden$="[[wide]]"></div>
           <div class="flex"></div>
           <div class="layout vertical center-center" hidden$="[[!wide]]">
             <a class="projectLink" target="_blank" href="http://deeplinkingyouth.eu/"><img class="euLogo" src="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/erasmus.png"></a>
@@ -128,7 +129,7 @@
       </app-header>
 
       <paper-tabs id="paper_tabs" class="tabs" selected="{{selectedTab}}" attr-for-selected="name" focused>
-        <paper-tab name="predictedRelevant" class="tab">AI filtered feed</paper-tab>
+        <paper-tab name="predictedRelevant" class="tab">Live AI filtered social media</paper-tab>
         <paper-tab name="wordcloud" class="tab">Most used words</paper-tab>
         <paper-tab name="stats" class="tab">Language statistics</paper-tab>
         <template is="dom-if" if="[[isAdmin]]">
@@ -148,14 +149,12 @@
         </section>
         <section name="stats">
           <div class="layout vertical center-center">
-            <paper-material elevation="1" class="layout horizontal chartPaperMaterial">
-              <ac-chart-languages id="languagePie"></ac-chart-languages>
-              <ac-chart-volume id="volumeColumns"></ac-chart-volume>
-            </paper-material>
+            <ac-chart-languages id="languagePie"></ac-chart-languages>
+            <ac-chart-volume id="volumeColumns"></ac-chart-volume>
           </div>
         </section>
+        <ac-news-item-classification item-id="{{itemId}}" name="classify" name="classify"></ac-news-item-classification>
         <template is="dom-if" if="[[isAdmin]]">
-          <ac-news-item-classification item-id="{{itemId}}" name="classify" name="classify"></ac-news-item-classification>
           <ac-view-items id="all" name="all" category="all"></ac-view-items>
           <ac-view-items id="finance" name="finance" category="Finance"></ac-view-items>
           <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>

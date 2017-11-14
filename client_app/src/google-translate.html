@@ -5,7 +5,10 @@
 <link rel="import" href="ac-linkify-and-emoji.html">
 
 <dom-module id="google-translate">
-  <style>
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment">
     .translatedBy {
       color: #888;
       font-size: 9px;
@@ -18,9 +21,22 @@
     a:link {
       color: #444;
     }
+
+    img.emoji {
+      width: 17px !important;
+      height: 17px !important;
+      max-width: 17px !important;
+      max-height: 17px !important;
+    }
+
+    .myEmo {
+      width: 17px !important;
+      height: 17px !important;
+      max-width: 17px !important;
+      max-height: 17px !important;
+    }
   </style>
 
-  <template>
     <template is="dom-if" if="[[translatedText]]">
       <div class="layout vertical">
         <div id="translatedTextWithEmoji"></div>
@@ -33,8 +49,7 @@
       <yp-ajax id="updateLanguage" method="PUT"></yp-ajax>
     </div>
 
-
-  </template>a
+  </template>
 
   <script>
 

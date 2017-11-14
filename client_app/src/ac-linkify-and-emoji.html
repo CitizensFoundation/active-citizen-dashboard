@@ -3,7 +3,7 @@
 <script src="../bower_components/linkifyjs/linkify-string.js"></script>
 <script type="text/javascript"  src="sanitize-html.min.js"></script>
 
-<script src="twemoji.min-2.1.2.js"></script>
+<script src="//twemoji.maxcdn.com/2/twemoji.min.js?2.3.1"></script>
 
 <script>
   /**
@@ -27,7 +27,7 @@
           'strong'
         ]
       });
-      return twemoji.parse(sanitizedText).replace(/&amp\;quot\;/g,"\"");
+      return twemoji.parse(sanitizedText, {className: "myEmo"}).replace(/&amp\;quot\;/g,"\"");
     }
   }
 </script>

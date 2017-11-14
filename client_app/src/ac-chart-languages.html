@@ -21,19 +21,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <style>
       google-chart {
-        width: 300px;
+        width: 400px;
         height: 200px;
       }
     </style>
 
-    <template is="dom-if" if="chartData">
+    <div class="chartContainer">
       <google-chart
         type='pie'
         options='{"title": "Top languages"}'
         cols='[{"label":"Language", "type":"string"}, {"label":"Count", "type":"number"}]'
         rows$="[[chartData]]">
       </google-chart>
-    </template>
+    </div>
     <yp-ajax id="getCharts" auto method="GET" url="/api/news_items/chart/LanguagesUsed" on-response="_chartDataResponse"></yp-ajax>
 
   </template>
