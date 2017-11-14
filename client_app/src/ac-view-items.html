@@ -12,7 +12,6 @@
 <link rel="import" href="ac-news-item-small.html">
 <link rel="import" href="language-names.html">
 <link rel="import" href="ac-iron-list-behavior.html">
-<link rel="import" href="ac-chart-word-cloud.html">
 <link rel="import" href="ac-chart-languages.html">
 <link rel="import" href="ac-chart-volume.html">
 
@@ -210,22 +209,6 @@
       </paper-material>
     </div>
 
-    <div class="layout vertical center-center">
-      <div class="wordMapInfo">Most commonly used words past 30 days</div>
-      <paper-material elevation="1" class="layout horizontal worldCloudMaterial">
-        <div class="wordCloudContainer">
-          <ac-chart-word-cloud id="wordCloud"></ac-chart-word-cloud>
-        </div>
-      </paper-material>
-    </div>
-
-    <div class="layout vertical center-center">
-      <paper-material elevation="1" class="layout horizontal chartPaperMaterial">
-        <ac-chart-languages id="languagePie"></ac-chart-languages>
-        <ac-chart-volume id="volumeColumns"></ac-chart-volume>
-      </paper-material>
-    </div>
-
     <div class="layout horizontal center-center">
       <div hidden$="[[searchActive]]" class="layout horizontal">
         <paper-input id="searchInput" label="Search..." value="{{searchingFor}}" class="searchBox"></paper-input>
@@ -249,7 +232,7 @@
       </iron-list>
     </div>
 
-    <iron-a11y-keys id="a11y" target$="[[keyTarget]]" keys="enter"
+    <iron-a11y-keys id="a11y" target="[[keyTarget]]" keys="enter"
                     on-keys-pressed="_search"></iron-a11y-keys>
   </template>
 
@@ -308,10 +291,7 @@
         },
 
         keyTarget: {
-          type: Object,
-          value: function() {
-            return this.$.searchInput;
-          }
+          type: Object
         }
       },
 
@@ -325,6 +305,7 @@
       },
 
       ready: function () {
+        this.keyTarget = this.$.searchInput;
       },
 
       _resetSelectedItem: function () {

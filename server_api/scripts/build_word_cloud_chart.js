@@ -49,10 +49,11 @@ models.NewsItem.findAll({
       $gt: 0
     },
     created_at: {
-      $gt:  moment().add(-2, 'days').toISOString()
+      $gt:  moment().add(-500, 'days').toISOString()
     }
   }
 }).then(function (items) {
+  items = _.dropRight(items,items.length-2000)
   async.eachSeries(items, function (item, callback) {
     processItem(item, callback);
   }, function (error) {
@@ -63,7 +64,7 @@ models.NewsItem.findAll({
     console.log("Analytics text...");
     var results = nlp(allTheText).nouns().out('freq');
 
-    var filteredWords = filterWords(_.dropRight(results,results.length-90));
+    var filteredWords = filterWords(_.dropRight(results,results.length-200));
 
     var filteredArray = [];
 

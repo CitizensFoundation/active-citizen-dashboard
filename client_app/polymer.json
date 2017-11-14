@@ -11,14 +11,23 @@
     "src/ac-view-items.html",
     "src/ac-rating-category.html"
   ],
-  "sourceGlobs": [
+
+"builds": [{
+  "name": "bundled",
+  "bundle": true,
+  "js": {"compile": true, "minify": true},
+  "css": {"minify": true},
+  "html": {"minify": true},
+  "addServiceWorker": true
+  }],
+
+  "sources": [
     "src/**/*",
     "images/**/*",
     "manifest.json",
     "bower.json"
   ],
-  "includeDependencies": [
-    "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  "extraDependencies": [
+    "manifest.json"
   ]
 }
