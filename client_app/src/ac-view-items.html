@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="ac-news-item.html">
@@ -136,6 +137,15 @@
         margin-top: 16px;
       }
 
+      paper-checkbox.refresh {
+        margin-top: 32px;
+        margin-right: 16px;
+        color: #fff;
+        --paper-checkbox-label-color: {
+          color: #fff;
+        }
+      }
+
       .searchingFor {
         margin-top: 16px;
         font-size: 20px;
@@ -214,6 +224,7 @@
 
     <div class="layout horizontal center-center">
       <div hidden$="[[searchActive]]" class="layout horizontal">
+        <paper-checkbox class="refresh" checked="{{refreshEnabled}}">Refresh every 10 minutes</paper-checkbox>
         <paper-input id="searchInput" label="Search..." value="{{searchingFor::input}}" class="searchBox"></paper-input>
         <paper-icon-button class="searchIcon" icon="search" on-tap="_search"></paper-icon-button>
         <paper-icon-button class="clearSearchIcon" hidden$="[[!searchActive]]" icon="close" on-tap="_clearSearch" hidden$="[[!searchActive]]"></paper-icon-button>
@@ -292,6 +303,12 @@
 
         keyTarget: {
           type: Object
+        },
+
+        refreshEnabled: {
+          type: Boolean,
+          value: false,
+          observer: '_refreshEnabledChanged'
         }
       },
 
@@ -307,7 +324,7 @@
       ready: function () {
         this.async(function () {
           this.keyTarget = this.$.searchInput;
-        });
+        },100);
       },
 
       _resetSelectedItem: function () {
@@ -319,6 +336,12 @@
           return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         } else {
           return "0";
+        }
+      },
+
+      _refreshEnabledChanged: function (value) {
+        if (value===true) {
+          this._refreshTimer();
         }
       },
 
@@ -400,9 +423,6 @@
           }
         }
        this.$$("#getAllItems").generateRequest();
-        if (this.predictedRelevant) {
-          this._refreshTimer();
-        }
       }
     });
 

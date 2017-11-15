@@ -13,6 +13,7 @@
 <link rel="import" href="bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="bower_components/iron-image/iron-image.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
@@ -100,6 +101,19 @@
       .projectLink {
         padding-top: 6px;
       }
+
+      .yellow-button {
+        text-transform: none;
+        color: #eeff41;
+      }
+      .red-button {
+        text-transform: none;
+        color: #ee2201;
+      }
+      .green-button {
+        text-transform: none;
+        color: greenyellow;
+      }
     </style>
 
     <ac-dialog-container id="dialogContainer"></ac-dialog-container>
@@ -166,7 +180,13 @@
 
     </app-header-layout>
 
-  </template>
+    <paper-toast id="toast1" duration="0" text="Help by answering a few questions about this experimental non-profit AI project.">
+      <paper-button on-tap="_closeToast" class="yellow-button">Close</paper-button>
+      <paper-button on-tap="_showToastLater" class="yellow-button">Later</paper-button>
+      <a href="https://www.1ka.si/a/136835" target="_blank">
+        <paper-button on-tap="_closeToast" class="green-button">Take part in survey!</paper-button>
+      </a>
+    </paper-toast>  </template>
 
   <script>
 
@@ -209,6 +229,18 @@
 
       ready: function () {
         window.acDashBoardApp = this;
+        this._showToastLater();
+      },
+
+      _showToastLater: function () {
+        this.$.toast1.close();
+        this.async(function () {
+          this.$.toast1.open();
+        },5*1000);
+      },
+
+      _closeToast: function () {
+        this.$.toast1.close();
       },
 
       _selectedTabChanged: function (tab) {
