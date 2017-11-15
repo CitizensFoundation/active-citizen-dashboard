@@ -31,8 +31,8 @@
 
       paper-material {
         background-color: #FFF;
-        width: 550px;
-        height: 100px;
+        width: 600px;
+        height: 120px;
         margin: 8px;
       }
 
@@ -79,7 +79,6 @@
       .langHeader {
         font-size: 16px;
         color: #555;
-        padding-bottom: 4px;
       }
 
       .subjectHeader {
@@ -215,7 +214,6 @@
                 <yp-ajax id="getAllItems" small-spinner method="GET" last-response="{{newsItems}}"></yp-ajax>
               </div>
             </div>
-            <div hidden class="autoTranslateInfo">Automatically translated when needed</div>
             <div id="languageCounts" class="layout vertical languageItem"  hidden$="[[!wide]]">[[languageCounts]]</div>
           </div>
         </div>
