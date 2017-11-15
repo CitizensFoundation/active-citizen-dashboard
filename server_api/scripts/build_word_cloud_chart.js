@@ -49,7 +49,7 @@ models.NewsItem.findAll({
       $gt: 0
     },
     created_at: {
-      $gt:  moment().add(-500, 'days').toISOString()
+      $gt:  moment().add(-2, 'days').toISOString()
     }
   }
 }).then(function (items) {
