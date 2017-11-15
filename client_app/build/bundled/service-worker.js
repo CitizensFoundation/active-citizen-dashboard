@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["dashboard-app.html","940564dad2566e4ff515138b72667675"],["index.html","8f4923d96d062080e37e9344266f4aea"],["src/ac-dialog-container.html","dcc41710dd79d7f6a007cca7fc398408"],["src/ac-news-item-classification.html","4f92c405568e9172d31d16a15beee27a"],["src/ac-rating-category.html","b6c61702de63b01bcc903fde2f72b868"],["src/ac-view-items.html","def1a97adbef5acc0f5b61d67451bc31"],["src/app-helpers.html","29751377718274bc61b5da58714598d2"],["src/google-translate.html","afd5da524fba5a3d0fdc5be821f5b557"],["src/yp-ajax/yp-ajax-error-dialog.html","0729ed2437e1e569d1f404e2c605016c"],["src/yp-ajax/yp-ajax.html","7b12471ec2293d13ea374c97157faaf7"]];
+var precacheConfig = [["dashboard-app.html","e5bae33b35d0c9076dcabb1aa2178d75"],["index.html","8f4923d96d062080e37e9344266f4aea"]];
 var cacheName = 'sw-precache-v3--' + (self.registration ? self.registration.scope : '');
 
 

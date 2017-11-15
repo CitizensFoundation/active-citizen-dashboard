@@ -183,7 +183,7 @@
 
     </app-header-layout>
 
-    <paper-toast id="toast1" duration="0" text="Help by answering a few questions about this experimental non-profit AI project.">
+    <paper-toast id="toast1" duration="0" text="Please help us to improve this non-profit experimental dashboard by answering a few questions.">
       <paper-button on-tap="_closeToast" class="yellow-button">Close</paper-button>
       <paper-button on-tap="_showToastLater" class="yellow-button">Later</paper-button>
       <a href="https://www.1ka.si/a/136835" target="_blank">
@@ -239,7 +239,7 @@
         this.$.toast1.close();
         this.async(function () {
           this.$.toast1.open();
-        },10*1000);
+        },60*1000);
       },
 
       _closeToast: function () {

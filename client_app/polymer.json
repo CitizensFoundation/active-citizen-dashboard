@@ -2,14 +2,6 @@
   "entrypoint": "index.html",
   "shell": "dashboard-app.html",
   "fragments": [
-    "src/yp-ajax/yp-ajax.html",
-    "src/yp-ajax/yp-ajax-error-dialog.html",
-    "src/google-translate.html",
-    "src/app-helpers.html",
-    "src/ac-dialog-container.html",
-    "src/ac-news-item-classification.html",
-    "src/ac-view-items.html",
-    "src/ac-rating-category.html"
   ],
 
 "builds": [{
