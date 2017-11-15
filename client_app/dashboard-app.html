@@ -91,9 +91,9 @@
       .bottomInfo {
          margin: 16px;
       }
-      @media (max-width: 420px) {
+      @media (max-width: 600px) {
         .tab {
-           font-size: 10px;
+           font-size: 12px;
         }
       }
 
@@ -147,9 +147,38 @@
       </app-header>
 
       <paper-tabs id="paper_tabs" class="tabs" selected="{{selectedTab}}" attr-for-selected="name" focused>
-        <paper-tab name="predictedRelevant" class="tab">Live AI filtered social media</paper-tab>
-        <paper-tab name="wordcloud" class="tab">Most used words (past 2 days)</paper-tab>
-        <paper-tab name="stats" class="tab">Language statistics</paper-tab>
+        <paper-tab name="predictedRelevant" class="tab">
+          <div hidden$="[[wide]]">
+            AI filtered feed
+          </div>
+          <div hidden$="[[!wide]]">
+            Live AI filtered social media
+          </div>
+        </paper-tab>
+        <paper-tab name="wordcloud" class="tab">
+          <div hidden$="[[wide]]">
+            Wordcloud
+          </div>
+          <div hidden$="[[!wide]]">
+            Most used words (past 2 days)
+          </div>
+        </paper-tab>
+        <paper-tab name="stats" class="tab">
+          <div hidden$="[[wide]]">
+            Stats
+          </div>
+          <div hidden$="[[!wide]]">
+            Language statistics
+          </div>
+        </paper-tab>
+        <paper-tab name="stats" class="tab">
+          <div hidden$="[[wide]]">
+            Info
+          </div>
+          <div hidden$="[[!wide]]">
+            Information
+          </div>
+        </paper-tab>
         <template is="dom-if" if="[[isAdmin]]">
           <paper-tab name="all" class="tab">All</paper-tab>
           <paper-tab name="finance" class="tab">Finance</paper-tab>
