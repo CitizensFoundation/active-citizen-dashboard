@@ -53,7 +53,7 @@ models.NewsItem.findAll({
     }
   }
 }).then(function (items) {
-  items = _.dropRight(items,items.length-2000)
+  //items = _.dropRight(items,items.length-2000)
   async.eachSeries(items, function (item, callback) {
     processItem(item, callback);
   }, function (error) {
