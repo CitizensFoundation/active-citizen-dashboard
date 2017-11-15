@@ -17,6 +17,9 @@
 <link rel="import" href="bower_components/iron-image/iron-image.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
+<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
+
+<link rel="import" href="src/yp-ajax/yp-ajax.html">
 <link rel="import" href="src/ac-news-item-classification.html">
 <link rel="import" href="src/ac-dialog-container.html">
 <link rel="import" href="src/ac-view-items.html">
@@ -144,7 +147,7 @@
 
       <paper-tabs id="paper_tabs" class="tabs" selected="{{selectedTab}}" attr-for-selected="name" focused>
         <paper-tab name="predictedRelevant" class="tab">Live AI filtered social media</paper-tab>
-        <paper-tab name="wordcloud" class="tab">Most used words</paper-tab>
+        <paper-tab name="wordcloud" class="tab">Most used words (past 2 days)</paper-tab>
         <paper-tab name="stats" class="tab">Language statistics</paper-tab>
         <template is="dom-if" if="[[isAdmin]]">
           <paper-tab name="all" class="tab">All</paper-tab>
@@ -236,7 +239,7 @@
         this.$.toast1.close();
         this.async(function () {
           this.$.toast1.open();
-        },5*1000);
+        },10*1000);
       },
 
       _closeToast: function () {
