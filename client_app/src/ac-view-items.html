@@ -29,12 +29,37 @@
         flex: 1 1 auto;
       }
 
-      paper-material {
+      .languageInfo {
         background-color: #FFF;
         width: 600px;
         height: 120px;
         margin: 8px;
       }
+
+      .newsItemMaterial {
+        background-color: #FFF;
+        width: 600px;
+        height: 120px;
+        margin: 8px;
+      }
+
+      @media (max-width: 600px) {
+        .newsItemMaterial {
+          width: 300px;
+          height: 200px;
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        .languageInfo {
+          height: 170px;
+        }
+
+        #languageCounts {
+          display: none;
+        }
+      }
+
 
       .card {
         margin: 8px;
@@ -137,7 +162,7 @@
       }
 
       paper-checkbox.refresh {
-        margin-top: 32px;
+        margin-top: 16px;
         margin-right: 16px;
         color: #fff;
         --paper-checkbox-label-color: {
@@ -220,9 +245,11 @@
       </paper-material>
     </div>
 
-    <div class="layout horizontal center-center">
-      <div hidden$="[[searchActive]]" class="layout horizontal">
+    <div class="layout horizontal center-center wrap">
+      <div class="layout horizontal">
         <paper-checkbox class="refresh" checked="{{refreshEnabled}}">Refresh every 10 minutes</paper-checkbox>
+      </div>
+      <div class="layout horizontal">
         <paper-input id="searchInput" label="Search..." value="{{searchingFor::input}}" class="searchBox"></paper-input>
         <paper-icon-button class="searchIcon" icon="search" on-tap="_search"></paper-icon-button>
         <paper-icon-button class="clearSearchIcon" hidden$="[[!searchActive]]" icon="close" on-tap="_clearSearch" hidden$="[[!searchActive]]"></paper-icon-button>
@@ -233,7 +260,7 @@
       <iron-list id="ironList" override-padding-top="120" items="[[newsItems]]" scroll-target="document" grid>
         <template>
           <div class="card">
-            <paper-material elevation="1" class="layout vertical">
+            <paper-material elevation="1" class="newsItemMaterial layout vertical">
               <ac-news-item-small item="[[item]]"></ac-news-item-small>
             </paper-material>
           </div>

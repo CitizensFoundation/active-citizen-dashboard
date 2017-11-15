@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 
 <link rel="import" href="yp-ajax/yp-ajax.html">
 <link rel="import" href="google-translate.html">
@@ -166,6 +167,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+    <iron-media-query query="(min-width: 600px)" query-matches="{{wide}}"></iron-media-query>
+
     <div class="layout horizontal mainItemContainer" on-tap="_openItem">
       <div class="avatar layout self-start">
         <iron-image preload sizing="cover" placeholder="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png" width="50" height="50" src$="[[item.data_object.avatar]]"></iron-image>
@@ -200,7 +203,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         finalText: {
           type: String,
           computed: '_hasTranslatedText(item, hasTranslatedText)'
-        }
+        },
+
+        wide: Boolean
       },
 
       behaviors: [
@@ -212,10 +217,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _hasTranslatedText: function (item, hasTranslatedText) {
+        var textLength;
         if (hasTranslatedText && hasTranslatedText!="") {
           this.$.textWithEmoji.innerHTML = this.addLinksAndEmjois(this._removeBrackets(hasTranslatedText));
+          textLength = hasTranslatedText.length;
         } else if (item) {
           this.$.textWithEmoji.innerHTML = this.addLinksAndEmjois(this._removeBrackets(item.description));
+          textLength = item.description.length;
+        }
+
+        var text = this.$.textWithEmoji;
+        if (text && textLength) {
+          console.error(textLength);
+          if (this.wide) {
+            if (textLength <= 18) {
+              text.style.fontSize = "25px";
+            } else if (textLength <= 80) {
+              text.style.fontSize = "23px";
+            } else if (textLength <= 110) {
+              text.style.fontSize = "20px";
+            } else if (textLength <= 180) {
+              text.style.fontSize = "17px";
+            } else {
+              text.style.fontSize = "13px";
+            }
+          } else {
+            if (textLength <= 18) {
+              text.style.fontSize = "24px";
+            } else if (textLength <= 80) {
+              text.style.fontSize = "22px";
+            } else if (textLength <= 110) {
+              text.style.fontSize = "19px";
+            } else if (textLength <= 180) {
+              text.style.fontSize = "14px";
+            } else {
+              text.style.fontSize = "12px";
+            }
+          }
         }
       },
 

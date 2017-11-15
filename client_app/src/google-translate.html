@@ -37,6 +37,8 @@
     }
   </style>
 
+    <iron-media-query query="(min-width: 600px)" query-matches="{{wide}}"></iron-media-query>
+
     <template is="dom-if" if="[[translatedText]]">
       <div class="layout vertical">
         <div id="translatedTextWithEmoji"></div>
@@ -107,19 +109,53 @@
         disableUpdateLanguage: {
           type: Boolean,
           value: false
-        }
+        },
+
+        wide: Boolean
       },
 
       behaviors: [
         Polymer.AcLinkifyAndEmjoi
       ],
 
-      _translatedTextChanged: function (item, text) {
+      _translatedTextChanged: function (item, newText) {
         this.async(function () {
-          if (item && text && this.$$("#translatedTextWithEmoji")) {
-            this.$$("#translatedTextWithEmoji").innerHTML = this.addLinksAndEmjois(text);
+          var textLength;
+          if (item && newText && this.$$("#translatedTextWithEmoji")) {
+            this.$$("#translatedTextWithEmoji").innerHTML = this.addLinksAndEmjois(newText);
+            textLength = newText.length;
           } else if (this.$$("#translatedTextWithEmoji")) {
             this.$$("#translatedTextWithEmoji").innerHTML = "";
+          }
+
+          var text = this.$$("#translatedTextWithEmoji");
+          if (text && textLength) {
+            console.error(textLength);
+            if (this.wide) {
+              if (textLength <= 18) {
+                text.style.fontSize = "25px";
+              } else if (textLength <= 80) {
+                text.style.fontSize = "23px";
+              } else if (textLength <= 110) {
+                text.style.fontSize = "20px";
+              } else if (textLength <= 180) {
+                text.style.fontSize = "17px";
+              } else {
+                text.style.fontSize = "13px";
+              }
+            } else {
+              if (textLength <= 18) {
+                text.style.fontSize = "24px";
+              } else if (textLength <= 80) {
+                text.style.fontSize = "22px";
+              } else if (textLength <= 110) {
+                text.style.fontSize = "19px";
+              } else if (textLength <= 180) {
+                text.style.fontSize = "14px";
+              } else {
+                text.style.fontSize = "12px";
+              }
+            }
           }
         }, 50);
       },
