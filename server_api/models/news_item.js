@@ -84,7 +84,7 @@ module.exports = function(sequelize, DataTypes) {
         var vectorName = NewsItem.getSearchVector();
 
         sequelize
-          .query('DROP TRIGGER news_item_vector_update ON "' + NewsItem.tableName + '";')
+          .query('SELECT id FROM news_items WHERE id=1;')
           .then(function() {
             console.log("Have DROPPED TRIGGER");
             return sequelize
