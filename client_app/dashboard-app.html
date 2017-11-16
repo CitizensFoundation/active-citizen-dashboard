@@ -117,6 +117,12 @@
         text-transform: none;
         color: greenyellow;
       }
+
+      .information {
+        max-width: 320px;
+        width: 320px;
+        padding: 16px;
+      }
     </style>
 
     <ac-dialog-container id="dialogContainer"></ac-dialog-container>
@@ -171,7 +177,7 @@
             Language statistics
           </div>
         </paper-tab>
-        <paper-tab name="stats" class="tab">
+        <paper-tab name="information" class="tab">
           <div hidden$="[[wide]]">
             Info
           </div>
@@ -198,6 +204,25 @@
           <div class="layout vertical center-center">
             <ac-chart-languages id="languagePie"></ac-chart-languages>
             <ac-chart-volume id="volumeColumns"></ac-chart-volume>
+          </div>
+        </section>
+        <section name="information">
+          <div class="layout vertical center-center">
+            <div class="layout vertical center-center information">
+              <div class="information">
+                <b>About the project</b><br>
+                This experimental non-profit dashboard listens to Twitter, Facebook and other social media sites. We have trained an AI algorithm
+                to filter out relevant items connected to the subjects of Youth mobility and Erasmus.
+              </div>
+              <div class="information">
+                <b>Main project website</b><br>
+                <a href="http://ecas.org/projects/deep-linking-youth/" target="_blank">http://ecas.org/projects/deep-linking-youth/</a>
+              </div>
+              <div class="information">
+                <b>The open source code behind this website</b><br>
+                <a href="https://github.com/rbjarnason/active-citizen-dashboard" target="_blank">https://github.com/rbjarnason/active-citizen-dashboard</a>
+              </div>
+            </div>
           </div>
         </section>
         <ac-news-item-classification item-id="{{itemId}}" name="classify" name="classify"></ac-news-item-classification>
