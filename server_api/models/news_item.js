@@ -88,7 +88,7 @@ module.exports = function(sequelize, DataTypes) {
           .then(function() {
             console.log("Have DROPPED TRIGGER");
             return sequelize
-              .query('DROP INDEX news_item_search_idx;')
+              .query('SELECT id FROM news_items WHERE id=1;')
               .error(console.log);
           }).then(function() {
           console.log("Have DROPPED INDEX");
