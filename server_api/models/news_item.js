@@ -69,6 +69,35 @@ module.exports = function(sequelize, DataTypes) {
 
       },
 
+      removeFullTextIndex: function() {
+        if(sequelize.options.dialect !== 'postgres') {
+          console.log('Not creating search index, must be using POSTGRES to do this');
+          return;
+        }
+
+        console.log("Removing full text index");
+
+        var searchFields = ['name', 'translated_text', 'description'];
+
+        var NewsItem = this;
+
+        var vectorName = NewsItem.getSearchVector();
+
+        sequelize
+          .query('DROP TRIGGER news_item_vector_update ON "' + NewsItem.tableName + '";')
+          .then(function() {
+            console.log("Have DROPPED TRIGGER");
+            return sequelize
+              .query('DROP INDEX news_item_search_idx;')
+              .error(console.log);
+          }).then(function() {
+          console.log("Have DROPPED INDEX");
+          return sequelize
+            .query('ALTER TABLE "' + NewsItem.tableName + '" DROP COLUMN "' + vectorName + '";')
+            .error(console.log);
+        }).error(console.log);
+      },
+
       search: function(query) {
         console.log("In search for " + query);
 
@@ -87,15 +116,16 @@ module.exports = function(sequelize, DataTypes) {
         return NewsItem.findAll({
           order: "created_at DESC",
           where: [where, [{
-            $and: {
-              predicted_rating_value: {
-                $gt: 0
-              },
-              rating_value: null
-            }
-          }]],
-          limit: 1500
-        });
+                    $and: {
+                      predicted_rating_value: {
+                          $gt: 0
+                        },
+                      rating_value: null
+                    }
+                }]],
+                limit: 2500
+
+      });
       }
     }
   });
