@@ -263,13 +263,16 @@
       ready: function () {
         window.acDashBoardApp = this;
         this._showToastLater();
+        if (location.search.indexOf('trainingMode')>=0) {
+          this.set('isAdmin', true);
+        }
       },
 
       _showToastLater: function () {
         this.$.toast1.close();
         this.async(function () {
           this.$.toast1.open();
-        },60*1000);
+        },90*1000);
       },
 
       _closeToast: function () {
@@ -277,21 +280,21 @@
       },
 
       _selectedTabChanged: function (tab) {
-        if (tab=="all") {
-          this.$.all.refresh();
-        } else if (tab=='finance') {
-          this.$.finance.refresh();
-        } else if (tab=='housing') {
-          this.$.housing.refresh();
-        } else if (tab=='university') {
-          this.$.university.refresh();
-        } else if (tab=='other') {
-          this.$.other.refresh();
-        } else if (tab=='predictedRelevant') {
-          this.$.predictedRelevant.refresh();
-        } else if (tab=='predictedNotRelevant') {
-          this.$.predictedNotRelevant.refresh();
-        }
+        this.async(function () {
+          if (tab=="all") {
+            this.$$("#all").refresh();
+          } else if (tab=='finance') {
+            this.$$("#finance").refresh();
+          } else if (tab=='housing') {
+            this.$$("#housing").refresh();
+          } else if (tab=='university') {
+            this.$$("#university").refresh();
+          } else if (tab=='other') {
+            this.$$("#other").refresh();
+          } else if (tab=='predictedRelevant') {
+            this.$$("#predictedRelevant").refresh();
+          }
+        });
         this.set('page', tab);
         ga('send', 'pageview', '/'+tab);
       },

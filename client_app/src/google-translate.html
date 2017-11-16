@@ -35,6 +35,10 @@
       max-width: 17px !important;
       max-height: 17px !important;
     }
+
+    .ajax {
+      heigth: 4px;
+    }
   </style>
 
     <iron-media-query query="(min-width: 600px)" query-matches="{{wide}}"></iron-media-query>
@@ -45,7 +49,7 @@
         <div class="translatedBy">automatically translated</div>
       </div>
     </template>
-    <div class="layout horizontal center-center" hidden>
+    <div class="layout horizontal center-center ajax" hidden>
       <yp-ajax id="translateApi" dispatch-error on-response="_translatedResponse"></yp-ajax>
       <yp-ajax id="checkLanguageApi" dispatch-error on-response="_languageDetected"></yp-ajax>
       <yp-ajax id="updateLanguage" method="PUT"></yp-ajax>
@@ -130,7 +134,6 @@
 
           var text = this.$$("#translatedTextWithEmoji");
           if (text && textLength) {
-            console.error(textLength);
             if (this.wide) {
               if (textLength <= 18) {
                 text.style.fontSize = "25px";
