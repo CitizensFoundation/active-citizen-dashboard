@@ -9,6 +9,20 @@ request = coreRequest.defaults({jar: true});
 var coreUrl = "https://in.coosto.com/";
 var loginParams = "?username="+process.env.COOSTO_USERNAME+"&password="+process.env.COOSTO_PASSWORD;
 
+var skipTexts = [
+  "can help you to prepare your study abroad experience in Barcelona"
+];
+
+var shouldSkip = function (description) {
+  var skip = false;
+  skipTexts.forEach(function (text) {
+    if (description.indexOf(text) > -1) {
+      skip = true;
+    }
+  });
+  return skip;
+};
+
 var getAndSaveResults = function (callback) {
   request(coreUrl+"api/1/users/login"+loginParams, function (error, loginResults) {
     models.NewsSearchQuery.findAll({}).then(function (queries) {
@@ -35,16 +49,21 @@ var getAndSaveResults = function (callback) {
                 console.log("------------ News Item has no body End -------------");
                 innerSeriesCallback();
               } else {
-                models.NewsItem.create({
-                  name: result.title ? result.title : '',
-                  description: result.fulltext,
-                  data_id: result.id,
-                  news_search_query_id: query.id,
-                  data_object: result
-                }).then(function (createResults) {
-                  console.log("Have saved item");
+                if (!shouldSkip(result.fulltext)) {
+                  models.NewsItem.create({
+                    name: result.title ? result.title : '',
+                    description: result.fulltext,
+                    data_id: result.id,
+                    news_search_query_id: query.id,
+                    data_object: result
+                  }).then(function (createResults) {
+                    console.log("Have saved item");
+                    innerSeriesCallback();
+                  });
+                } else {
+                  console.log("Item skipped: "+result.fulltext);
                   innerSeriesCallback();
-                });
+                }
               }
             });
           }, function (error) {

@@ -40,7 +40,7 @@ fs
   });
 
 sequelize.sync().done(function() {
-   db.NewsItem.addFullTextIndex();
+   db.NewsItem.removeFullTextIndex();
 });
 
 db.sequelize = sequelize;
