@@ -20,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="yp-ajax/yp-ajax.html">
 <link rel="import" href="google-translate.html">
 <link rel="import" href="ac-linkify-and-emoji.html">
+<link rel="import" href="language-names.html">
 
 <dom-module id="ac-news-item-small">
 
@@ -125,7 +126,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 50px;
       }
 
-      @media (max-width: 560px) {
+      .footer {
+        margin-right: 8px;
+        font-size: 14px;
+        color: #888;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 600px) {
         .description {
           font-size: 14px;
         }
@@ -134,6 +143,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 8px;
           height: 170px;
           overflow: hidden;
+        }
+
+
+        .footer {
+          font-size: 13px;
+          @apply(--layout-center-center);
         }
       }
 
@@ -182,6 +197,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="description" id="textWithEmoji" hidden$="[[hasTranslatedText]]"></div>
       </div>
     </div>
+    <div class="layout horizontal footer">
+      <div class="flex"></div>
+      <div>
+        {{itemDate}} - [[item.data_object.author]] - [[getLanguageName(item.language)]]
+      </div>
+    </div>
   </template>
 
   <script>
@@ -194,6 +215,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         item: {
           type: Object,
           value: null
+        },
+
+        itemDate: {
+          type: String,
+          computed: '_itemDate(item)'
         },
 
         hasTranslatedText: {
@@ -209,8 +235,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       behaviors: [
-        Polymer.AcLinkifyAndEmjoi
+        Polymer.AcLinkifyAndEmjoi,
+        Polymer.languageNames
       ],
+
+      _itemDate: function (item) {
+        if (item) {
+          return moment(item.created_at).format("DD.MMM YYYY");
+        }
+      },
 
       _openItem: function () {
         this.fire('ac-open-full-item', this.item);
@@ -247,11 +280,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             } else if (textLength <= 80) {
               text.style.fontSize = "22px";
             } else if (textLength <= 110) {
-              text.style.fontSize = "19px";
+              text.style.fontSize = "20px";
             } else if (textLength <= 180) {
-              text.style.fontSize = "14px";
+              text.style.fontSize = "15px";
             } else {
-              text.style.fontSize = "12px";
+              text.style.fontSize = "13px";
             }
           }
         }

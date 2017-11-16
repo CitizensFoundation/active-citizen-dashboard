@@ -45,10 +45,8 @@
 
       @media (max-width: 600px) {
         .newsItemMaterial {
-          width: 300px;
+          width: 100%;
           height: 200px;
-          margin-left: 0;
-          margin-right: 0;
         }
 
         .languageInfo {
@@ -60,10 +58,13 @@
         }
       }
 
-
-      .card {
-        margin: 8px;
+      @media (max-width:320px) {
+        .newsItemMaterial {
+          width: 270px;
+          height: 220px;
+        }
       }
+
       yp-ajax {
         margin: 16px;
       }
@@ -257,9 +258,9 @@
     </div>
 
     <div class="layout vertical center-center">
-      <iron-list id="ironList" override-padding-top="120" items="[[newsItems]]" scroll-target="document" grid>
+      <iron-list id="ironList" scroll-offset="120" items="[[newsItems]]" scroll-target="document" grid>
         <template>
-          <div class="card">
+          <div class="card layout vertical center-center">
             <paper-material elevation="1" class="newsItemMaterial layout vertical">
               <ac-news-item-small item="[[item]]"></ac-news-item-small>
             </paper-material>
