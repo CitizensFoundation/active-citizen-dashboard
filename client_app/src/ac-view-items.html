@@ -58,6 +58,20 @@
         }
       }
 
+      @media (max-width:375px) {
+        .newsItemMaterial {
+          width: 340px;
+          height: 210px;
+        }
+      }
+
+      @media (max-width:360px) {
+        .newsItemMaterial {
+          width: 320px;
+          height: 205px;
+        }
+      }
+
       @media (max-width:320px) {
         .newsItemMaterial {
           width: 270px;
@@ -120,6 +134,13 @@
         width: 103px;
         height: 103px;
         margin-right: 16px;
+      }
+
+      @media (max-width: 600px) {
+        .headerImage {
+          width: 70px;
+          height: 70px;
+        }
       }
 
       .autoTranslateInfo {
@@ -219,7 +240,7 @@
       <paper-material elevation="1" class="languageInfo layout horizontal">
         <div class="layout horizontal">
           <div>
-            <iron-image class="headerImage" src="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png"></iron-image>
+            <iron-image class="headerImage" sizing="cover" src="https://s3-eu-west-1.amazonaws.com/yrpri-eu-direct-assets/deepYNotFound.png"></iron-image>
           </div>
           <div>
             <div class="subjectHeader">
@@ -234,7 +255,7 @@
             </div>
             <div class="layout horizontal">
               <div class="langHeader" hidden$="[[!totalLanguageCount]]">
-                [[totalItemCount]] voices in [[totalLanguageCount]] languages
+                [[totalItemCount]] voices translated from [[totalLanguageCount]] languages
               </div>
               <div>
                 <yp-ajax id="getAllItems" small-spinner method="GET" last-response="{{newsItems}}"></yp-ajax>
