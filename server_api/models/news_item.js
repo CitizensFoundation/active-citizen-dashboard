@@ -84,11 +84,11 @@ module.exports = function(sequelize, DataTypes) {
         var vectorName = NewsItem.getSearchVector();
 
         sequelize
-          .query('SELECT id FROM news_items WHERE id=1;')
+          .query('DROP TRIGGER news_item_vector_update ON "' + NewsItem.tableName + '";')
           .then(function() {
             console.log("Have DROPPED TRIGGER");
             return sequelize
-              .query('SELECT id FROM news_items WHERE id=1;')
+              .query('DROP INDEX news_item_search_idx;')
               .error(console.log);
           }).then(function() {
           console.log("Have DROPPED INDEX");
