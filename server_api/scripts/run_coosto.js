@@ -15,11 +15,11 @@ var skipTexts = [
 
 var shouldSkip = function (description) {
   var skip = false;
-  skipTexts.forEach(function (text) {
-    if (description.indexOf(text) > -1) {
+  for (var i = 0; i < skipTexts.length; i++) {
+    if (description.indexOf(skipTexts[i]) >= 0) {
       skip = true;
     }
-  });
+  }
   return skip;
 };
 
