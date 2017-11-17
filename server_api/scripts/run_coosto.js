@@ -12,7 +12,9 @@ var loginParams = "?username="+process.env.COOSTO_USERNAME+"&password="+process.
 var skipTexts = [
   "Barcelona Centre Universitari can help you to prepare your [study abroad] experience in Barcelona",
   "Erasmus University Rotterdam",
-  "[Erasmus] University Rotterdam"
+  "[Erasmus] University Rotterdam",
+  "Erasmus Capital",
+  "[Erasmus] Capital"
 ];
 
 var shouldSkip = function (description) {
