@@ -10,7 +10,7 @@ var coreUrl = "https://in.coosto.com/";
 var loginParams = "?username="+process.env.COOSTO_USERNAME+"&password="+process.env.COOSTO_PASSWORD;
 
 var skipTexts = [
-  "can help you to prepare your study abroad experience in Barcelona"
+  "Barcelona Centre Universitari can help you to prepare your [study abroad] experience in Barcelona"
 ];
 
 var shouldSkip = function (description) {

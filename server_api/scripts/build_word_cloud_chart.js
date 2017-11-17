@@ -12,6 +12,20 @@ var _ = require("lodash");
   - maxSize: max gram count, default: 3
 */
 
+var skipTexts = [
+  "Barcelona Centre Universitari can help you to prepare your [study abroad] experience in Barcelona"
+];
+
+var shouldSkip = function (description) {
+  var skip = false;
+  for (var i = 0; i < skipTexts.length; i++) {
+    if (description.indexOf(skipTexts[i]) >= 0) {
+      skip = true;
+    }
+  }
+  return skip;
+};
+
 var wordToFilter = ["erasmus","african culture","french culture","frdesouche","rebeudeter",
   "jsuis en teme","spain","italy","france","all","month","months","day","days","her","him","thing","my",
   "the erasmus girl","if","be","english","student","discover","year","years","what","times","things",
@@ -37,8 +51,12 @@ var processItem = function (item, done) {
   } else {
     text = item.description.trim()+" ";
   }
-  allTheText += text;
-  console.log(text);
+  if (!shouldSkip(text)) {
+    allTheText += text;
+    console.log(text);
+  } else {
+    console.error(text);
+  }
   done();
 };
 
