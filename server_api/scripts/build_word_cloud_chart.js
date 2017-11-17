@@ -32,8 +32,9 @@ var shouldSkip = function (description) {
 
 var wordToFilter = ["erasmus","african culture","french culture","frdesouche","rebeudeter",
   "jsuis en teme","spain","italy","france","all","month","months","day","days","her","him","thing","my",
-  "the erasmus girl","if","be","english","student","discover","year","years","what","times","things","pittsburgh","video",
-"[erasmus]","[#erasmus]","[study abroad]","[your study abroad]","your [study abroad]","erasmus mundus scholarship"];
+  "the erasmus girl","if","be","english","student","year","years","what","times","things","pittsburgh","video","videos",
+"[erasmus]","[#erasmus]","[study abroad]","[your study abroad]","your [study abroad]","erasmus mundus scholarship",
+  "[erasmus] mundus scholarship"];
 
 var filterWords = function (words) {
   words = _.filter(words, function (word) {
