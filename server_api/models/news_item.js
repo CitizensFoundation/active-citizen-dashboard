@@ -111,7 +111,12 @@ module.exports = function(sequelize, DataTypes) {
         query = sequelize.getQueryInterface().escape(query);
         console.log(query);
 
-        var where = '"'+NewsItem.getSearchVector() + '" @@ plainto_tsquery(\'english\', ' + query + ')';
+        query = query.replace(/ /g, ' & ');
+        query = query.replace(/'/g, '');
+        query = query += " & !RT";
+//        var where = '"'+NewsItem.getSearchVector() + '" @@ plainto_tsquery(\'english\', ' + query + ')';
+//        var where = '"'+NewsItem.getSearchVector() + '" @@ to_tsquery(\'english\', ' + query + ')';
+        var where = '"'+NewsItem.getSearchVector() + '" @@ to_tsquery(\'english\', ' + "'" +query+ "'" + ')';
 
         return NewsItem.findAll({
           order: "created_at DESC",
@@ -119,8 +124,7 @@ module.exports = function(sequelize, DataTypes) {
                     $and: {
                       predicted_rating_value: {
                           $gt: 0
-                        },
-                      rating_value: null
+                        }
                     }
                 }]],
                 limit: 2500

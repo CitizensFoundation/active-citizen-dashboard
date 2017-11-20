@@ -109,23 +109,26 @@ router.get('/chart/:name', function(req, res) {
 
 
 router.get('/predicted_relevant', function(req, res) {
-  models.NewsItem.findAll(
-    {
-      offset: 0,
-      limit: defaultLimit,
-      where: {
+  var query = "!RT";
+//        var where = '"'+NewsItem.getSearchVector() + '" @@ plainto_tsquery(\'english\', ' + query + ')';
+//        var where = '"'+NewsItem.getSearchVector() + '" @@ to_tsquery(\'english\', ' + query + ')';
+  var where = '"'+models.NewsItem.getSearchVector() + '" @@ to_tsquery(\'english\', ' + "'" +query+ "'" + ')';
+
+  models.NewsItem.findAll({
+    order: "created_at DESC",
+    where: [where, [{
+      $and: {
         predicted_rating_value: {
           $gt: 0
-        },
-        rating_value: null
-      },
-      order: defaultPredictionOrder
-    }).then(function (items) {
+        }
+      }
+    }]],
+    limit: 1500
+  }).then(function (items) {
     res.send(items);
   }).catch(function (error) {
     res.sendStatus(500);
   });
-
 });
 
 router.get('/predicted_not_relevant', function(req, res) {

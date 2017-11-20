@@ -31,8 +31,8 @@
 
       .languageInfo {
         background-color: #FFF;
-        width: 600px;
-        height: 120px;
+        width: 650px;
+        height: 125px;
         margin: 8px;
       }
 
@@ -258,7 +258,7 @@
                 [[totalItemCount]] voices translated from [[totalLanguageCount]] languages
               </div>
               <div>
-                <yp-ajax id="getAllItems" small-spinner method="GET" last-response="{{newsItems}}"></yp-ajax>
+                <yp-ajax id="getAllItems" small-spinner method="GET" on-last-response-changed="_newsItemsResponse"></yp-ajax>
               </div>
             </div>
             <div id="languageCounts" class="layout vertical languageItem"  hidden$="[[!wide]]">[[languageCounts]]</div>
@@ -279,7 +279,7 @@
     </div>
 
     <div class="layout vertical center-center">
-      <iron-list id="ironList" scroll-offset="120" items="[[newsItems]]" scroll-target="document" grid>
+      <iron-list id="ironList" scroll-offset="120" scroll-target="document" grid>
         <template>
           <div class="card layout vertical center-center">
             <paper-material elevation="1" class="newsItemMaterial layout vertical">
@@ -301,9 +301,9 @@
       is: 'ac-view-items',
 
       properties: {
-        newsItems: {
+        activeItems: {
           type: Array,
-          observer: '_newsItemsChanged'
+          value: null
         },
 
         selectedItem: {
@@ -421,11 +421,15 @@
         return str;
       },
 
-      _newsItemsChanged: function (newsItems) {
+      _newsItemsResponse: function (event, detail) {
+        var newsItems = detail.value;
+
         if (newsItems) {
+//          this.set('activeItems', newsItems);
           this.async(function () {
             this.$.ironList.notifyResize();
           }, 20);
+          this.$.ironList.items = newsItems;
           this.set('totalItemCount', this.formatNumber(newsItems.length));
           var languageCounts = {};
           this.async(function () {
@@ -441,6 +445,8 @@
             this.set('totalLanguageCount', totalCount-1);
             this.set('languageCounts', this._languageCountsToString(languageCounts));
           });
+        } else {
+          this.$.ironList.items = null;
         }
       },
 
@@ -448,6 +454,9 @@
         if (this.searchingFor && this.searchingFor!=="") {
           this.refresh();
           this.set('searchActive', true);
+          this.$.ironList.items = null;
+          this.$.ironList.notifyResize();
+          debugger;
         }
       },
 

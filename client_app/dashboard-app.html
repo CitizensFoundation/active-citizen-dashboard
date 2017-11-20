@@ -211,13 +211,13 @@
             <div class="layout vertical center-center information">
               <div class="information">
                 <b>About the project</b><br>
-                This experimental non-profit dashboard listens to Twitter, Facebook and other social media sites. We have trained an AI algorithm
-                to filter out relevant items connected to the subjects of Youth mobility and Erasmus.
-                All content is automatically translated to English using the Google Translate API.
+                This experimental non-profit Digital Dashboard was created to identify what young people are saying about learning mobility programmes to provide insightful inputs for EU policy-makers and stakeholders. The Dashboard currently “listens” to the opinions voiced on Twitter, Facebook, blogs and other social media sites. We have trained an Artificial Intelligence (AI) algorithm to filter out relevant items connected to the subjects of youth mobility and learning programmes, such as Erasmus. All content is automatically translated to English using the Google Translate API.<br>
+                <br>
+                The Digital Dashboard is part of the Digital Ecosystem for E-Participation Linking Youth (DEEP-Linking Youth) co-funded by the Erasmus+ Programme of the European Union and implemented by a consortium of seven European organisations. The project aims to explore how e-participation can foster young people’s empowerment and active participation in democratic life.
               </div>
               <div class="information">
                 <b>Main project website</b><br>
-                <a href="http://ecas.org/projects/deep-linking-youth/" target="_blank">http://ecas.org/projects/deep-linking-youth/</a>
+                <a href="http://deeplinkingyouth.eu/" target="_blank">http://deeplinkingyouth.eu/</a>
               </div>
               <div class="information">
                 <b>The open source code behind this website</b><br>
@@ -227,7 +227,7 @@
           </div>
         </section>
         <ac-news-item-classification item-id="{{itemId}}" name="classify" name="classify"></ac-news-item-classification>
-        <template is="dom-if" if="[[isAdmin]]">
+        <template is="dom-if" if="[[isAdmin]]" restamp>
           <ac-view-items id="all" name="all" category="all"></ac-view-items>
           <ac-view-items id="finance" name="finance" category="Finance"></ac-view-items>
           <ac-view-items id="housing" name="housing" category="Housing"></ac-view-items>
