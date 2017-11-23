@@ -301,6 +301,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _next: function () {
         this.$.getNextToClassifyAjax.generateRequest();
         this.$.getRatingStats.generateRequest();
+        this.fire('yp-analytics-event', { category: 'classify', eventType: 'next' });
+
       },
 
       _classifyDone: function (value) {
@@ -316,6 +318,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.classifyItemAjax.url = "/api/news_items/"+this.item.id+"/rate";
         this.$.classifyItemAjax.body = { ratingValue: detail.ratingValue, ratingCategoryName: detail.categoryName};
         this.$.classifyItemAjax.generateRequest();
+        this.fire('yp-analytics-event', { category: 'classify', eventType: 'rated' });
       }
     });
 

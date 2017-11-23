@@ -206,6 +206,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _rateAgain: function () {
         this.fire('rate-again', { itemId: this.item.id })
+        this.fire('yp-analytics-event', { category: 'item', eventType: 'reclassify' });
       },
 
       _ratingToWord: function (value) {

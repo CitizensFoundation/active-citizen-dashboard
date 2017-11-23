@@ -246,6 +246,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _openItem: function () {
         this.fire('ac-open-full-item', this.item);
+        this.fire('yp-analytics-event', { category: 'item', eventType: 'open' });
       },
 
       _hasTranslatedText: function (item, hasTranslatedText) {
@@ -294,6 +295,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _rateAgain: function () {
         this.fire('rate-again', { itemId: this.item.id })
+        this.fire('yp-analytics-event', { category: 'rate', eventType: 'again' });
       }
     });
 

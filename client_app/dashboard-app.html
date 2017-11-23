@@ -283,7 +283,8 @@
       ],
 
       listeners: {
-        'rate-again': '_rateAgain'
+        'rate-again': '_rateAgain',
+        'yp-analytics-event': '_analyticsEvent'
       },
 
       ready: function () {
@@ -292,6 +293,10 @@
         if (location.search.indexOf('trainingMode')>=0) {
           this.set('isAdmin', true);
         }
+      },
+
+      _analyticsEvent: function (event, detail) {
+        ga('send', 'event', detail.category, detail.eventType);
       },
 
       _showToastLater: function () {
@@ -343,6 +348,11 @@
 
       _pageChanged: function(page) {
         console.debug("page change: "+page);
+        if (page) {
+          this.async(function () {
+            ga('send', 'pageview');
+          });
+        }
         //this.set('selectedTab', page)
       }
 

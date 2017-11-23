@@ -403,6 +403,7 @@
         this.async(function () {
           this.$.dialog.open();
         })
+        this.fire('yp-analytics-event', { category: 'view', eventType: 'open' });
       },
 
       _languageCountsToString: function (obj) {
@@ -456,7 +457,7 @@
           this.set('searchActive', true);
           this.$.ironList.items = null;
           this.$.ironList.notifyResize();
-          debugger;
+          this.fire('yp-analytics-event', { category: 'search', eventType: 'start' });
         }
       },
 
@@ -464,6 +465,7 @@
         this.set('searchActive', false);
         this.set('searchingFor', "");
         this.refresh();
+        this.fire('yp-analytics-event', { category: 'search', eventType: 'clear' });
       },
 
       refresh: function () {
