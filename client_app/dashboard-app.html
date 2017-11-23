@@ -313,6 +313,7 @@
 
       _closeForLinkToast: function () {
         this.fire('yp-analytics-event', { category: 'toast', eventType: 'openSurvey' });
+        this.$.toast1.close();
       },
 
       _closeToast: function () {
