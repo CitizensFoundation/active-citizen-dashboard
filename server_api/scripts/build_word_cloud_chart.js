@@ -34,7 +34,7 @@ var wordToFilter = ["erasmus","african culture","french culture","frdesouche","r
   "jsuis en teme","spain","italy","france","all","month","months","day","days","her","him","thing","my",
   "the erasmus girl","if","be","english","student","year","years","what","times","things","pittsburgh","video","videos",
 "[erasmus]","[#erasmus]","[study abroad]","[your study abroad]","your [study abroad]","erasmus mundus scholarship",
-  "[erasmus] mundus scholarship"];
+  "[erasmus] mundus scholarship","ryanair","easyjet"];
 
 var filterWords = function (words) {
   words = _.filter(words, function (word) {
@@ -65,16 +65,25 @@ var processItem = function (item, done) {
   done();
 };
 
+
+var query = "!RT";
+//        var where = '"'+NewsItem.getSearchVector() + '" @@ plainto_tsquery(\'english\', ' + query + ')';
+//        var where = '"'+NewsItem.getSearchVector() + '" @@ to_tsquery(\'english\', ' + query + ')';
+var where = '"'+models.NewsItem.getSearchVector() + '" @@ to_tsquery(\'english\', ' + "'" +query+ "'" + ')';
+
 models.NewsItem.findAll({
   order: "created_at DESC",
-  where: {
-    predicted_rating_value: {
-      $gt: 0
-    },
-    created_at: {
-      $gt:  moment().add(-14, 'days').toISOString()
+  where: [where, [{
+    $and: {
+      predicted_rating_value: {
+        $gt: 0
+      },
+      created_at: {
+        $gt:  moment().add(-60, 'days').toISOString()
+      }
     }
-  }
+  }]],
+  limit: 1500
 }).then(function (items) {
   //items = _.dropRight(items,items.length-2000)
   async.eachSeries(items, function (item, callback) {

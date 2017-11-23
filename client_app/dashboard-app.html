@@ -243,7 +243,7 @@
       <paper-button on-tap="_closeToast" class="yellow-button">Close</paper-button>
       <paper-button on-tap="_showToastLater" class="yellow-button">Later</paper-button>
       <a href="https://www.1ka.si/a/136835" target="_blank">
-        <paper-button on-tap="_closeToast" class="green-button">Take part in survey!</paper-button>
+        <paper-button on-tap="_closeForLinkToast" class="green-button">Take part in survey!</paper-button>
       </a>
     </paper-toast>  </template>
 
@@ -289,7 +289,7 @@
 
       ready: function () {
         window.acDashBoardApp = this;
-        this._showToastLater();
+        this._closeAndReopenToastLater();
         if (location.search.indexOf('trainingMode')>=0) {
           this.set('isAdmin', true);
         }
@@ -299,14 +299,24 @@
         ga('send', 'event', detail.category, detail.eventType);
       },
 
-      _showToastLater: function () {
+      _showToastLater: function (skipEvent) {
+        this.fire('yp-analytics-event', { category: 'toast', eventType: 'close' });
+        this._closeAndReopenToastLater();
+      },
+
+      _closeAndReopenToastLater: function () {
         this.$.toast1.close();
         this.async(function () {
           this.$.toast1.open();
-        },90*1000);
+        },9*1000);
+      },
+
+      _closeForLinkToast: function () {
+        this.fire('yp-analytics-event', { category: 'toast', eventType: 'openSurvey' });
       },
 
       _closeToast: function () {
+        this.fire('yp-analytics-event', { category: 'toast', eventType: 'close' });
         this.$.toast1.close();
       },
 
