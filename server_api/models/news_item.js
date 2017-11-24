@@ -120,15 +120,8 @@ module.exports = function(sequelize, DataTypes) {
 
         return NewsItem.findAll({
           order: "created_at DESC",
-          where: [where, [{
-                    $and: {
-                      predicted_rating_value: {
-                          $gt: 0
-                        }
-                    }
-                }]],
-                limit: 2500
-
+          where: [where += " AND predicted_rating_value > 0"],
+          limit: 2500
       });
       }
     }

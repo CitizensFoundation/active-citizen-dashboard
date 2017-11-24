@@ -116,13 +116,7 @@ router.get('/predicted_relevant', function(req, res) {
 
   models.NewsItem.findAll({
     order: "created_at DESC",
-    where: [where, [{
-      $and: {
-        predicted_rating_value: {
-          $gt: 0
-        }
-      }
-    }]],
+    where: [where+=" AND predicted_rating_value > 0"],
     limit: 1500
   }).then(function (items) {
     res.send(items);
