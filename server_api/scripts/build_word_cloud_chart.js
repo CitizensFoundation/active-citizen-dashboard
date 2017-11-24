@@ -34,7 +34,7 @@ var wordToFilter = ["erasmus","african culture","french culture","frdesouche","r
   "jsuis en teme","spain","italy","france","all","month","months","day","days","her","him","thing","my",
   "the erasmus girl","if","be","english","student","year","years","what","times","things","pittsburgh","video","videos",
 "[erasmus]","[#erasmus]","[study abroad]","[your study abroad]","your [study abroad]","erasmus mundus scholarship",
-  "[erasmus] mundus scholarship","ryanair","easyjet"];
+  "[erasmus] mundus scholarship","ryanair","easyjet","discount"];
 
 var filterWords = function (words) {
   words = _.filter(words, function (word) {
@@ -73,16 +73,7 @@ var where = '"'+models.NewsItem.getSearchVector() + '" @@ to_tsquery(\'english\'
 
 models.NewsItem.findAll({
   order: "created_at DESC",
-  where: [where, [{
-    $and: {
-      predicted_rating_value: {
-        $gt: 0
-      },
-      created_at: {
-        $gt:  moment().add(-75, 'days').toISOString()
-      }
-    }
-  }]],
+  where: [where+=" AND predicted_rating_value > 0"],
   limit: 1500
 }).then(function (items) {
   //items = _.dropRight(items,items.length-2000)
