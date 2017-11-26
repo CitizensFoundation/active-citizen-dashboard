@@ -113,9 +113,11 @@
         text-transform: none;
         color: #ee2201;
       }
-      .green-button {
+
+      .orange-button {
         text-transform: none;
-        color: greenyellow;
+        color: var(--paper-orange-a200);
+        font-weight: bold;
       }
 
       .information {
@@ -243,7 +245,7 @@
       <paper-button on-tap="_closeToast" class="yellow-button">Close</paper-button>
       <paper-button on-tap="_showToastLater" class="yellow-button">Later</paper-button>
       <a href="https://www.1ka.si/a/136835" target="_blank">
-        <paper-button on-tap="_closeForLinkToast" class="green-button">Take part in survey!</paper-button>
+        <paper-button on-tap="_closeForLinkToast" class="orange-button">Take part in survey!</paper-button>
       </a>
     </paper-toast>  </template>
 
